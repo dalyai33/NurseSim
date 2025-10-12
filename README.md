@@ -6,5 +6,5 @@ martinfr@oregonstate.edu,
 dalyai@oregonstate.edu, 
 halei@oregonstate.edu, 
 shimk@oregonstate.edu, 
-isweesin@oregonstate.edu
--------------------------------------------
+isweesin@oregonstate.edu,
+Contact------------------------------------
