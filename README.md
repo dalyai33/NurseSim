@@ -1,5 +1,5 @@
 # NurseSim+
- An AI-Powered Clinical Simulation for Nursing Education
+ Our team is working to develop an AI-Powered Clinical Simulation for Nursing Education. We have been hired by OHSU to research, develop, and deliver a product that can be actively used by current and future nursing students.
 
  # Connect to Git with SSH (Secure Shell)
 
