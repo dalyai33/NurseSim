@@ -1,10 +1,10 @@
 ##Pull request format
 
-#Title of Issue to be fixed
-........
+#Title of Issue to be fixed:
+________
 
-#Description of changes
-........
+#Description of changes:
+________
 
-#People for Review
-........
+#People for Review:
+________
