@@ -1,4 +1,4 @@
-# NurseSim-
+# NurseSim+
  An AI-Powered Clinical Simulation for Nursing Education
 
  # Connect to Git with SSH (Secure Shell)
