@@ -150,10 +150,10 @@ chmod 644 ~/.ssh/id_ed25519.pub
 ---
 
 
-Contact------------------------------------
-martinfr@oregonstate.edu, 
-dalyai@oregonstate.edu, 
-halei@oregonstate.edu, 
-shimk@oregonstate.edu, 
-isweesin@oregonstate.edu,
-Contact------------------------------------
+## Contact
+martinfr@oregonstate.edu
+dalyai@oregonstate.edu
+halei@oregonstate.edu
+shimk@oregonstate.edu
+isweesin@oregonstate.edu
+
