@@ -11,30 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Check out the repo
     - uses: actions/checkout@v3
 
-    # --- Node.js setup ---
+    # Step 2: Set up Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '20'
 
-    # --- Install dependencies in web folder ---
-    - name: Install Node dependencies
-      working-directory: ./web
+    # Step 3: Install dependencies
+    - name: Install dependencies
       run: npm install
 
-    # --- Build React project ---
+    # Step 4: Build React project
     - name: Build
-      working-directory: ./web
       run: npm run build
 
-    # --- Run tests ---
+    # Step 5: Run tests
     - name: Run tests
-      working-directory: ./web
       run: npm test -- --watchAll=false
 
-    # --- Optional lint ---
+    # Step 6 (Optional): Lint code
     - name: Lint code
-      working-directory: ./web
       run: npm run lint || echo "No lint script found, skipping"
