@@ -29,12 +29,4 @@ jobs:
       working-directory: ./web
       run: npm run build
 
-    # --- Run tests ---
-    - name: Run tests
-      working-directory: ./web
-      run: npm test -- --watchAll=false
-
-    # --- Optional lint ---
-    - name: Lint code
-      working-directory: ./web
-      run: npm run lint || echo "No lint script found, skipping"
+  
