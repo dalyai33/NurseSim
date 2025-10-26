@@ -1,0 +1,35 @@
+:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+.app-shell { min-height: 100%; display: grid; place-items: center; background: #f7f7f8; }
+
+.login-wrap { width: 100%; max-width: 420px; padding: 24px; }
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+  padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.brand { margin: 0 0 16px; font-size: 24px; text-align: center; }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 14px; margin-bottom: 6px; color: #111827; }
+.field input {
+  width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 10px;
+  outline: none; font-size: 14px; background: #fff;
+}
+.field input:focus { border-color: #6b7280; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+.error { margin: 6px 0 0; color: #b91c1c; font-size: 12px; }
+
+.btn {
+  width: 100%; margin-top: 8px; padding: 10px 12px; border: none; border-radius: 10px;
+  background: #111827; color: #fff; font-weight: 600; cursor: pointer;
+}
+.btn:hover { filter: brightness(0.95); }
+
+.links { margin-top: 10px; text-align: center; }
+.links a { color: #2563eb; text-decoration: none; font-size: 13px; }
+.links a:hover { text-decoration: underline; }
+
+.dash-wrap { text-align: center; padding: 24px; }
