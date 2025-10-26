@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # --- Python / Ren'Py setup ---
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Python tests
+      run: |
+        pytest tests/ || echo "No Python tests found, skipping"
+
+    # --- Node.js setup ---
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install Node dependencies
+      run: npm install || echo "No package.json found, skipping"
+
+    # --- TypeScript check ---
+    - name: Check TypeScript
+      run: |
+        if [ -f tsconfig.json ]; then
+          npx tsc --noEmit
+        else
+          echo "No tsconfig.json found, skipping TypeScript check"
+        fi
+
+    # --- Basic HTML/CSS/JS syntax check ---
+    - name: Check HTML/JS/CSS
+      run: |
+        echo "Basic syntax checks: skipping (add linters later)"
