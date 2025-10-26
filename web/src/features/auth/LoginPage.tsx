@@ -14,7 +14,7 @@ function handleSubmit(e: React.FormEvent){
     e.preventDefault(); // to prevent reloading the whole page
     const nextErrors: typeof errors = {}; // init errors to 0
     if (!isValidEmail(email)) nextErrors.email = "Invalid email address, please check";
-    if (!pw) nextErrors.pw = "really bro? no password???";
+    if (!pw) nextErrors.pw = "rReally bro? no password???";
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
         // in case no errors, go to success page
