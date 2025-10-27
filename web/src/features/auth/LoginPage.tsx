@@ -51,12 +51,12 @@ return (
                     />
                     {errors.pw && <p className="error">{errors.pw}</p>}
                 </div>
-                <button className="btn" type="submit"> Log In</button>
+                <button className="btn" type="submit">Log In</button>
 
                 <div className="links">
                     <a href="#">Forgot Password?</a>
                     <span> . </span>
-                    <a href="#">Create Account</a>
+                    <a href="/signup">Create Account</a>
                 </div>
             </form>
         </div>
