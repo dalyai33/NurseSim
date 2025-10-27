@@ -5,6 +5,8 @@ html, body, #root { height: 100%; margin: 0; }
 .app-shell { min-height: 100%; display: grid; place-items: center; background: #f7f7f8; }
 
 .login-wrap { width: 100%; max-width: 420px; padding: 24px; }
+.sign-up-wrap { width: 100%; max-width: 420px; padding: 24px; }
+
 .card {
   background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
   padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
