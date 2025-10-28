@@ -23,8 +23,8 @@ function handleSubmit(e: React.FormEvent){
     if (!pw) nextErrors.pw = "Really bro? no password???";
     if (!firstName) nextErrors.firstName = "You should have a first name!";
     if (!lastName) nextErrors.lastName = "You should have a last name!";
-    if (!studentID) nextErrors.studentID = "You should have a last name!";
-    if (!phoneNumber) nextErrors.phoneNumber = "You should have a last name!";
+    if (!studentID) nextErrors.studentID = "You should have a student ID number!";
+    if (!phoneNumber) nextErrors.phoneNumber = "You should have a phone number!";
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
