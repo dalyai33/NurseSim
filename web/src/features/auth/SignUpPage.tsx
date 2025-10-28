@@ -38,29 +38,31 @@ return (
         <div className="card">
             <h1 className="brand"> NurseSim</h1>
             <form onSubmit={handleSubmit} noValidate>
-                <div className="field">
-                    <label htmlFor="firstName">First Name</label>
-                    <input 
-                        id="firstName"
-                        type="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="John"
-                        aria-invalid={!!errors.firstName}
-                    />
-                    {errors.firstName && <p className="error">{errors.firstName}</p>}
-                </div>
-                <div className="field">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input 
-                        id="lastName"
-                        type="lastName"
-                        value={firstName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Doe"
-                        aria-invalid={!!errors.lastName}
-                    />
-                    {errors.lastName && <p className="error">{errors.lastName}</p>}
+                <div className="name-fields">
+                    <div className="field">
+                        <label htmlFor="firstName">First Name</label>
+                        <input 
+                            id="firstName"
+                            type="firstName"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="John"
+                            aria-invalid={!!errors.firstName}
+                        />
+                        {errors.firstName && <p className="error">{errors.firstName}</p>}
+                    </div>
+                    <div className="field">
+                        <label htmlFor="lastName">Last Name</label>
+                        <input 
+                            id="lastName"
+                            type="lastName"
+                            value={firstName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Doe"
+                            aria-invalid={!!errors.lastName}
+                        />
+                        {errors.lastName && <p className="error">{errors.lastName}</p>}
+                    </div>
                 </div>
                 <div className="field">
                     <label htmlFor="studentID">Student ID</label>
@@ -113,7 +115,7 @@ return (
                 <button className="btn" type="submit">Sign Up</button>
 
                 <div className="links">
-                    <a href="/login">Sign in</a>
+                    <button className="btn-signin" type="submit">Sign In</button>
                 </div>
             </form>
         </div>
