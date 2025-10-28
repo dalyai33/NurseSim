@@ -46,7 +46,7 @@ return (
                             type="firstName"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            placeholder="John"
+                            placeholder="Alex"
                             aria-invalid={!!errors.firstName}
                         />
                         {errors.firstName && <p className="error">{errors.firstName}</p>}
@@ -58,7 +58,7 @@ return (
                             type="lastName"
                             value={firstName}
                             onChange={(e) => setLastName(e.target.value)}
-                            placeholder="Doe"
+                            placeholder="Smith"
                             aria-invalid={!!errors.lastName}
                         />
                         {errors.lastName && <p className="error">{errors.lastName}</p>}
