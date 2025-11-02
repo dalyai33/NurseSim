@@ -11,8 +11,8 @@ We follow a professionalism-first approach:
 - Escalate only when team-level resolution fails.
 
 **Reporting:**  
-Contact **Ian (Team Leader)**   
-- **Ian Hale** – `halei@oregonstate.edu`  
+Contact  
+- **Ian Hale (Team Leader)** – `halei@oregonstate.edu`
 
 ## Getting Started
 ### 2.1 Prerequisites
@@ -41,6 +41,12 @@ git add -A
 git commit -m "feat(simulation): add new patient scenario"
 git push -u origin feature/add-student-scenario 
 ```
+Rebase before pushing to keep history linear.
+```bash
+git pull --rebase origin main
+```
+Merge through GitHub once approved (do NOT local-merge into main).
+
 ## Issues & Planning
 Explain how to file issues, required templates/labels, estimation, and
 triage/assignment practices.
