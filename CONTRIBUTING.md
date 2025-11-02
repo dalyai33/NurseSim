@@ -121,6 +121,7 @@ A PR can be merged only if:
 - Lint passes – from `.github/workflows/lint.yml`
 - Branch is up to date with main
 - Review is approved
+
 If any checks fail, fix it -> push again -> CI re-runs
 
 ## CI/CD
