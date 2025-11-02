@@ -16,10 +16,10 @@ Contact
 
 ## Getting Started
 ### 2.1 Prerequisites
-- **Node.js** ≥ 18 and **npm**
+- **Node.js** 
 - **Git** with **SSH** configured (we use SSH, not HTTPS)
 - **Ren’Py** (for the simulation / VN-style UI segment)
-- Recommended: VS Code + ESLint + Prettier
+- Recommended: VS Code + ESLint
 ### 2.2 Clone via SSH
 Follow the README steps (already in the repo) to set up SSH:
 
@@ -48,11 +48,25 @@ git pull --rebase origin main
 Merge through GitHub once approved (do NOT local-merge into main).
 
 ## Issues & Planning
-Explain how to file issues, required templates/labels, estimation, and
-triage/assignment practices.
+We use **GitHub Issues** to plan, assign, and track all project work — including bugs, features, documentation, and risk management.  
+This keeps our progress visible to the entire team and aligns with our weekly meeting goals.
+
+### Issue Criteria
+- Name of issue
+- Location/where to find the issue
+- Short description of what needs to be done and why
+
 ## Commit Messages
-State the convention (e.g., Conventional Commits), include examples, and how to
-reference issues.
+- **Feature branches:** `feature/<short-description>`  
+- **Bug-fix branches:** `fix/<issue-number>`  
+- **Docs branches:** `docs/<topic>` 
+
+**Example:**
+```bash
+git commit -m "feat(simulation): add new patient scenario"
+git push -u origin feature/add-student-scenario 
+```
+
 ## Code Style, Linting & Formatting
 Name the formatter/linter, config file locations, and the exact commands to
 check/fix locally.
