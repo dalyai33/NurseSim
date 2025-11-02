@@ -20,8 +20,9 @@ Team: NurseSim+
 
 [ STEP 3: RUN THE SIMULATOR ]
 -------------------------------------
-1. In the Ren'Py launcher, find the "NurseSim" project.
-2. Click "Launch Project" to start the simulator.
+1. In the Ren'Py launcher, click on Preferences->Project Directory
+2. Set the Project Directory to the Git Repository Folder
+3. Select on "renpyNurseSim" and Click "Launch Project" to start the simulator.
 
 [ STEP 4: EDIT THE PROJECT ]
 -------------------------------------
@@ -30,6 +31,7 @@ Team: NurseSim+
     options.rpy  -> settings and configurations
     screens.rpy  -> menus and UI elements
 - You can edit with any text editor or Ren'Py’s built-in editor.
+- If using Visual Studio, make sure to download Ren'Py Language Reader extension
 
 -------------------------------------
 TEAM NOTE:
