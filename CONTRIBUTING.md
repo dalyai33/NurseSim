@@ -15,18 +15,18 @@ Contact
 - **Ian Hale (Team Leader)** – `halei@oregonstate.edu`
 
 ## Getting Started
-### 2.1 Prerequisites
+### Prerequisites
 - **Node.js** 
 - **Git** with **SSH** configured (we use SSH, not HTTPS)
 - **Ren’Py** (for the simulation / VN-style UI segment)
 - Recommended: VS Code + ESLint
-### 2.2 Clone via SSH
+### Clone via SSH
 Follow the README steps (already in the repo) to set up SSH:
 
 ## Branching & Workflow
 We use a **lightweight GitFlow** process designed for our senior capstone schedule.
 
-### 3.1 Branch Structure
+### Branch Structure
 
 - **Main branch:** `main` — always stable and deployable  
 - **Feature branches:** `feature/<short-description>`  
