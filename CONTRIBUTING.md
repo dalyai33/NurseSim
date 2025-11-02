@@ -1,14 +1,46 @@
 # Contributing Guide
-How to set up, code, test, review, and release so contributions meet our Definition
-of Done.
+Welcome to NurseSim+ — an AI-powered clinical simulation for nursing education.
+This guide explains how to set up, contribute, and ensure all code meets our Definition of Complete.
+
 ## Code of Conduct
-Reference the project/community behavior expectations and reporting process.
+We follow a professionalism-first approach:
+
+- Be respectful, inclusive, and constructive in Discord, GitHub, and meetings.
+- Respond to teammates within **24 hours** unless you’ve said you’ll be unavailable (our team charter standard).:contentReference[oaicite:1]{index=1}
+- Major disagreements → majority vote; minor assignment details → consensus.
+- Escalate only when team-level resolution fails.
+
+**Reporting:**  
+Contact **Ian (Team Leader)**   
+- **Ian Hale** – `halei@oregonstate.edu`  
+
 ## Getting Started
-List prerequisites, setup steps, environment variables/secrets handling, and how to
-run the app locally.
+### 2.1 Prerequisites
+- **Node.js** ≥ 18 and **npm**
+- **Git** with **SSH** configured (we use SSH, not HTTPS)
+- **Ren’Py** (for the simulation / VN-style UI segment)
+- Recommended: VS Code + ESLint + Prettier
+### 2.2 Clone via SSH
+Follow the README steps (already in the repo) to set up SSH:
+
 ## Branching & Workflow
-Describe the workflow (e.g., trunk-based or GitFlow), default branch, branch
-naming, and when to rebase vs. merge.
+We use a **lightweight GitFlow** process designed for our senior capstone schedule.
+
+### 3.1 Branch Structure
+
+- **Main branch:** `main` — always stable and deployable  
+- **Feature branches:** `feature/<short-description>`  
+- **Bug-fix branches:** `fix/<issue-number>`  
+- **Docs branches:** `docs/<topic>`  
+
+**Examples:**
+```bash
+git checkout -b feature/add-student-scenario
+# work on your feature
+git add -A
+git commit -m "feat(simulation): add new patient scenario"
+git push -u origin feature/add-student-scenario 
+```
 ## Issues & Planning
 Explain how to file issues, required templates/labels, estimation, and
 triage/assignment practices.
