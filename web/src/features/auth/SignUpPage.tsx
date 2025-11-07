@@ -29,7 +29,7 @@ function handleSubmit(e: React.FormEvent){
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
         // in case no errors, go to success page
-        navigate("/login")
+        navigate("/login");
     }
 }
 
@@ -120,6 +120,6 @@ return (
             </form>
         </div>
     </div>
-)
+);
 
 }

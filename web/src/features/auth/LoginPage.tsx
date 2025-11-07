@@ -18,7 +18,7 @@ function handleSubmit(e: React.FormEvent){
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
         // in case no errors, go to success page
-        navigate("/dashboard")
+        navigate("/dashboard");
     }
 }
 
@@ -61,6 +61,6 @@ return (
             </form>
         </div>
     </div>
-)
+);
 
 }
