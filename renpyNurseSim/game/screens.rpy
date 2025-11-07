@@ -297,8 +297,9 @@ screen navigation():
 
         spacing gui.navigation_spacing
 
-        if main_menu:
 
+        if main_menu:
+            textbutton _("Tutorial") action Start("tutorial")
             textbutton _("Start") action Start()
 
         else:
