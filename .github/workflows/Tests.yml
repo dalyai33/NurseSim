@@ -24,7 +24,8 @@ jobs:
       working-directory: ./web
       run: npm install
 
-    # --- Run tests ---
-    - name: Run tests
+    # --- Run tests with coverage ---
+    - name: Run tests with coverage 
       working-directory: ./web
-      run: npm run test
+      run: npm run coverage
+      
