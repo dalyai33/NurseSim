@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # --- Node.js setup ---
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    # --- Install dependencies ---
+    - name: Install Node dependencies
+      working-directory: ./web
+      run: npm install
+
+    # --- Run tests ---
+    - name: Run tests
+      working-directory: ./web
+      run: npm run test
