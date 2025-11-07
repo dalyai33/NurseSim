@@ -3,11 +3,12 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import LoginPage from "../features/auth/LoginPage";
+import type * as RRDom from "react-router-dom";
 
 // Mock useNavigate
 const mockedNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
-  const actual: any = await vi.importActual("react-router-dom");
+  const actual: typeof RRDom = await vi.importActual("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockedNavigate,
