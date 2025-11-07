@@ -14,7 +14,7 @@ jobs:
         with:
           script: |
             const reviewers = [
-              "dalyai33", "nisweesi", "franciscojmartinez12", "" // <-- GitHub usernames here
+              "dalyai33", "nisweesi", "franciscojmartinez12", "KianalShim", "Halei-6103" // <-- GitHub usernames here
             ];
             const author = context.payload.pull_request.user.login.toLowerCase();
             const pool = reviewers.filter(u => u.toLowerCase() !== author);
