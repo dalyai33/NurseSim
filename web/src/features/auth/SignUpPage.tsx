@@ -43,7 +43,7 @@ return (
                         <label htmlFor="firstName">First Name</label>
                         <input 
                             id="firstName"
-                            type="firstName"
+                            type="text"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             placeholder="Alex"
@@ -55,8 +55,8 @@ return (
                         <label htmlFor="lastName">Last Name</label>
                         <input 
                             id="lastName"
-                            type="lastName"
-                            value={firstName}
+                            type="text"
+                            value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             placeholder="Smith"
                             aria-invalid={!!errors.lastName}
@@ -68,7 +68,7 @@ return (
                     <label htmlFor="studentID">Student ID</label>
                     <input 
                         id="studentID"
-                        type="studentID"
+                        type="text"
                         value={studentID}
                         onChange={(e) => setstudentID(e.target.value)}
                         placeholder="97XXXXXXX"
@@ -80,7 +80,7 @@ return (
                     <label htmlFor="phoneNumber">Phone Number</label>
                     <input 
                         id="phoneNumber"
-                        type="phoneNumber"
+                        type="text"
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         placeholder="+1 (234) 567-8910"
