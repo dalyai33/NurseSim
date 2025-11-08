@@ -14,7 +14,7 @@ label start:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    image bg livingroom_scaled = im.Scale("hospitalroom.jpg", 1920, 1080)
+    image bg livingroom_scaled = im.Scale("Hospital_room.PNG", 1920, 1080)
     scene bg livingroom_scaled
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
