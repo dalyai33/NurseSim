@@ -2,7 +2,7 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-define b = Character("Benny Beaver")
+define b = Character("Ducky Duck")
 
 
 
@@ -12,22 +12,22 @@ label tutorial:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    image bgt livingroom_scaled = im.Scale("hostpitalroom.jpg", 1920, 1080)
+    image bgt livingroom_scaled = im.Scale("Hospital_Room.PNG", 1920, 1080)
     scene bg livingroom_scaled
 
     # Shows our character sprite, may change later on
-    show bennybeaver at Position(xpos=0.5, ypos=0.6)
+    show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
 
     # Dialogue
     b "Welcome to the Nursing Sim+ Tutorial."
 
-    # Probably a new photo of benny waving his hand saying hello
-    #show bennybeaver at Position(xpos=0.5, ypos=0.6)
+    # Probably a new photo of ducky waving his hand saying hello
+    #show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
     b "I'm Capstone, your own personal AI assistant!"
     b "Its time for me to teach you how to play the simulator."
 
     # New photo
-    # show bennybeaver at Position(xpos=0.5, ypos=0.6)
+    # show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
     b "Lets first start off with a question to test your knowledge"
 
 
