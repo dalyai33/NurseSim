@@ -56,4 +56,7 @@ label tutorial_q1:
     if choice == "blood":
         b "Correct! 'Hemo-' relates to blood."
     else:
-        b "Not quite. Lets click the help button and get a hint."
+        $ show_back_arrow = True
+        show screen back_arrow_guide
+        b "Not quite. Lets click that little back button at the bottom of your screen and give it another try."
+        
