@@ -20,8 +20,7 @@ label start:
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
 
-    show duck_mascot at sprite_small # xpos and ypos are relative to screen width/height (0.0 to 1.0)
-
+    show duck_mascot at sprite_small
     # These display lines of dialogue.
 
     b "Welcome to the Nursing Sim+."
