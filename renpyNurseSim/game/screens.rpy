@@ -1620,3 +1620,41 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 900
+
+
+################################################################################
+## Screen Question
+################################################################################
+style mcq_question:
+    color "#404040"
+    size 28
+    xalign 0.0
+
+style mcq_button:
+    color "#404040"
+    padding (12, 8)
+    background Solid("#ffffffcc")
+    xmaximum int(config.screen_width * 0.85)
+
+screen mcq(question, options):
+    modal True
+    zorder 50
+
+    frame:
+        xalign 0.5
+        yalign 0.82
+        xmaximum int(config.screen_width * 0.92)
+        padding (10, 10)
+        background Solid("#e0a366cc")
+
+        vbox:
+            spacing 8
+            text question style "mcq_question"
+
+            for i, (label_text, return_value) in enumerate(options, start=1):
+                textbutton label_text action Return(return_value) style "mcq_button"
+
+    # keyboard shortcuts 1..9 pick corresponding option
+    for i, (label_text, return_value) in enumerate(options, start=1):
+        if i <= 9:
+            key "K_%d" % i action Return(return_value)

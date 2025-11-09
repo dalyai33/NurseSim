@@ -2,8 +2,14 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-define b = Character("Ducky Duck")
+define b = Character("Capstone")
 
+# Sizing for our mascott
+transform sprite_small:
+ # xpos and ypos are relative to screen width/height (0.0 to 1.0)
+    xalign 0.5
+    yalign 0.6
+    zoom 0.25
 
 
 
@@ -16,7 +22,7 @@ label tutorial:
     scene bg livingroom_scaled
 
     # Shows our character sprite, may change later on
-    show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
+    show duck_mascot at sprite_small
 
     # Dialogue
     b "Welcome to the Nursing Sim+ Tutorial."
@@ -36,19 +42,18 @@ label tutorial_q1:
 
     # These questions would normally be AI created, but for tutorial we will have Capstone
     # ask this hardcoded question
-    b "What does the prefix 'hemo-' correlate with?"
+    # b "What does the prefix 'hemo-' correlate with?"
 
-    menu:
-        "1) Blood":
-            $ correct = True
-        "2) Liver":
-            $ correct = False
-        "3) Bone":
-            $ correct = False
-        "4) Skin":
-            $ correct = False
+    $ answers = [
+        ("1) Blood", "blood"),
+        ("2) Liver", "liver"),
+        ("3) Bone", "bone"),
+        ("4) Skin", "skin"),
+    ]
+    # call the screen and get the returned value
+    $ choice = renpy.call_screen("mcq", "What does the prefix 'hemo-' correlate with?", answers)
 
-    if correct:
+    if choice == "blood":
         b "Correct! 'Hemo-' relates to blood."
     else:
-        b "Not quite. 'Hemo-' relates to blood."
+        b "Not quite. Lets click the help button and get a hint."
