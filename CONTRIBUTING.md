@@ -260,9 +260,9 @@ For any questions, issues, or clarification about NurseSim+, please reach out th
 |------|------|--------|
 | **Ian Hale** | Team Lead | halei@oregonstate.edu |
 | **Aidan Daly** | QA Lead | dalyai@oregonstate.edu |
-| **Francisco Martin** | Documentation Lead | martinfr@oregonstate.edu |
+| **Francisco Martinez** | Documentation Lead | martinfr@oregonstate.edu |
 | **Kiana Shim** | UI/UX Developer | shimk@oregonstate.edu |
-| **Nadir Iswee Sin** | Lead Developer | isweesin@oregonstate.edu |
+| **Nadir Isweesi** | Lead Developer | isweesin@oregonstate.edu |
 
 ### Response Expectations
 - **Discord messages:** Within 24 hours.  
