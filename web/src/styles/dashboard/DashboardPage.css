@@ -1,0 +1,17 @@
+/* remove browser default margin so content can go flush left */
+body {
+    margin: 0;
+  }
+  
+  /* horizontal layout: navbar on the left, content right next to it */
+  .dash-wrap {
+    display: flex;
+    align-items: flex-start;   /* keep everything stuck to the top */
+  }
+  
+  /* main content area */
+  .dash-content {
+    padding: 1.5rem;          /* space around the text */
+    flex: 1;                  /* take remaining width */
+  }
+  
