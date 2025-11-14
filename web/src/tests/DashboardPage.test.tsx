@@ -1,11 +1,16 @@
 // src/tests/DashboardPage.test.tsx
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { MantineProvider } from "@mantine/core";
 import DashboardPage from "../features/dashboard/DashboardPage";
 
 describe("DashboardPage", () => {
-  it("renders the welcome heading and success message", () => {
-    render(<DashboardPage />);
+  it("renders the welcome heading, sidebar, and success message", () => {
+    render(
+    <MantineProvider>
+      <DashboardPage />
+    </MantineProvider>
+  );
 
     // Get elements by text and assert their content
     const heading = screen.getByRole("heading", { level: 2 });
