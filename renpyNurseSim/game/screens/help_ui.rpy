@@ -18,5 +18,16 @@ screen help_popup():
 
     textbutton "Close" action Hide("help_popup"):
         xalign 0.75
-        yalign 0.75
-        padding (6,6)
+        yalign 0.6
+        padding (10, 18)
+
+        # Button background
+        background "#d05a00"
+        hover_background "#ff7a1a"
+
+        # Text appearance (note the text_ prefix)
+        text_color "#ffffff"
+        text_hover_color "#ffffff"
+        text_outlines [(2, "#000000", 0, 0)]
+        text_size 20
+        text_bold True
