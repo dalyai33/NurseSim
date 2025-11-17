@@ -1,4 +1,4 @@
-:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+/* :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; margin: 0; }
 
@@ -50,6 +50,174 @@ html, body, #root { height: 100%; margin: 0; }
 .links a { color: #2563eb; text-decoration: none; font-size: 13px; }
 .links a:hover { text-decoration: underline; }
 
+<<<<<<< HEAD
+.dash-wrap { text-align: center; padding: 24px; } */
+
+/* LOGIN THEME – aligns with Nurse Sim gradients + soft cards */
+
+/* you can keep your global reset separately; this just scopes login layout */
+.app-shell {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-top, #f4b873) 0%,
+    var(--color-bg-bottom, #e2e0dd) 100%
+  );
+}
+
+.login-wrap,
+.sign-up-wrap {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
+
+/* soft, rounded “Nurse Sim” card */
+.card {
+  background: linear-gradient(180deg, #f4efe8 0%, #f0d5a2 100%);
+  border-radius: var(--radius-large, 32px);
+  padding: 32px 28px;
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+/* brand title similar to other headings */
+.brand {
+  margin: 0 0 24px;
+  font-size: 26px;
+  text-align: center;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* fields */
+
+.field {
+  margin-bottom: 16px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.name-fields .field {
+  flex: 1;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #5b4b3a;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  outline: none;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.field input:focus {
+  border-color: #f39a45;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px rgba(243, 154, 69, 0.3);
+}
+
+/* validation */
+
+.error {
+  margin: 6px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+/* primary gradient button (matches ENTER / TEACHER VIEW) */
+
+.btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #f9c66b, #f38f43);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* secondary “sign in with…” style button */
+
+.btn-signin {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.9);
+  color: #5b4b3a;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* footer links */
+
+.links {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #5b4b3a;
+}
+
+.links a {
+  color: #f38f43;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* dashboard wrapper (if you reuse it) */
+
+.dash-wrap {
+  text-align: center;
+  padding: 24px;
+=======
 
 /* DASHBOARD STYLES */
 
@@ -74,5 +242,6 @@ html, body, #root { height: 100%; margin: 0; }
   flex-direction: column;
   align-items: flex-start;
   background: #f7f7f8;
+>>>>>>> main
 }
 

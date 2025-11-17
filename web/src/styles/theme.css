@@ -1,0 +1,29 @@
+:root {
+  --color-orange: #FF8400;
+  --color-orange-light: #f7c270;
+  --color-cream: #f9e7d3;
+  --color-cream-soft: #f3e8dd;
+  --color-gray-light: #dedede;
+  --color-bg-top: #f2b46d;
+  --color-bg-bottom: #FFD7AC;
+  --color-shadow-soft: rgba(0, 0, 0, 0.2);
+
+  --radius-large: 32px;
+  --radius-medium: 24px;
+  --radius-small: 16px;
+
+  /* --font-display: "Cinzel Decorative", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, sans-serif; */
+  --font-display: "Aboreto", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: white;
+  background: #000;
+}

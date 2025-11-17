@@ -1,0 +1,194 @@
+/* ==============
+   AUTH LAYOUT
+   ============== */
+
+.app-shell {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-top, #f4b873) 0%,
+    var(--color-bg-bottom, #e2e0dd) 100%
+  );
+}
+
+/* center card + keep same width for login/signup */
+.login-wrap,
+.sign-up-wrap {
+  width: 100%;
+  max-width: 520px;
+  padding: 24px;
+}
+
+/* ==================
+   CARD + TYPOGRAPHY
+   ================== */
+
+.card {
+  background: linear-gradient(180deg, #f4efe8 0%, #f0d5a2 100%);
+  border-radius: var(--radius-large, 32px);
+  padding: 32px 32px 28px;
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+}
+
+/* brand title */
+.brand {
+  margin: 0;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* give form some breathing room */
+.card form {
+  margin-top: 24px;
+}
+
+/* ==============
+   FORM FIELDS
+   ============== */
+
+.field {
+  margin-bottom: 16px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.name-fields .field {
+  flex: 1;
+}
+
+/* labels white like rest of UI */
+.field label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* inputs fit cleanly inside card */
+.field input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  outline: none;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #333;
+  box-sizing: border-box;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* subtle focus ring in brand orange */
+.field input:focus {
+  border-color: #f39a45;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px rgba(243, 154, 69, 0.4);
+}
+
+/* optional: lighter placeholder */
+.field input::placeholder {
+  color: #999999;
+}
+
+/* error text pops but stays inside layout */
+.error {
+  margin: 6px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+/* ==============
+   BUTTONS
+   ============== */
+
+.btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #f9c66b, #f38f43);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* secondary button on SignUp (“Already have an account? Sign In”) */
+
+.btn-signin {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* ==============
+   LINKS / FOOTER
+   ============== */
+
+.links {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* for the login link text on SignUp, if you keep it outside a button */
+.links span {
+  margin: 0 4px;
+}
+
+/* optional: dashboard text if you reuse this file */
+.dash-wrap {
+  text-align: center;
+  padding: 24px;
+}

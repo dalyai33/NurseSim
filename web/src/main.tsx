@@ -1,15 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { MantineProvider } from '@mantine/core';
-import AppRouter from "./app/routes";
+import App from "./app/app";
 
-// to tell react where to render the root file
-ReactDOM.createRoot(document.getElementById("root")!).render(
-    // to catch erros and mistakes
+import "./styles/globals.css";
+import "./styles/theme.css";
+import "./styles/layout.css";
+import "./styles/auth.css";
+import "./styles/landing.css";
+import "./styles/classroom.css";
+import "./styles/profile.css";
+import "./styles/sim.css";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    {/* // to go to the router */}
-    <MantineProvider>
-      <AppRouter />
-    </MantineProvider>
+    <App />
   </React.StrictMode>
 );

@@ -48,14 +48,14 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
-    const emailError = screen.queryByText(/Invalid email address/i);
-    const pwError = screen.queryByText(/Really bro\? no password\?/i);
+    const emailError = screen.queryByText(/Enter a valid OHSU email\./i); // updated
+    const pwError = screen.queryByText(/Password is required\./i);       // updated
 
     expect(emailError).not.toBeNull();
     expect(pwError).not.toBeNull();
   });
 
-  it("navigates to dashboard when inputs are valid", () => {
+  it("navigates to landing when inputs are valid", () => {          // updated description
     render(
       <MemoryRouter>
         <LoginPage />
@@ -66,6 +66,7 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
-    expect(mockedNavigate).toHaveBeenCalledWith("/dashboard");
+    expect(mockedNavigate).toHaveBeenCalledWith("/landing");      // updated
   });
+
 });

@@ -57,15 +57,16 @@ describe("SignUpPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
 
-    expect(screen.queryByText(/Invalid email address/i)).not.toBeNull();
-    expect(screen.queryByText(/Really bro\? no password/i)).not.toBeNull();
-    expect(screen.queryByText(/You should have a first name/i)).not.toBeNull();
-    expect(screen.queryByText(/You should have a last name/i)).not.toBeNull();
-    expect(screen.queryByText(/You should have a student ID/i)).not.toBeNull();
-    expect(screen.queryByText(/You should have a phone number/i)).not.toBeNull();
+    // Updated to match the actual error messages
+    expect(screen.queryByText(/Enter a valid OHSU email\./i)).not.toBeNull();
+    expect(screen.queryByText(/Password required\./i)).not.toBeNull();
+    expect(screen.queryByText(/First name required\./i)).not.toBeNull();
+    expect(screen.queryByText(/Last name required\./i)).not.toBeNull();
+    expect(screen.queryByText(/Student ID required\./i)).not.toBeNull();
+    expect(screen.queryByText(/Phone required\./i)).not.toBeNull();
   });
 
-  it("navigates to login on valid input", () => {
+  it("navigates to landing on valid input", () => {
     render(
       <MemoryRouter>
         <SignUpPage />
@@ -81,6 +82,7 @@ describe("SignUpPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
 
-    expect(mockedNavigate).toHaveBeenCalledWith("/login");
+    // Updated to match the component's navigation
+    expect(mockedNavigate).toHaveBeenCalledWith("/landing");
   });
 });

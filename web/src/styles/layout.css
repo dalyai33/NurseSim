@@ -1,0 +1,17 @@
+.app-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.app-screen-inner {
+  width: 100%;
+  max-width: 1200px; /* similar proportion to your mockups */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  position: relative;
+}
