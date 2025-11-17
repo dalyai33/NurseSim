@@ -2,31 +2,34 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../lib/validate";
 
-export default function LoginPage(){
-    // to navigate between pages
-    const navigate = useNavigate();
-    // to preload the ui after it changes from email (init statE) to set email
-    const [email, setEmail] = useState("");
-    const [pw, setPw] = useState("");
-    const [errors, setErrors] = useState<{ email?: string; pw?: string}>({});
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; pw?: string }>({});
 
-function handleSubmit(e: React.FormEvent){
-    e.preventDefault(); // to prevent reloading the whole page
-    const nextErrors: typeof errors = {}; // init errors to 0
-    if (!isValidEmail(email)) nextErrors.email = "Invalid email address, please check";
-    if (!pw) nextErrors.pw = "Really bro? no password?";
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const nextErrors: typeof errors = {};
+
+    if (!email) nextErrors.email = "Email is required.";
+    else if (!isValidEmail(email)) nextErrors.email = "Enter a valid OHSU email.";
+
+    if (!pw) nextErrors.pw = "Password is required.";
+
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
-        // in case no errors, go to success page
-        navigate("/landing");
-    }
-}
 
-return (
+    if (Object.keys(nextErrors).length === 0) {
+      navigate("/landing");
+    }
+  }
+
+  return (
     <div className="app-shell">
       <div className="login-wrap">
         <div className="card">
           <h1 className="brand">NurseSim</h1>
+
           <form onSubmit={handleSubmit} noValidate>
             <div className="field">
               <label htmlFor="email">Email</label>
@@ -54,9 +57,7 @@ return (
               {errors.pw && <p className="error">{errors.pw}</p>}
             </div>
 
-            <button className="btn" type="submit">
-              Log In
-            </button>
+            <button className="btn" type="submit">Log In</button>
 
             <div className="links">
               <a href="#">Forgot Password?</a>

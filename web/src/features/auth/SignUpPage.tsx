@@ -2,42 +2,53 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../lib/validate";
 
-export default function SignUpPage(){
-    // to navigate between pages
-    const navigate = useNavigate();
-    // to preload the ui after it changes from email (init statE) to set email
-    const [email, setEmail] = useState("");
-    const [pw, setPw] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [studentID, setstudentID] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [errors, setErrors] = useState<{
-        email?: string; pw?: string, firstName?: string, lastName?: string, studentID?: string, phoneNumber?: string
-    }>({});
+export default function SignUpPage() {
+  const navigate = useNavigate();
 
-function handleSubmit(e: React.FormEvent){
-    e.preventDefault(); // to prevent reloading the whole page
-    const nextErrors: typeof errors = {}; // init errors to 0
-    if (!isValidEmail(email)) nextErrors.email = "Invalid email address, please check";
-    if (!pw) nextErrors.pw = "Really bro? no password???";
-    if (!firstName) nextErrors.firstName = "You should have a first name!";
-    if (!lastName) nextErrors.lastName = "You should have a last name!";
-    if (!studentID) nextErrors.studentID = "You should have a student ID number!";
-    if (!phoneNumber) nextErrors.phoneNumber = "You should have a phone number!";
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [studentID, setStudentID] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [errors, setErrors] = useState<{
+    firstName?: string;
+    lastName?: string;
+    studentID?: string;
+    phoneNumber?: string;
+    email?: string;
+    pw?: string;
+  }>({});
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    const nextErrors: typeof errors = {};
+
+    if (!firstName) nextErrors.firstName = "First name required.";
+    if (!lastName) nextErrors.lastName = "Last name required.";
+    if (!studentID) nextErrors.studentID = "Student ID required.";
+    if (!phoneNumber) nextErrors.phoneNumber = "Phone required.";
+
+    if (!email) nextErrors.email = "Email is required.";
+    else if (!isValidEmail(email)) nextErrors.email = "Enter a valid OHSU email.";
+
+    if (!pw) nextErrors.pw = "Password required.";
 
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
-        // in case no errors, go to success page
-        navigate("/login");
-    }
-}
 
- return (
+    if (Object.keys(nextErrors).length === 0) {
+      navigate("/landing");
+    }
+  }
+
+  return (
     <div className="app-shell">
       <div className="sign-up-wrap">
         <div className="card">
           <h1 className="brand">NurseSim</h1>
+
           <form onSubmit={handleSubmit} noValidate>
             <div className="name-fields">
               <div className="field">
@@ -73,7 +84,7 @@ function handleSubmit(e: React.FormEvent){
                 id="studentID"
                 type="text"
                 value={studentID}
-                onChange={(e) => setstudentID(e.target.value)}
+                onChange={(e) => setStudentID(e.target.value)}
                 placeholder="97XXXXXXX"
                 aria-invalid={!!errors.studentID}
               />
@@ -119,9 +130,7 @@ function handleSubmit(e: React.FormEvent){
               {errors.pw && <p className="error">{errors.pw}</p>}
             </div>
 
-            <button className="btn" type="submit">
-              Sign Up
-            </button>
+            <button className="btn" type="submit">Sign Up</button>
 
             <div className="links">
               <button
