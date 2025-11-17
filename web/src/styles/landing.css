@@ -1,0 +1,72 @@
+.landing-root {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.landing-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 24px;
+  text-align: center;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.2),
+    transparent 60%
+  );
+}
+.landing-title {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 6vw, 64px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.landing-buttons .gradient-button {
+  font-family: var(--font-body);
+}
+
+.landing-buttons {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gradient-button {
+  min-width: 200px;
+  padding: 18px 40px;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(145deg, #f9c66b, #f38f43);
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gradient-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.gradient-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.25);
+}
