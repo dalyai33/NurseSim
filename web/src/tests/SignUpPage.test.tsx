@@ -85,4 +85,16 @@ describe("SignUpPage", () => {
     // Updated to match the component's navigation
     expect(mockedNavigate).toHaveBeenCalledWith("/landing");
   });
+
+  it("redirects to log in screen when user has account already", () => {
+    render(
+      <MemoryRouter>
+        <SignUpPage />
+      </MemoryRouter>
+    );
+    const link = screen.getByText("Already have an account? Sign In");
+    fireEvent.click(link);
+    expect(mockedNavigate).toHaveBeenCalledWith("/login");
+  });
+
 });

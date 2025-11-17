@@ -69,4 +69,19 @@ describe("LoginPage", () => {
     expect(mockedNavigate).toHaveBeenCalledWith("/landing");      // updated
   });
 
+  it("navigates to signup page when selecting create account", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    const link = screen.getByText(/Create Account/i);
+    fireEvent.click(link);
+    expect(mockedNavigate).toHaveBeenCalledWith("/signup");
+ 
+    
+  });
+
+
 });
