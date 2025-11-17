@@ -2,53 +2,69 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-define b = Character("Ducky Duck")
+define b = Character("Capstone")
+
+# Sizing for our mascott
+transform sprite_small:
+ # xpos and ypos are relative to screen width/height (0.0 to 1.0)
+    xalign 0.5
+    yalign 0.6
+    zoom 0.25
 
 
+# Start label — make sure your game starts here (or call this label from your menu)
+label start_tutorial:
+    call tutorial_flow
+    # continue game...
+    return
 
+label tutorial_flow:
+    # Run the intro tutorial
+    call tutorial
+
+    # Run the question once
+    call tutorial_q1
+
+    # Line shown after the first question
+    b "Wow! I didn't realize how smart you were, I never got to show you the help functionality. Lets try that again, and this time, hit the Help button."
+    show screen help_arrow_guide
+    # Run the question a second time
+    call tutorial_q1
+
+    # Finished Tutorial
+    b "Congrats! You are practically a pro now at using the NurseSim+ Simulator. We hope you enjoy your learning!"
+    return
 
 label tutorial:
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-
     image bgt livingroom_scaled = im.Scale("Hospital_Room.PNG", 1920, 1080)
     scene bg livingroom_scaled
 
-    # Shows our character sprite, may change later on
-    show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
+    show duck_mascot at sprite_small
 
-    # Dialogue
     b "Welcome to the Nursing Sim+ Tutorial."
-
-    # Probably a new photo of ducky waving his hand saying hello
-    #show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
     b "I'm Capstone, your own personal AI assistant!"
     b "Its time for me to teach you how to play the simulator."
-
-    # New photo
-    # show Duck_Mascot at Position(xpos=0.5, ypos=0.6)
     b "Lets first start off with a question to test your knowledge"
 
-
+    return
 
 label tutorial_q1:
+    $ answers = [
+        ("1) Blood", "blood"),
+        ("2) Liver", "liver"),
+        ("3) Bone", "bone"),
+        ("4) Skin", "skin"),
+    ]
 
-    # These questions would normally be AI created, but for tutorial we will have Capstone
-    # ask this hardcoded question
-    b "What does the prefix 'hemo-' correlate with?"
+    $ choice = renpy.call_screen("mcq", "What does the prefix 'hemo-' correlate with?", answers)
 
-    menu:
-        "1) Blood":
-            $ correct = True
-        "2) Liver":
-            $ correct = False
-        "3) Bone":
-            $ correct = False
-        "4) Skin":
-            $ correct = False
-
-    if correct:
+    if choice == "blood":
+        $ q1_correct = True
         b "Correct! 'Hemo-' relates to blood."
     else:
-        b "Not quite. 'Hemo-' relates to blood."
+        $ q1_correct = False
+        $ show_back_arrow = True
+        show screen back_arrow_guide
+        b "Not quite. Lets click that little back button at the bottom of your screen and give it another try."
+
+    return

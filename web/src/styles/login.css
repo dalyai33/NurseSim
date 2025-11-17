@@ -50,6 +50,7 @@ html, body, #root { height: 100%; margin: 0; }
 .links a { color: #2563eb; text-decoration: none; font-size: 13px; }
 .links a:hover { text-decoration: underline; }
 
+<<<<<<< HEAD
 .dash-wrap { text-align: center; padding: 24px; } */
 
 /* LOGIN THEME – aligns with Nurse Sim gradients + soft cards */
@@ -216,5 +217,31 @@ html, body, #root { height: 100%; margin: 0; }
 .dash-wrap {
   text-align: center;
   padding: 24px;
+=======
+
+/* DASHBOARD STYLES */
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-sidebar {
+  width: 80px;              /* fixed width blue panel */
+  background: #1976d2;      /* blue */
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f7f7f8;
+>>>>>>> main
 }
 
