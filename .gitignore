@@ -1,1 +1,4 @@
-#No required ignore files yet
+#Ignore the .env file
+.env
+.env.*
+*.env
