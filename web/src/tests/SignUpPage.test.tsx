@@ -77,7 +77,7 @@ describe("SignUpPage", () => {
     fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: "Smith" } });
     fireEvent.change(screen.getByLabelText(/Student ID/i), { target: { value: "97000001" } });
     fireEvent.change(screen.getByLabelText(/Phone Number/i), { target: { value: "+12345678910" } });
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@domain.com" } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@ohsu.edu" } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
 
     fireEvent.click(screen.getByRole("button", { name: /Sign Up/i }));

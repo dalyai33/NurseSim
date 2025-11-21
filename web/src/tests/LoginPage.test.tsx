@@ -62,7 +62,7 @@ describe("LoginPage", () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@domain.com" } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@ohsu.edu" } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
