@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import psycopg2
 import os
 from dotenv import load_dotenv
-from flask_cors import CORS   # <-- NEW
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -16,47 +16,93 @@ def get_connection():
     )
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"])  # Vite dev server
+CORS(app, origins=["http://localhost:5173"])
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT id, email, teacher FROM users;")
+    cur.execute("""
+        SELECT id, first_name, last_name, student_id, phone_number, email, teacher
+        FROM users;
+    """)
     rows = cur.fetchall()
     cur.close()
     conn.close()
 
-    users = [{"id": r[0], "email": r[1], "teacher": r[2]} for r in rows]
+    users = [
+        {
+            "id": r[0],
+            "first_name": r[1],
+            "last_name": r[2],
+            "student_id": r[3],
+            "phone_number": r[4],
+            "email": r[5],
+            "teacher": r[6],
+        }
+        for r in rows
+    ]
     return jsonify(users)
 
-@app.route("/api/login", methods=["POST"])
-def login():
+@app.route("/api/signup", methods=["POST"])
+def signup():
     data = request.get_json() or {}
-    email = data.get("email")
-    password = data.get("password")
 
-    if not email or not password:
-        return jsonify({"ok": False, "error": "Missing email or password."}), 400
+    first_name  = data.get("first_name")
+    last_name   = data.get("last_name")
+    student_id  = data.get("student_id")
+    phone       = data.get("phone_number")
+    email       = data.get("email")
+    password    = data.get("password")
+
+    missing = []
+    if not first_name:  missing.append("first_name")
+    if not last_name:   missing.append("last_name")
+    if not student_id:  missing.append("student_id")
+    if not phone:       missing.append("phone_number")
+    if not email:       missing.append("email")
+    if not password:    missing.append("password")
+
+    if missing:
+        return jsonify({
+            "ok": False,
+            "error": f"Missing required fields: {', '.join(missing)}"
+        }), 400
 
     conn = get_connection()
     cur = conn.cursor()
-    
-    cur.execute("SELECT id, email, password, teacher FROM users WHERE email = %s;", (email,))
+
+    cur.execute("SELECT id FROM users WHERE email = %s;", (email,))
+    existing = cur.fetchone()
+    if existing:
+        cur.close()
+        conn.close()
+        return jsonify({"ok": False, "error": "Email already in use."}), 409
+
+    cur.execute(
+        """
+        INSERT INTO users (first_name, last_name, student_id, phone_number, email, password, teacher)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
+        """,
+        (first_name, last_name, student_id, phone, email, password, False)  # teacher = False by default
+    )
     row = cur.fetchone()
+    conn.commit()
     cur.close()
     conn.close()
 
-    # No user or wrong password
-    if row is None or row[2] != password:
-        return jsonify({"ok": False, "error": "Invalid email or password."}), 401
-
     user = {
         "id": row[0],
-        "email": row[1],
-        "teacher": row[3],
+        "first_name": row[1],
+        "last_name": row[2],
+        "student_id": row[3],
+        "phone_number": row[4],
+        "email": row[5],
+        "teacher": row[6],
     }
-    return jsonify({"ok": True, "user": user}), 200
+
+    return jsonify({"ok": True, "user": user}), 201
 
 if __name__ == "__main__":
     app.run(debug=True)

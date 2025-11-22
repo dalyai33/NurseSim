@@ -19,9 +19,11 @@ export default function SignUpPage() {
     phoneNumber?: string;
     email?: string;
     pw?: string;
+    form?: string; 
   }>({});
+  const [loading, setLoading] = useState(false); 
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const nextErrors: typeof errors = {};
@@ -38,8 +40,42 @@ export default function SignUpPage() {
 
     setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length === 0) {
+    if (Object.keys(nextErrors).length > 0) return;
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          student_id: studentID,
+          phone_number: phoneNumber,
+          email,
+          password: pw,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setErrors((prev) => ({
+          ...prev,
+          form: data.error || "Sign up failed. Please try again.",
+        }));
+        return;
+      }
+
       navigate("/landing");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setErrors((prev) => ({
+        ...prev,
+        form: "Could not reach the server. Please try again.",
+      }));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -50,6 +86,8 @@ export default function SignUpPage() {
           <h1 className="brand">NurseSim</h1>
 
           <form onSubmit={handleSubmit} noValidate>
+            {errors.form && <p className="error">{errors.form}</p>}
+
             <div className="name-fields">
               <div className="field">
                 <label htmlFor="firstName">First Name</label>
@@ -130,7 +168,9 @@ export default function SignUpPage() {
               {errors.pw && <p className="error">{errors.pw}</p>}
             </div>
 
-            <button className="btn" type="submit">Sign Up</button>
+            <button className="btn" type="submit" disabled={loading}>
+              {loading ? "Signing up..." : "Sign Up"}
+            </button>
 
             <div className="links">
               <button
