@@ -18,7 +18,7 @@ function QuizComponent(){
             </ol>
         </div>
         
-    )
+    );
 }
 
-export default QuizComponent
+export default QuizComponent;
