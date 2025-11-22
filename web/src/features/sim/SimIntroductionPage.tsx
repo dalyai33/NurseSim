@@ -5,6 +5,7 @@ import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
 // import duckImg from "../../assets/Duck.png";
 import "../../styles/sim.css";
+import QuizComponent from "../../components/QuizPopUp";
 
 export const SimIntroductionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,8 +16,9 @@ export const SimIntroductionPage: React.FC = () => {
         className="app-screen-inner sim-root"
         style={{ backgroundImage: `url(${simBg})` }}
       >
+        
         <button className="back-arrow sim-back" onClick={() => navigate(-1)} />
-
+        
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">
             <img
@@ -31,9 +33,11 @@ export const SimIntroductionPage: React.FC = () => {
             /> */}
           </div>
         </div>
-
+        <QuizComponent/>
         {/* <img src={duckImg} alt="Nurse duck" className="sim-duck" /> */}
       </div>
     </div>
+
+    
   );
 };

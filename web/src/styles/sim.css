@@ -44,3 +44,26 @@
   height: 60%;
   object-fit: contain;
 }
+.quiz-popup{
+  
+  width: 75%;
+  margin: 75% auto 0 auto;
+
+  background-color: orange;
+  padding: 25px;
+
+  border-radius: 10px;
+}
+
+.answer{
+  /* background-color: white; */
+  margin: 5px;
+  width: fit-content;
+  color: grey;
+  font-size: larger;
+}
+
+.question{
+  color: black;
+  font-size: x-large;
+}
