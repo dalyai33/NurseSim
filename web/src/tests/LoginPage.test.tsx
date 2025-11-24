@@ -21,6 +21,14 @@ vi.mock("../../lib/validate", () => ({
 }));
 
 describe("LoginPage", () => {
+  it("loads the login page", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Login/i)).not.toBeNull();
+  });
   it("renders the login form", () => {
     render(
       <MemoryRouter>
