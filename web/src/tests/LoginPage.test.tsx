@@ -27,7 +27,7 @@ describe("LoginPage", () => {
         <LoginPage />
       </MemoryRouter>
     );
-    expect(screen.getByText(/Login/i)).not.toBeNull();
+    expect(screen.getByText(/Log In/i)).not.toBeNull();
   });
   it("renders the login form", () => {
     render(
