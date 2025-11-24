@@ -1,19 +1,30 @@
-function QuizComponent(){
+
+//Types for the quiz props passed in 
+interface QuizComponentProps{
+    question: string;
+    correctAnswer: string;
+    wrongOne: string;
+    wrongTwo: string;
+    wrongThree: string;
+}
+
+
+function QuizComponent({question, correctAnswer, wrongOne, wrongTwo, wrongThree} : QuizComponentProps){
     return(
         <div className="quiz-popup">
-            <h1 className="question">What does the prefix 'hemo-' correlate with?</h1>
+            <h1 className="question">{question}</h1>
             <ol>
                 <li className="answer">
-                    <button>Blood</button>
+                    <button>{correctAnswer}</button>
                 </li>
                 <li className="answer">
-                    <button>Liver</button>
+                    <button>{wrongOne}</button>
                 </li>
                 <li className="answer">
-                    <button>Bone</button>
+                    <button>{wrongTwo}</button>
                 </li>
                 <li className="answer">
-                    <button>Skin</button>
+                    <button>{wrongThree}</button>
                 </li>
             </ol>
         </div>
