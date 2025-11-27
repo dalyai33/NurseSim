@@ -20,8 +20,13 @@ body,
 
 /* 3. Base body styles */
 body {
+  margin: 0;
   font-family: var(--font-body, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
-  background-color: #000;          /* outer border around your mockups */
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-top, #f4b873) 0%,
+    var(--color-bg-bottom, #e2e0dd) 100%
+  );
   color: #fff;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

@@ -1,7 +1,16 @@
+.sim-screen .app-screen-inner {
+  max-width: none;
+  width: 100%;
+  height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .sim-root {
   background-size: cover;
   background-position: center;
   position: relative;
+  height: 100vh;
 }
 
 .sim-back {
@@ -43,4 +52,29 @@
   margin: auto;
   height: 60%;
   object-fit: contain;
+}
+
+.quiz-popup {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 40px;
+  width: min(900px, 90%);
+  background-color: #e3a538;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 16px 26px rgba(0, 0, 0, 0.4);
+}
+
+.answer{
+  /* background-color: white; */
+  margin: 5px;
+  width: fit-content;
+  color: grey;
+  font-size: larger;
+}
+
+.question{
+  color: black;
+  font-size: x-large;
 }
