@@ -9,9 +9,8 @@
 
 .app-screen-inner {
   width: 100%;
-  max-width: 1200px; /* similar proportion to your mockups */
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  position: relative;
+  height: 100vh;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
 }
