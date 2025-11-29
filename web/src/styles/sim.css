@@ -79,3 +79,33 @@
   color: black;
   font-size: x-large;
 }
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.popup-box {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  text-align: center;
+  color: #000;
+}
+
+.popup-close {
+  margin-top: 15px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.close-button{
+  background-color: #e3a538;
+  margin: 10%;
+  border-radius: 16px;
+  padding: 7px;
+}
