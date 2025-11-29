@@ -10,6 +10,14 @@ import QuizComponent from "../../components/QuizPopUp";
 export const SimIntroductionPage: React.FC = () => {
   const navigate = useNavigate();
 
+  //Definitions for the questions and answers
+  //TODO: add backend functionality to get these from database. 
+  const quizQuestion: string = "What does the prefix 'hemo-' correlate with?";
+  const wrongOne: string = "Liver";
+  const wrongTwo: string = "Bone";
+  const wrongThree: string = "Skin";
+  const correctAnswer: string = "Blood";
+
   return (
     <div className="app-screen">
       <div
@@ -33,7 +41,7 @@ export const SimIntroductionPage: React.FC = () => {
             /> */}
           </div>
         </div>
-        <QuizComponent/>
+        <QuizComponent question={quizQuestion} correctAnswer={correctAnswer} wrongOne = {wrongOne} wrongTwo ={wrongTwo} wrongThree = {wrongThree}/>
         {/* <img src={duckImg} alt="Nurse duck" className="sim-duck" /> */}
       </div>
     </div>
