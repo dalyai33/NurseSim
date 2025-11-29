@@ -105,7 +105,7 @@ export const SimIntroductionPage: React.FC = () => {
             /> */}
           </div>
         </div>
-        {!showIntroduction && (
+        {!showIntroduction && !showSuccess && (
         <div className="quiz-popup">
 
             
