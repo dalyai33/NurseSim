@@ -37,6 +37,7 @@ import { ClassroomStudentsPage } from "../features/classroom/ClassroomStudentsPa
 import { ClassroomPermissionsPage } from "../features/classroom/ClassroomPermissionsPage";
 import { SimIntroductionPage } from "../features/sim/SimIntroductionPage";
 import { ProfilePage } from "../features/profile/ProfilePage";
+import {SimPageTwo} from "../features/sim/SimPageTwo"; 
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -56,6 +57,7 @@ export const AppRoutes: React.FC = () => {
       {/* sim & profile */}
       <Route path="/sim" element={<SimIntroductionPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/sim/page-two" element={<SimPageTwo />} />
 
       {/* fallback */}
       <Route path="*" element={<Navigate to="/" />} />
