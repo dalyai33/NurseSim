@@ -56,7 +56,7 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
-    const emailError = screen.queryByText(/Enter a valid OHSU email\./i); // updated
+    const emailError = screen.queryByText(/Invalid email or password\./i); // updated
     const pwError = screen.queryByText(/Password is required\./i);       // updated
 
     expect(emailError).not.toBeNull();
