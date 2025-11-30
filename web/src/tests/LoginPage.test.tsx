@@ -21,6 +21,14 @@ vi.mock("../../lib/validate", () => ({
 }));
 
 describe("LoginPage", () => {
+  it("loads the login page", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Log In/i)).not.toBeNull();
+  });
   it("renders the login form", () => {
     render(
       <MemoryRouter>
@@ -48,7 +56,7 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
-    const emailError = screen.queryByText(/Enter a valid OHSU email\./i); // updated
+    const emailError = screen.queryByText(/Invalid email or password\./i); // updated
     const pwError = screen.queryByText(/Password is required\./i);       // updated
 
     expect(emailError).not.toBeNull();
@@ -62,11 +70,44 @@ describe("LoginPage", () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@domain.com" } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@ohsu.edu" } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
     fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
 
     expect(mockedNavigate).toHaveBeenCalledWith("/landing");      // updated
   });
+
+  it("navigates to signup page when selecting create account", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    const link = screen.getByText(/Create Account/i);
+    fireEvent.click(link);
+    expect(mockedNavigate).toHaveBeenCalledWith("/signup");
+ 
+    
+  });
+
+  it("shows an error when email is empty", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    // Leave email empty
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "somepassword" } });
+    fireEvent.click(screen.getByRole("button", { name: /Log In/i })); 
+
+    const emailRequiredError = screen.getByText(/Email is required\./i);
+
+    expect(emailRequiredError).not.toBeNull();
+});
+
+
 
 });

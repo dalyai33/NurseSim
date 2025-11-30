@@ -13,4 +13,8 @@ export default defineConfig({
       reporter: ['text', 'json-summary'],
     },
   },
+  server:{
+    host:true,
+    port:5173,
+  },
 });

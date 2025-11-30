@@ -14,7 +14,7 @@ export default function LoginPage() {
     const nextErrors: typeof errors = {};
 
     if (!email) nextErrors.email = "Email is required.";
-    else if (!isValidEmail(email)) nextErrors.email = "Enter a valid OHSU email.";
+    else if (!isValidEmail(email)) nextErrors.email = "Invalid email or password.";
 
     if (!pw) nextErrors.pw = "Password is required.";
 
