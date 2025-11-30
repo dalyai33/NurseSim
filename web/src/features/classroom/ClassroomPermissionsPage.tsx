@@ -9,8 +9,13 @@ export const ClassroomPermissionsPage: React.FC = () => {
 
   return (
     <ClassroomShell>
-      <button className="back-arrow" onClick={() => navigate(-1)} aria-label="Back" />
       <header className="classroom-header">
+          {/* back arrow */}
+        <button
+          className="back-arrow"
+          onClick={() => navigate(-1)}
+          aria-label="Back"
+        />
         <span className="classroom-label">Classroom Name:</span>
         <div className="classroom-name-pill">KIRSTEN</div>
       </header>
