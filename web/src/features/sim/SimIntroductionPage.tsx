@@ -9,6 +9,8 @@ import "../../styles/sim.css";
 
 import { useState } from "react";
 
+const TUTORIAL_COMPLETED_KEY = "nursesim_tutorial_completed";
+
 export const SimIntroductionPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -31,8 +33,9 @@ export const SimIntroductionPage: React.FC = () => {
   }
 
   function handleCorrect(){
-      //show the success popup
+      //show the success popup and mark tutorial as complete
       setShowSuccess(true);
+      localStorage.setItem(TUTORIAL_COMPLETED_KEY, "true");
   }
 
   function handleStartQuiz(){
@@ -41,8 +44,8 @@ export const SimIntroductionPage: React.FC = () => {
   }
 
   function handleExitTutorial(){
-      //exit the tutorial and go back
-      navigate(-1);
+      //exit the tutorial and go back to landing page
+      navigate("/sim");
   }  
 
   return (
@@ -79,7 +82,7 @@ export const SimIntroductionPage: React.FC = () => {
 
         {showPopup && (
                 <div className="popup-overlay">
-                    <div className="popup-box">
+                    <div className="popup-box incorrect-box">
                         <h2>Hmm... Not quite try again!</h2>
                         <p>Psst its what flows through your veins</p>
                         <button className= "close-button" onClick={() => setShowPopup(false)}>
@@ -89,7 +92,7 @@ export const SimIntroductionPage: React.FC = () => {
                 </div>
             )}
         
-        <button className="back-arrow sim-back" onClick={() => navigate(-1)} />
+        <button className="back-arrow sim-back" onClick={() => navigate("/sim")} />
         
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">

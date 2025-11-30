@@ -17,15 +17,14 @@ export const ClassroomStudentsPage: React.FC = () => {
 
   return (
     <ClassroomShell>
-      {/* back arrow */}
-      <button
-        className="back-arrow"
-        onClick={() => navigate(-1)}
-        aria-label="Back"
-      />
-
       {/* top header */}
       <header className="classroom-header">
+          {/* back arrow */}
+        <button
+          className="back-arrow"
+          onClick={() => navigate(-1)}
+          aria-label="Back"
+        />
         <span className="classroom-label">Classroom Name:</span>
         <div className="classroom-name-pill">KIRSTEN</div>
       </header>

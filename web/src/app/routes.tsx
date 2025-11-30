@@ -36,6 +36,10 @@ import { LandingPage } from "../features/landing/LandingPage";
 import { ClassroomStudentsPage } from "../features/classroom/ClassroomStudentsPage";
 import { ClassroomPermissionsPage } from "../features/classroom/ClassroomPermissionsPage";
 import { SimIntroductionPage } from "../features/sim/SimIntroductionPage";
+import { SimLandingPage } from "../features/sim/SimLandingPage";
+import { SimLevel1Page } from "../features/sim/SimLevel1Page";
+import { SimLevel2Page } from "../features/sim/SimLevel2Page";
+import { SimLevel3Page } from "../features/sim/SimLevel3Page";
 import { ProfilePage } from "../features/profile/ProfilePage";
 import {SimPageTwo} from "../features/sim/SimPageTwo"; 
 
@@ -55,7 +59,11 @@ export const AppRoutes: React.FC = () => {
       <Route path="/classroom/students" element={<ClassroomStudentsPage />} />
 
       {/* sim & profile */}
-      <Route path="/sim" element={<SimIntroductionPage />} />
+      <Route path="/sim" element={<SimLandingPage />} />
+      <Route path="/sim/tutorial" element={<SimIntroductionPage />} />
+      <Route path="/sim/level-1" element={<SimLevel1Page />} />
+      <Route path="/sim/level-2" element={<SimLevel2Page />} />
+      <Route path="/sim/level-3" element={<SimLevel3Page />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/sim/page-two" element={<SimPageTwo />} />
 
