@@ -6,9 +6,10 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; pw?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; pw?: string; form?: string }>({});
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const nextErrors: typeof errors = {};
 
@@ -19,8 +20,35 @@ export default function LoginPage() {
 
     setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length === 0) {
+    if (Object.keys(nextErrors).length > 0) return;
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pw }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setErrors((prev) => ({
+          ...prev,
+          form: data.error || "Login failed. Please check your email and password.",
+        }));
+        return;
+      }
+
       navigate("/landing");
+    } catch (err) {
+      console.error("Login error:", err);
+      setErrors((prev) => ({
+        ...prev,
+        form: "Could not reach the server. Try again.",
+      }));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -31,6 +59,8 @@ export default function LoginPage() {
           <h1 className="brand">NurseSim</h1>
 
           <form onSubmit={handleSubmit} noValidate>
+            {errors.form && <p className="error">{errors.form}</p>}
+
             <div className="field">
               <label htmlFor="email">Email</label>
               <input
@@ -57,7 +87,9 @@ export default function LoginPage() {
               {errors.pw && <p className="error">{errors.pw}</p>}
             </div>
 
-            <button className="btn" type="submit">Log In</button>
+            <button className="btn" type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Log In"}
+            </button>
 
             <div className="links">
               <a href="#">Forgot Password?</a>
