@@ -17,6 +17,46 @@ def get_connection():
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.get_json() or {}
+
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"ok": False, "error": "Email and password are required."}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT id, first_name, last_name, student_id, phone_number, email, teacher
+        FROM users
+        WHERE email = %s AND password = %s;
+        """,
+        (email, password)
+    )
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not row:
+        return jsonify({"ok": False, "error": "Invalid email or password."}), 401
+
+    user = {
+        "id": row[0],
+        "first_name": row[1],
+        "last_name": row[2],
+        "student_id": row[3],
+        "phone_number": row[4],
+        "email": row[5],
+        "teacher": row[6],
+    }
+
+    return jsonify({"ok": True, "user": user}), 200
+
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
