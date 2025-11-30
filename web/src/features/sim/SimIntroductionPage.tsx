@@ -82,7 +82,7 @@ export const SimIntroductionPage: React.FC = () => {
 
         {showPopup && (
                 <div className="popup-overlay">
-                    <div className="popup-box">
+                    <div className="popup-box incorrect-box">
                         <h2>Hmm... Not quite try again!</h2>
                         <p>Psst its what flows through your veins</p>
                         <button className= "close-button" onClick={() => setShowPopup(false)}>
