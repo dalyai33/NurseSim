@@ -31,7 +31,7 @@ export const SimLandingPage: React.FC = () => {
         className="app-screen-inner sim-root"
         style={{ backgroundImage: `url(${simBg})` }}
       >
-        <button className="back-arrow sim-back" onClick={() => navigate(-1)} />
+        <button className="back-arrow sim-back" onClick={() => navigate("/landing")} />
         
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">
