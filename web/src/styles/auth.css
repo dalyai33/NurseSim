@@ -33,7 +33,7 @@
   box-shadow:
     0 22px 40px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.7);
-  color: #ffffff;
+  color: #c06a00;
 }
 
 /* brand title */
@@ -72,7 +72,7 @@
   display: block;
   font-size: 15px;
   margin-bottom: 6px;
-  color: rgba(255, 255, 255, 0.95);
+  color: #c06a00;
 }
 
 /* inputs fit cleanly inside card */
