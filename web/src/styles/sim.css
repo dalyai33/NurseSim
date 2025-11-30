@@ -60,65 +60,87 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: 40px;
-  width: min(900px, 90%);
-  background-color: #e3a538;
-  padding: 24px 32px;
-  border-radius: 16px;
-  box-shadow: 0 16px 26px rgba(0, 0, 0, 0.4);
+  width: min(720px, 90%);
+  padding: 20px 26px;
+  background: linear-gradient(180deg, #f7c270 0%, #f3e2cf 100%);
+  border-radius: 24px;
+  box-shadow:
+    0 18px 28px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.answer{
-  /* background-color: white; */
-  margin: 5px;
-  width: fit-content;
-  color: grey;
-  font-size: larger;
+.question {
+  color: #1f2933;
+  font-size: 20px;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 600;
+  margin: 0 0 10px;
 }
 
-.question{
-  color: black;
-  font-size: x-large;
+.quiz-popup ol {
+  margin: 0;
+  padding-left: 1.5rem;
 }
+
+.answer {
+  margin: 4px 0;
+  font-size: 16px;
+  color: #374151;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.answer button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 2px 4px;
+  border-radius: 999px;
+}
+
+.answer button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* === FULL-SCREEN POPUP OVERLAY (INTRO / SUCCESS / INCORRECT) === */
+
 .popup-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.45),
+    rgba(0, 0, 0, 0.75)
+  );
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 999;
 }
 
 .popup-box {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 12px;
-  text-align: center;
-  color: #000;
-}
-
-.popup-close {
-  margin-top: 15px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.close-button{
-  background-color: #e3a538;
-  margin: 10%;
-  border-radius: 16px;
-  padding: 7px;
-}
-
-.introduction-box {
   max-width: 600px;
   width: 90%;
+  background: linear-gradient(180deg, #f4efe8 0%, #f0d5a2 100%);
+  border-radius: 28px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 28px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  color: #1f2933;
+  font-family: var(--font-body, system-ui, sans-serif);
 }
 
 .introduction-box h2 {
   color: #d05a00;
   margin-bottom: 20px;
   font-size: 28px;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.introduction-box {
+  max-width: 600px;
+  width: 90%;
 }
 
 .introduction-box p {
@@ -144,6 +166,51 @@
   font-size: 16px;
   line-height: 1.6;
   color: #333;
+}
+
+.incorrect-box h2 {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #dc0505;
+}
+
+.incorrect-box p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.incorrect-box .popup-close {
+  margin-top: 8px;
+}
+
+/* === BUTTONS INSIDE POPUP === */
+
+.popup-close,
+.close-button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(145deg, #f9c66b, #f38f43);
+  color: #1f2933;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.close-button {
+  background-color: #e3a538;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
 }
 
 .sim-landing-container {
@@ -282,7 +349,7 @@
   transform: translate(-50%, -50%);
   width: min(600px, 90%);
   text-align: center;
-  background: rgba(255, 255, 255, 0.95);
+  background: #f3e8dd;
   padding: 48px 32px;
   border-radius: 16px;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
