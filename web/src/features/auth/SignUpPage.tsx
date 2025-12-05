@@ -11,6 +11,8 @@ export default function SignUpPage() {
   const [lastName, setLastName] = useState("");
   const [studentID, setStudentID] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [teacherCode, setTeacherCode] = useState("");
+  const [isTeacher, setIsTeacher] = useState(false);
 
   const [errors, setErrors] = useState<{
     firstName?: string;
@@ -19,6 +21,7 @@ export default function SignUpPage() {
     phoneNumber?: string;
     email?: string;
     pw?: string;
+    teacherCode?: string;
     form?: string; 
   }>({});
   const [loading, setLoading] = useState(false); 
@@ -38,6 +41,10 @@ export default function SignUpPage() {
 
     if (!pw) nextErrors.pw = "Password required.";
 
+    if (isTeacher && teacherCode !== "NurseSimCapstone") {
+      nextErrors.teacherCode = "Invalid teacher code.";
+    }
+
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) return;
@@ -54,6 +61,8 @@ export default function SignUpPage() {
           phone_number: phoneNumber,
           email,
           password: pw,
+          is_teacher: isTeacher,
+          teacher_code: teacherCode,
         }),
       });
 
@@ -166,6 +175,65 @@ export default function SignUpPage() {
                 aria-invalid={!!errors.pw}
               />
               {errors.pw && <p className="error">{errors.pw}</p>}
+            </div>
+
+            <div className="field">
+              <label htmlFor="teacherCode">Teacher Code (Optional)</label>
+              <input
+                id="teacherCode"
+                type="text"
+                value={teacherCode}
+                onChange={(e) => {
+                  setTeacherCode(e.target.value);
+                  if (e.target.value === "NurseSimCapstone") {
+                    setIsTeacher(true);
+                    setErrors((prev) => {
+                      const next = { ...prev };
+                      delete next.teacherCode;
+                      return next;
+                    });
+                  } else {
+                    setIsTeacher(false);
+                  }
+                }}
+                placeholder="Enter code to create teacher account"
+                aria-invalid={!!errors.teacherCode}
+              />
+              {errors.teacherCode && <p className="error">{errors.teacherCode}</p>}
+            </div>
+
+            <div className="field">
+              <label htmlFor="isTeacher" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }}>
+                <span>Create Teacher Account</span>
+                <input
+                  id="isTeacher"
+                  type="checkbox"
+                  checked={isTeacher}
+                  onChange={(e) => {
+                    if (e.target.checked && teacherCode !== "NurseSimCapstone") {
+                      setErrors((prev) => ({
+                        ...prev,
+                        teacherCode: "Please enter the correct teacher code first.",
+                      }));
+                      setIsTeacher(false);
+                    } else {
+                      setIsTeacher(e.target.checked);
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.teacherCode;
+                        return next;
+                      });
+                    }
+                  }}
+                  disabled={teacherCode !== "NurseSimCapstone"}
+                  style={{ 
+                    width: "18px", 
+                    height: "18px", 
+                    cursor: teacherCode === "NurseSimCapstone" ? "pointer" : "not-allowed",
+                    margin: 0
+                  }}
+                />
+              </label>
             </div>
 
             <button className="btn" type="submit" disabled={loading}>

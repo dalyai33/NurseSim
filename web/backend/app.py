@@ -94,6 +94,8 @@ def signup():
     phone       = data.get("phone_number")
     email       = data.get("email")
     password    = data.get("password")
+    is_teacher  = data.get("is_teacher", False)
+    teacher_code = data.get("teacher_code", "")
 
     missing = []
     if not first_name:  missing.append("first_name")
@@ -108,6 +110,14 @@ def signup():
             "ok": False,
             "error": f"Missing required fields: {', '.join(missing)}"
         }), 400
+
+    # Validate teacher code if trying to create teacher account
+    if is_teacher:
+        if teacher_code != "NurseSimCapstone":
+            return jsonify({
+                "ok": False,
+                "error": "Invalid teacher code. Teacher account creation requires the correct code."
+            }), 403
 
     conn = get_connection()
     cur = conn.cursor()
@@ -125,7 +135,7 @@ def signup():
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
         """,
-        (first_name, last_name, student_id, phone, email, password, False)  # teacher = False by default
+        (first_name, last_name, student_id, phone, email, password, is_teacher)
     )
     row = cur.fetchone()
     conn.commit()
