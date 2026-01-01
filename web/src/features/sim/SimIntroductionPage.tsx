@@ -92,7 +92,7 @@ export const SimIntroductionPage: React.FC = () => {
                 </div>
             )}
         
-        <button className="back-arrow sim-back" onClick={() => navigate("/sim")} />
+        <button className="back-arrow sim-back" aria-label="Back" onClick={() => navigate("/sim")} />
         
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">
