@@ -42,17 +42,20 @@ while True:
         print("BYE BYE BYE")
         break
 
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=user_input,
-        config=types.GenerateContentConfig(
-            #Restrict the model to use one token at a time
-            thinking_config=types.ThinkingConfig(thinking_budget=1),
-            system_instruction=messages,
-            #scaler of randomness/creative responses
-            temperature=0.1,
+    try:
+        response = client.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=user_input,
+            config=types.GenerateContentConfig(
+                #Restrict the model to use one token at a time
+                thinking_config=types.ThinkingConfig(thinking_budget=1),
+                system_instruction=messages,
+                #scaler of randomness/creative responses
+                temperature=0.1,
+            )
         )
-    )
-    print("\n")
+        print("\n")
 
-    print(response.text)
+        print(response.text)
+    except Exception as e:
+        print("Error connecting to Gemini: ", e)
