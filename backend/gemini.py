@@ -1,4 +1,5 @@
 import os
+import sys
 from google import genai
 from google.genai import types
 
@@ -6,7 +7,12 @@ from google.genai import types
 #run this command: pip install google-genai
 
 #Put your api key in the .env file in the backend directory
-client = genai.Client(api_key = os.getenv('GEMINI_API_KEY'))
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+client = genai.Client(api_key = GEMINI_API_KEY)
+if not GEMINI_API_KEY:
+    print("Error: GEMINI API key not found, please, set it as an env variable")
+    sys.exit(1)
+
 
 
 messages=[
