@@ -13,8 +13,6 @@ if not GEMINI_API_KEY:
     print("Error: GEMINI API key not found, please, set it as an env variable")
     sys.exit(1)
 
-
-
 messages = """
         As the Capstone Duck Lab, You are a helpful assistant, create brief (25-word) answer statements under the following strict conditions:
         1. Do not build ansers on previous conversation
