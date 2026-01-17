@@ -1,12 +1,12 @@
 from flask import Flask
 from dotenv import load_dotenv
-from routes.chat import chat_bp
+from chatbot import chat_bot
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.register_blueprint(chat_bp)
+app.register_blueprint(chat_bot)
 
 # just for testing pusposes
 @app.route("/api/health")

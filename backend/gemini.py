@@ -29,21 +29,22 @@ messages = """
 
 print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your questions.")
 
-while True:
-    #use to get input from the console
-    user_input = input("You: ")
+# while True:
+#     #use to get input from the console
+#     user_input = input("You: ")
 
-    if not user_input:
-        print("Please Enter a text to get a response!\n")
+#     if not user_input:
+#         print("Please Enter a text to get a response!\n")
     
-    if user_input.lower() in ["goodbye", "bye", "quit", "leave", "exit"]:
-        print("BYE BYE BYE")
-        break
+#     if user_input.lower() in ["goodbye", "bye", "quit", "leave", "exit"]:
+#         print("BYE BYE BYE")
+#         break
 
+def get_help(user_text: str):
     try:
         response = client.models.generate_content(
             model="gemini-3-flash-preview",
-            contents=user_input,
+            contents=user_text,
             config=types.GenerateContentConfig(
                 #Restrict the model to use one token at a time
                 thinking_config=types.ThinkingConfig(thinking_budget=1),
@@ -52,8 +53,11 @@ while True:
                 temperature=0.1,
             )
         )
-        print("\n")
 
-        print(response.text)
+        text = getattr(response, "text", None)
+        if text is None:
+            text = str(response)
+
+        return str(text).strip()
     except Exception as e:
         print("Error connecting to Gemini: ", e)
