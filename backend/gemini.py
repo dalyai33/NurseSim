@@ -15,8 +15,7 @@ if not GEMINI_API_KEY:
 
 
 
-messages=[
-    {"role": "system", "content":f"""
+messages = """
         As the Capstone Duck Lab, You are a helpful assistant, create brief (25-word) answer statements under the following strict conditions:
         1. Do not build ansers on previous conversation
         2. Within 25 words or 500 tokens if the user really needs to hear more information
@@ -28,23 +27,32 @@ messages=[
         8. YOUR JOB IS TO BE LIKE A TEACHER ASSISTANT IN AN EXAM, ONLY HELP WITH A HINT, YOU CANNOT LET THEM GET THE ANSWER FROM YOU
         9. Do not reply with broad response
         Do not include any meta-text.
-        """}
-]
+        """
 
-#use to get input from the console
-user_input = input("Hello there, I am Capstone. I am your here for you if you need any help with a question: \n")
+print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your questions.")
 
-response = client.models.generate_content(
-    model="gemini-3-flash-preview",
-    contents=user_input,
-    config=types.GenerateContentConfig(
-        #Restrict the model to use one token at a time
-        thinking_config=types.ThinkingConfig(thinking_budget=1),
-        system_instruction="You are a tutor for nursing students. You must not respond with the answer to the question they ask, but must give hits instead.",
-        #scaler of randomness/creative responses
-        temperature=0.1,
+while True:
+    #use to get input from the console
+    user_input = input("You: ")
+
+    if not user_input:
+        print("Please Enter a text to get a response!\n")
+    
+    if user_input.lower() in ["goodbye", "bye", "quit", "leave", "exit"]:
+        print("BYE BYE BYE")
+        break
+
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=user_input,
+        config=types.GenerateContentConfig(
+            #Restrict the model to use one token at a time
+            thinking_config=types.ThinkingConfig(thinking_budget=1),
+            system_instruction=messages,
+            #scaler of randomness/creative responses
+            temperature=0.1,
+        )
     )
-)
-print("\n")
+    print("\n")
 
-print(response.text)
+    print(response.text)
