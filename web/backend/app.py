@@ -95,7 +95,7 @@ def signup():
     phone       = data.get("phone_number")
     email       = data.get("email")
     password    = data.get("password")
-    is_teacher = data.get("is_teacher", False)
+    is_teacher  = data.get("is_teacher", False)
     teacher_code = data.get("teacher_code", "")
 
     missing = []
@@ -132,7 +132,7 @@ def signup():
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
         """,
-        (first_name, last_name, student_id, phone, email, password, False)  # teacher = False by default
+        (first_name, last_name, student_id, phone, email, password, is_teacher)
     )
     row = cur.fetchone()
     conn.commit()
