@@ -3,6 +3,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+import bcrypt
 
 load_dotenv()
 
@@ -111,18 +112,14 @@ def signup():
             "error": f"Missing required fields: {', '.join(missing)}"
         }), 400
 
-    # Validate teacher code if trying to create teacher account
-    if is_teacher:
-        if teacher_code != "NurseSimCapstone":
-            return jsonify({
-                "ok": False,
-                "error": "Invalid teacher code. Teacher account creation requires the correct code."
-            }), 403
-
+    pw_byes = password.encode("utf-8")
+    pw_hash = bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
+    
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT id FROM users WHERE email = %s;", (email,))
+    
     existing = cur.fetchone()
     if existing:
         cur.close()
