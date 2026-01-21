@@ -5,7 +5,6 @@ chat_bot = Blueprint("chat", __name__)
 
 
 @chat_bot.route("/api/chat", methods=["POST"])
-
 def chat():
     data = request.get_json(silent=True)
     
