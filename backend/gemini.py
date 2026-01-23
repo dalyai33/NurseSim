@@ -13,10 +13,7 @@ if not GEMINI_API_KEY:
     print("Error: GEMINI API key not found, please, set it as an env variable")
     sys.exit(1)
 
-
-
-messages=[
-    {"role": "system", "content":f"""
+messages = """
         As the Capstone Duck Lab, You are a helpful assistant, create brief (25-word) answer statements under the following strict conditions:
         1. Do not build ansers on previous conversation
         2. Within 25 words or 500 tokens if the user really needs to hear more information
@@ -28,23 +25,39 @@ messages=[
         8. YOUR JOB IS TO BE LIKE A TEACHER ASSISTANT IN AN EXAM, ONLY HELP WITH A HINT, YOU CANNOT LET THEM GET THE ANSWER FROM YOU
         9. Do not reply with broad response
         Do not include any meta-text.
-        """}
-]
+        """
 
-#use to get input from the console
-user_input = input("Hello there, I am Capstone. I am your here for you if you need any help with a question: \n")
+print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your questions.")
 
-response = client.models.generate_content(
-    model="gemini-3-flash-preview",
-    contents=user_input,
-    config=types.GenerateContentConfig(
-        #Restrict the model to use one token at a time
-        thinking_config=types.ThinkingConfig(thinking_budget=1),
-        system_instruction="You are a tutor for nursing students. You must not respond with the answer to the question they ask, but must give hits instead.",
-        #scaler of randomness/creative responses
-        temperature=0.1,
-    )
-)
-print("\n")
+# while True:
+#     #use to get input from the console
+#     user_input = input("You: ")
 
-print(response.text)
+#     if not user_input:
+#         print("Please Enter a text to get a response!\n")
+    
+#     if user_input.lower() in ["goodbye", "bye", "quit", "leave", "exit"]:
+#         print("BYE BYE BYE")
+#         break
+
+def get_help(user_text: str):
+    try:
+        response = client.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=user_text,
+            config=types.GenerateContentConfig(
+                #Restrict the model to use one token at a time
+                thinking_config=types.ThinkingConfig(thinking_budget=1),
+                system_instruction=messages,
+                #scaler of randomness/creative responses
+                temperature=0.1,
+            )
+        )
+
+        text = getattr(response, "text", None)
+        if text is None:
+            text = str(response)
+
+        return str(text).strip()
+    except Exception as e:
+        print("Error connecting to Gemini: ", e)
