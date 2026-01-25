@@ -1,12 +1,14 @@
-// src/features/login/LoginPage.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import LoginPage from "../features/auth/LoginPage";
 import type * as RRDom from "react-router-dom";
 
-// Mock useNavigate
+// --------------------
+// Mocks
+// --------------------
 const mockedNavigate = vi.fn();
+
 vi.mock("react-router-dom", async () => {
   const actual: typeof RRDom = await vi.importActual("react-router-dom");
   return {
@@ -15,34 +17,35 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-// Mock email validator
 vi.mock("../../lib/validate", () => ({
   isValidEmail: (email: string) => email.includes("@"),
 }));
 
 describe("LoginPage", () => {
+  beforeEach(() => {
+    mockedNavigate.mockClear();
+    vi.restoreAllMocks();
+  });
+
   it("loads the login page", () => {
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
-    expect(screen.getByText(/Log In/i)).not.toBeNull();
+
+    expect(screen.getByRole("button", { name: /log in/i })).not.toBeNull();
   });
-  it("renders the login form", () => {
+
+  it("renders the login form fields", () => {
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
 
-    const emailInput = screen.getByLabelText(/Email/i);
-    const pwInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole("button", { name: /Log In/i });
-
-    expect(emailInput).not.toBeNull();
-    expect(pwInput).not.toBeNull();
-    expect(loginButton).not.toBeNull();
+    expect(screen.getByLabelText(/email/i)).not.toBeNull();
+    expect(screen.getByLabelText(/password/i)).not.toBeNull();
   });
 
   it("shows errors for invalid email and empty password", () => {
@@ -52,62 +55,148 @@ describe("LoginPage", () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "invalidemail" } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "" } });
-    fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "invalidemail" },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "" },
+    });
 
-    const emailError = screen.queryByText(/Invalid email or password\./i); // updated
-    const pwError = screen.queryByText(/Password is required\./i);       // updated
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
 
-    expect(emailError).not.toBeNull();
-    expect(pwError).not.toBeNull();
+    expect(screen.queryByText(/invalid email or password\./i)).not.toBeNull();
+    expect(screen.queryByText(/password is required\./i)).not.toBeNull();
   });
 
-  it("navigates to landing when inputs are valid", () => {          // updated description
+  it("navigates to landing on successful login", async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true }),
+    } as Response);
+
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@ohsu.edu" } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
-    fireEvent.click(screen.getByRole("button", { name: /Log In/i }));
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "test@ohsu.edu" },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "password123" },
+    });
 
-    //expect(mockedNavigate).toHaveBeenCalledWith("/landing");      // updated
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
+
+    await waitFor(() => {
+      expect(mockedNavigate).toHaveBeenCalledWith("/landing");
+    });
   });
 
-  it("navigates to signup page when selecting create account", () => {
+  it("shows form error when login fails", async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({ ok: false, error: "Invalid credentials" }),
+    } as Response);
+
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
 
-    const link = screen.getByText(/Create Account/i);
-    fireEvent.click(link);
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "test@ohsu.edu" },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "wrongpassword" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
+
+    expect(await screen.findByText(/invalid credentials/i)).not.toBeNull();
+  });
+
+
+  it("shows default error message when login fails without server error message", async () => {
+  globalThis.fetch = vi.fn().mockResolvedValue({
+    ok: false,
+    json: async () => ({ ok: false }), // ← NO error field
+  } as Response);
+
+  render(
+    <MemoryRouter>
+      <LoginPage />
+    </MemoryRouter>
+  );
+
+  fireEvent.change(screen.getByLabelText(/email/i), {
+    target: { value: "test@ohsu.edu" },
+  });
+  fireEvent.change(screen.getByLabelText(/password/i), {
+    target: { value: "wrongpassword" },
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: /log in/i }));
+
+  expect(
+    await screen.findByText(/login failed\. please check your email and password\./i)
+  ).not.toBeNull();
+  });
+
+
+  it("navigates to signup when clicking Create Account", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByText(/create account/i));
+
     expect(mockedNavigate).toHaveBeenCalledWith("/signup");
- 
-    
   });
 
-  it("shows an error when email is empty", () => {
+  it("shows error when email is empty", () => {
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
 
-    // Leave email empty
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "" } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "somepassword" } });
-    fireEvent.click(screen.getByRole("button", { name: /Log In/i })); 
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "somepassword" },
+    });
 
-    const emailRequiredError = screen.getByText(/Email is required\./i);
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
 
-    expect(emailRequiredError).not.toBeNull();
+    expect(screen.queryByText(/email is required\./i)).not.toBeNull();
+  });
+
+
+  it("shows server error when fetch throws", async () => {
+  globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
+
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "test@ohsu.edu" },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "password123" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
+
+    expect(
+      await screen.findByText(/could not reach the server\. try again\./i)
+    ).not.toBeNull();
+  });
+
 });
 
-
-
-});

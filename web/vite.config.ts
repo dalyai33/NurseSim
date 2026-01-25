@@ -11,6 +11,7 @@ export default defineConfig({
     include: ['src/**/*{test,spec}.{ts,tsx}'],
     coverage: {
       reporter: ['text', 'json-summary'],
+      exclude:["src/components/**"],
     },
   },
   server:{
