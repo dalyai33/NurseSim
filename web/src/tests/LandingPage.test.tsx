@@ -42,13 +42,13 @@ describe("LandingPage", () => {
     expect(navigateMock).toHaveBeenCalledWith("/sim");
   });
 
-  it("navigates to /classroom/permissions when Teacher View button is clicked", () => {
+  it("navigates to /teacher when Teacher View button is clicked", () => {
     render(<LandingPage />);
 
     fireEvent.click(
       screen.getByRole("button", { name: /teacher view/i })
     );
 
-    expect(navigateMock).toHaveBeenCalledWith("/classroom/permissions");
+    expect(navigateMock).toHaveBeenCalledWith("/teacher");
   });
 });
