@@ -35,6 +35,7 @@ import SignUpPage from "../features/auth/SignUpPage";
 import { LandingPage } from "../features/landing/LandingPage";
 import { ClassroomStudentsPage } from "../features/classroom/ClassroomStudentsPage";
 import { ClassroomPermissionsPage } from "../features/classroom/ClassroomPermissionsPage";
+import { TeacherViewLandingPage } from "../features/classroom/TeacherViewLandingPage";
 import { SimIntroductionPage } from "../features/sim/SimIntroductionPage";
 import { SimLandingPage } from "../features/sim/SimLandingPage";
 import { SimLevel1Page } from "../features/sim/SimLevel1Page";
@@ -55,6 +56,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/landing" element={<LandingPage />} />
 
       {/* classroom views */}
+      <Route path="/teacher" element={<TeacherViewLandingPage />} />
       <Route path="/classroom/permissions" element={<ClassroomPermissionsPage />} />
       <Route path="/classroom/students" element={<ClassroomStudentsPage />} />
 
