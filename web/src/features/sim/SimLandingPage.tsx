@@ -4,18 +4,32 @@ import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
 import "../../styles/sim.css";
 
-const TUTORIAL_COMPLETED_KEY = "nursesim_tutorial_completed";
 
 export const SimLandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
 
-  useEffect(() => {
-    // Check if tutorial has been completed
-    const completed = localStorage.getItem(TUTORIAL_COMPLETED_KEY) === "true";
-    setTutorialCompleted(completed);
-  }, []);
+useEffect(() => { //Changed to useEffect to load tutorial progress from backend instead of using the local storage!
+  async function loadProgress() {
+    try {
+      const res = await fetch("http://localhost:5000/api/sim/progress", {
+        credentials: "include",
+      });
 
+      if (!res.ok) {
+        setTutorialCompleted(false);
+        return;
+      }
+
+      const data = await res.json();
+      setTutorialCompleted(Boolean(data.tutorialCompleted));
+    } catch {
+      setTutorialCompleted(false);
+    }
+  }
+
+  loadProgress();
+}, []);
   function handleTutorialClick() {
     navigate("/sim/tutorial");
   }

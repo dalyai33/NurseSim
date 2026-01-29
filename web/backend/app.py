@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 import psycopg2
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
 import bcrypt
-
+from datetime import timedelta
 load_dotenv()
 
 def get_connection():
@@ -17,7 +17,9 @@ def get_connection():
     )
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"])
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
+app.permanent_session_lifetime = timedelta(days=7)
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json() or {}
@@ -59,6 +61,9 @@ def login():
         "email": row[5],
         "teacher": row[7],
     }
+
+    session.permanent = True
+    session["user_id"] = user["id"] 
 
     return jsonify({"ok": True, "user": user}), 200
 
@@ -152,8 +157,74 @@ def signup():
         "email": row[5],
         "teacher": row[6],
     }
-
+    session.permanent = True
+    session["user_id"] = user["id"]
     return jsonify({"ok": True, "user": user}), 201
+
+@app.route("/api/me", methods=["GET"])
+def me():
+    #Confirm that session is in fact working
+    return jsonify({"ok": True, "user_id": session.get("user_id")})
+s
+
+def require_user():
+    user_id = session.get("user_id")
+    if not user_id:
+        return None, (jsonify({"ok": False, "error": "Not authenticated"}), 401)
+    return user_id, None
+
+
+@app.route("/api/sim/progress", methods=["GET"])
+def sim_progress():
+    user_id, err = require_user()
+    if err:
+        return err
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT EXISTS (
+            SELECT 1
+            FROM sim_attempts
+            WHERE user_id = %s
+              AND module_key = 'tutorial'
+              AND status = 'completed'
+        );
+    """, (user_id,))
+    tutorial_completed = cur.fetchone()[0]
+
+    cur.close()
+    conn.close()
+
+    return jsonify({"ok": True, "tutorialCompleted": tutorial_completed})
+
+
+@app.route("/api/sim/tutorial/complete", methods=["POST"])
+def sim_tutorial_complete():
+    user_id, err = require_user()
+    if err:
+        return err
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO sim_attempts (user_id, module_key, status, started_at, finished_at)
+        VALUES (%s, 'tutorial', 'completed', now(), now())
+        ON CONFLICT DO NOTHING;
+    """, (user_id,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({"ok": True})
+
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"ok": True})
 
 if __name__ == "__main__":
     app.run(debug=True)
