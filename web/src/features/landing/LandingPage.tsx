@@ -19,7 +19,7 @@ export const LandingPage: React.FC = () => {
             <GradientButton onClick={() => navigate("/sim")}>
               Enter
             </GradientButton>
-            <GradientButton onClick={() => navigate("/classroom/permissions")}>
+            <GradientButton onClick={() => navigate("/teacher")}>
               Teacher View
             </GradientButton>
           </div>

@@ -45,7 +45,7 @@ useEffect(() => { //Changed to useEffect to load tutorial progress from backend 
         className="app-screen-inner sim-root"
         style={{ backgroundImage: `url(${simBg})` }}
       >
-        <button className="back-arrow sim-back" onClick={() => navigate("/landing")} />
+        <button className="back-arrow sim-back"  aria-label="Back" onClick={() => navigate("/landing")} />
         
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">

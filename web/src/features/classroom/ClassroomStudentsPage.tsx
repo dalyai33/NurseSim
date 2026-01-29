@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ClassroomShell } from "./ClassroomShell";
 import { SoftCard } from "../../components/SoftCard";
 import "../../styles/classroom.css";
@@ -14,6 +14,8 @@ const STUDENTS = [
 
 export const ClassroomStudentsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const classroomName = searchParams.get("name") || "KIRSTEN";
 
   return (
     <ClassroomShell>
@@ -22,11 +24,11 @@ export const ClassroomStudentsPage: React.FC = () => {
           {/* back arrow */}
         <button
           className="back-arrow"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/teacher")}
           aria-label="Back"
         />
         <span className="classroom-label">Classroom Name:</span>
-        <div className="classroom-name-pill">KIRSTEN</div>
+        <div className="classroom-name-pill">{classroomName}</div>
       </header>
 
       {/* main content */}

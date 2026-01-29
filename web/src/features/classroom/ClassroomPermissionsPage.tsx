@@ -1,11 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ClassroomShell } from "./ClassroomShell";
 import { SoftCard } from "../../components/SoftCard";
 import "../../styles/classroom.css";
 
 export const ClassroomPermissionsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const classroomName = searchParams.get("name") || "KIRSTEN";
 
   return (
     <ClassroomShell>
@@ -13,11 +15,11 @@ export const ClassroomPermissionsPage: React.FC = () => {
           {/* back arrow */}
         <button
           className="back-arrow"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/teacher")}
           aria-label="Back"
         />
         <span className="classroom-label">Classroom Name:</span>
-        <div className="classroom-name-pill">KIRSTEN</div>
+        <div className="classroom-name-pill">{classroomName}</div>
       </header>
 
       <SoftCard className="permissions-card">
@@ -43,7 +45,7 @@ export const ClassroomPermissionsPage: React.FC = () => {
           <button
             className="save-pill"
             type="button"
-            onClick={() => navigate("/classroom/students")}
+            onClick={() => navigate(`/classroom/students?name=${encodeURIComponent(classroomName)}`)}
           >
             Save
           </button>
