@@ -113,7 +113,7 @@ def signup():
         }), 400
 
     pw_byes = password.encode("utf-8")
-    pw_hash = bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
+    pw_hash = bcrypt.hashpw(pw_byes, bcrypt.gensalt()).decode("utf-8")
     
     conn = get_connection()
     cur = conn.cursor()
