@@ -10,7 +10,6 @@ import "../../styles/sim.css";
 import { useState } from "react";
 import ChatbotComponent from "../../components/Chatbot";
 
-const TUTORIAL_COMPLETED_KEY = "nursesim_tutorial_completed";
 
 export const SimIntroductionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -33,11 +32,24 @@ export const SimIntroductionPage: React.FC = () => {
       setShowPopup(true);
   }
 
-  function handleCorrect(){
-      //show the success popup and mark tutorial as complete
-      setShowSuccess(true);
-      localStorage.setItem(TUTORIAL_COMPLETED_KEY, "true");
-  }
+    async function handleCorrect() {
+    // show the success popup
+    setShowSuccess(true);
+
+    // mark tutorial complete in the database (per user)
+    try {
+        const res = await fetch("http://localhost:5000/api/sim/tutorial/complete", {
+        method: "POST",
+        credentials: "include",
+        });
+
+        if (!res.ok) {
+        console.error("Failed to mark tutorial complete");
+        }
+    } catch (err) {
+        console.error("Tutorial complete request failed:", err);
+    }
+    }
 
   function handleStartQuiz(){
       //hide the introduction and show the quiz
