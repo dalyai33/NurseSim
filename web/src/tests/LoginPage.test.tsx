@@ -62,12 +62,7 @@ describe("LoginPage", () => {
       target: { value: "" },
     });
 
-<<<<<<< HEAD
-    const emailError = screen.queryByText(/Invalid email or password\./i); // updated
-    const pwError = screen.queryByText(/Password is required\./i);       // updated
-=======
     fireEvent.click(screen.getByRole("button", { name: /log in/i }));
->>>>>>> origin/main
 
     expect(screen.queryByText(/invalid email or password\./i)).not.toBeNull();
     expect(screen.queryByText(/password is required\./i)).not.toBeNull();
