@@ -11,6 +11,8 @@ export default function SignUpPage() {
   const [lastName, setLastName] = useState("");
   const [studentID, setStudentID] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [teacherCode, setTeacherCode] = useState("");
+  const [isTeacher, setIsTeacher] = useState(false);
 
   const [errors, setErrors] = useState<{
     firstName?: string;
@@ -19,9 +21,12 @@ export default function SignUpPage() {
     phoneNumber?: string;
     email?: string;
     pw?: string;
+    teacherCode?: string;
+    form?: string; 
   }>({});
+  const [loading, setLoading] = useState(false); 
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const nextErrors: typeof errors = {};
@@ -36,10 +41,50 @@ export default function SignUpPage() {
 
     if (!pw) nextErrors.pw = "Password required.";
 
+    if (isTeacher && teacherCode !== "NurseSimCapstone") {
+      nextErrors.teacherCode = "Invalid teacher code.";
+    }
+
     setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length === 0) {
+    if (Object.keys(nextErrors).length > 0) return;
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          student_id: studentID,
+          phone_number: phoneNumber,
+          email,
+          password: pw,
+          is_teacher: isTeacher,
+          teacher_code: teacherCode,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setErrors((prev) => ({
+          ...prev,
+          form: data.error || "Sign up failed. Please try again.",
+        }));
+        return;
+      }
+
       navigate("/landing");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setErrors((prev) => ({
+        ...prev,
+        form: "Could not reach the server. Please try again.",
+      }));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -50,6 +95,8 @@ export default function SignUpPage() {
           <h1 className="brand">NurseSim</h1>
 
           <form onSubmit={handleSubmit} noValidate>
+            {errors.form && <p className="error">{errors.form}</p>}
+
             <div className="name-fields">
               <div className="field">
                 <label htmlFor="firstName">First Name</label>
@@ -130,7 +177,68 @@ export default function SignUpPage() {
               {errors.pw && <p className="error">{errors.pw}</p>}
             </div>
 
-            <button className="btn" type="submit">Sign Up</button>
+            <div className="field">
+              <label htmlFor="teacherCode">Teacher Code (Optional)</label>
+              <input
+                id="teacherCode"
+                type="text"
+                value={teacherCode}
+                onChange={(e) => {
+                  setTeacherCode(e.target.value);
+                  if (e.target.value === "NurseSimCapstone") {
+                    setIsTeacher(true);
+                    setErrors((prev) => {
+                      const next = { ...prev };
+                      delete next.teacherCode;
+                      return next;
+                    });
+                  } else {
+                    setIsTeacher(false);
+                  }
+                }}
+                placeholder="Enter code to create teacher account"
+                aria-invalid={!!errors.teacherCode}
+              />
+              {errors.teacherCode && <p className="error">{errors.teacherCode}</p>}
+            </div>
+
+            <div className="field">
+              <label htmlFor="isTeacher" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }}>
+                <span>Create Teacher Account</span>
+                <input
+                  id="isTeacher"
+                  type="checkbox"
+                  checked={isTeacher}
+                  onChange={(e) => {
+                    if (e.target.checked && teacherCode !== "NurseSimCapstone") {
+                      setErrors((prev) => ({
+                        ...prev,
+                        teacherCode: "Please enter the correct teacher code first.",
+                      }));
+                      setIsTeacher(false);
+                    } else {
+                      setIsTeacher(e.target.checked);
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.teacherCode;
+                        return next;
+                      });
+                    }
+                  }}
+                  disabled={teacherCode !== "NurseSimCapstone"}
+                  style={{ 
+                    width: "18px", 
+                    height: "18px", 
+                    cursor: teacherCode === "NurseSimCapstone" ? "pointer" : "not-allowed",
+                    margin: 0
+                  }}
+                />
+              </label>
+            </div>
+
+            <button className="btn" type="submit" disabled={loading}>
+              {loading ? "Signing up..." : "Sign Up"}
+            </button>
 
             <div className="links">
               <button

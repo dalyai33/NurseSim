@@ -253,6 +253,59 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+<<<<<<< HEAD
+=======
+  position: relative;
+}
+
+.classroom-card {
+  position: relative;
+}
+
+.classroom-delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+}
+
+.delete-x {
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1;
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.classroom-delete-button:hover {
+  background: rgba(220, 5, 5, 0.8);
+  transform: scale(1.1);
+}
+
+.classroom-delete-button:active {
+  transform: scale(0.95);
+>>>>>>> origin/main
 }
 
 @media (max-width: 768px) {
