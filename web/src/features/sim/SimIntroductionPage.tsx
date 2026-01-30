@@ -8,6 +8,7 @@ import "../../styles/sim.css";
 // import QuizComponent from "../../components/QuizPopUp";
 
 import { useState } from "react";
+import ChatbotComponent from "../../components/Chatbot";
 
 const TUTORIAL_COMPLETED_KEY = "nursesim_tutorial_completed";
 
@@ -132,6 +133,9 @@ export const SimIntroductionPage: React.FC = () => {
         </div>
         )}
         {/* <img src={duckImg} alt="Nurse duck" className="sim-duck" /> */}
+      </div>
+      <div className="chatbot-float">
+            <ChatbotComponent/>
       </div>
     </div>
 
