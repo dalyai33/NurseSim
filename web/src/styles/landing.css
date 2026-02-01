@@ -34,9 +34,11 @@
 
 .landing-buttons {
   display: flex;
-  gap: 40px;
+  gap: 250px;
   flex-wrap: wrap;
   justify-content: center;
+  width: 100%;
+  max-width: 90vw;
 }
 
 .gradient-button {

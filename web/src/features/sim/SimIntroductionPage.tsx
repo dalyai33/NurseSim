@@ -61,7 +61,7 @@ export const SimIntroductionPage: React.FC = () => {
                         <h2>Welcome to the Nursing Sim+ Tutorial</h2>
                         <p>I'm Capstone, your own personal AI assistant!</p>
                         <p>It's time for me to teach you how to play the simulator.</p>
-                        <p>Let's first start off with a question to test your knowledge</p>
+                        <p>Let's first start off with a question to test your knowledge!</p>
                         <button className="close-button" onClick={handleStartQuiz}>
                             Start Quiz
                         </button>
