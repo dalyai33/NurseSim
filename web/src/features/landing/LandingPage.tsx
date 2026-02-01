@@ -4,8 +4,23 @@ import landingBg from "../../assets/MainBackground.png";
 import { GradientButton } from "../../components/GradientButton";
 import "../../styles/landing.css";
 
+const USER_STORAGE_KEY = "nursesim_user";
+
+function getStoredUser(): { teacher?: boolean } | null {
+  try {
+    const raw = localStorage.getItem(USER_STORAGE_KEY);
+    if (!raw) return null;
+    const user = JSON.parse(raw) as { teacher?: boolean };
+    return user ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const user = getStoredUser();
+  const isTeacher = Boolean(user?.teacher);
 
   return (
     <div className="app-screen">
@@ -19,9 +34,11 @@ export const LandingPage: React.FC = () => {
             <GradientButton onClick={() => navigate("/sim")}>
               Enter
             </GradientButton>
-            <GradientButton onClick={() => navigate("/teacher")}>
-              Teacher View
-            </GradientButton>
+            {isTeacher && (
+              <GradientButton onClick={() => navigate("/teacher")}>
+                Teacher View
+              </GradientButton>
+            )}
           </div>
         </div>
       </div>
