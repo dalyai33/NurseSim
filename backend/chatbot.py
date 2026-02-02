@@ -13,7 +13,7 @@ def chat():
     
     try:
         reply = get_help(data["message"])
-        return jsonify({"Nurse+: ": reply})
+        return jsonify({"reply: ": reply})
     except Exception as e:
         return jsonify({"Error:": str(e)}), 500
     
