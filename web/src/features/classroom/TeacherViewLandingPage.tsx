@@ -175,14 +175,7 @@ export const TeacherViewLandingPage: React.FC = () => {
                     value={classroomName}
                     onChange={(e) => setClassroomName(e.target.value)}
                     placeholder="Enter classroom name"
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      border: "1px solid #ddd",
-                      boxSizing: "border-box",
-                    }}
+                    className="classroom-input"
                     autoFocus
                   />
                 </div>

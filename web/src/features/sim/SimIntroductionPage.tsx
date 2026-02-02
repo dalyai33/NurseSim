@@ -8,6 +8,7 @@ import "../../styles/sim.css";
 // import QuizComponent from "../../components/QuizPopUp";
 
 import { useState } from "react";
+import ChatbotComponent from "../../components/Chatbot";
 
 
 export const SimIntroductionPage: React.FC = () => {
@@ -72,7 +73,7 @@ export const SimIntroductionPage: React.FC = () => {
                         <h2>Welcome to the Nursing Sim+ Tutorial</h2>
                         <p>I'm Capstone, your own personal AI assistant!</p>
                         <p>It's time for me to teach you how to play the simulator.</p>
-                        <p>Let's first start off with a question to test your knowledge</p>
+                        <p>Let's first start off with a question to test your knowledge!</p>
                         <button className="close-button" onClick={handleStartQuiz}>
                             Start Quiz
                         </button>
@@ -144,6 +145,9 @@ export const SimIntroductionPage: React.FC = () => {
         </div>
         )}
         {/* <img src={duckImg} alt="Nurse duck" className="sim-duck" /> */}
+      </div>
+      <div className="chatbot-float">
+            <ChatbotComponent/>
       </div>
     </div>
 
