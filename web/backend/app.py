@@ -124,13 +124,8 @@ def signup():
             "error": f"Missing required fields: {', '.join(missing)}"
         }), 400
 
-<<<<<<< HEAD
     pw_bytes = password.encode("utf-8")
     pw_hash = bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
-=======
-    pw_byes = password.encode("utf-8")
-    pw_hash = bcrypt.hashpw(pw_byes, bcrypt.gensalt()).decode("utf-8")
->>>>>>> origin/main
     
     conn = get_connection()
     cur = conn.cursor()
