@@ -19,4 +19,4 @@ def health():
 
 if __name__ == "__main__":
     # only here, turn it off when shipping to the production (in we ever did)
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
