@@ -193,6 +193,67 @@ def level1_start():
 
     return jsonify({"attempt_id": attempt_id, "step": step})
 
+@sim_bp.route("/level2/start", methods=["POST"])
+def level2_start():
+    """
+    Starts or retakes Level 2.
+    Assumes Level 2 scenario is scenario_id = 2.
+    Returns the next step to do.
+    """
+    user_id, err = require_user()
+    if err:
+        return err
+    
+    data = request.get_json() or {}
+    retake = bool(data.get("retake", False))
+
+    scenario_id = 2  # change if needed
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    attempt_id = None
+
+    # Resume existing attempt if not retake
+    if not retake:
+        cur.execute("""
+            SELECT id
+            FROM sim_attempts
+            WHERE user_id = %s AND scenario_id = %s AND status = 'in_progress'
+            ORDER BY started_at DESC
+            LIMIT 1;
+        """, (user_id, scenario_id))
+        row = cur.fetchone()
+        if row:
+            attempt_id = row[0]
+
+    # Otherwise create new attempt
+    if attempt_id is None:
+        cur.execute("""
+            INSERT INTO sim_attempts (user_id, scenario_id, status, mistakes)
+            VALUES (%s, %s, 'in_progress', 0)
+            RETURNING id;
+        """, (user_id, scenario_id))
+        attempt_id = cur.fetchone()[0]
+        conn.commit()
+
+    # Next step is (max finalized step_number) + 1
+    cur.execute("""
+        SELECT COALESCE(MAX(s.step_number), 0)
+        FROM sim_attempt_steps ats
+        JOIN sim_steps s ON s.id = ats.step_id
+        WHERE ats.attempt_id = %s;
+    """, (attempt_id,))
+    max_finalized_step = cur.fetchone()[0] or 0
+    next_step_number = int(max_finalized_step) + 1
+
+    step = get_step_by_number(cur, scenario_id, next_step_number)
+
+    cur.close()
+    conn.close()
+
+    return jsonify({"attempt_id": attempt_id, "step": step})
+
 
 @sim_bp.route("/tutorial/complete", methods=["POST"])
 def tutorial_complete():
