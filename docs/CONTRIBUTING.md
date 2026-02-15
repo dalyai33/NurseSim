@@ -14,14 +14,62 @@ We follow a professionalism-first approach:
 Contact  
 - **Ian Hale (Team Leader)** – `halei@oregonstate.edu`
 
+### Conflict resolution
+- **Discuss first** in Discord or in a meeting; aim for consensus on small decisions.
+- **Major decisions** → majority vote; if tied, discuss priorities and try to incorporate everyone’s input.
+- **Escalate** to the Team Lead (Ian) or advisor/TA when the team can’t resolve it.
+- **Accountability:** Use PRs, reviews, and meeting notes as evidence when needed.
+
 ## Getting Started
 ### Prerequisites
-- **Node.js** 
+- **Node.js**
+- **Python 3** (for the backend)
 - **Git** with **SSH** configured (we use SSH, not HTTPS)
-- **Ren’Py** (for the simulation / VN-style UI segment)
+- **PostgreSQL** (or access to a shared project database)
+- **pgAdmin** (to view and manage the database)
 - Recommended: VS Code + ESLint
+
 ### Clone via SSH
-Follow the README steps (already in the repo) to set up SSH:
+Follow the README steps (already in the repo) to set up SSH: clone using the SSH URL from the repo (e.g. `git clone <sshURL>`).
+
+### Local setup
+
+#### 1. Web app (frontend)
+From the repo root:
+```bash
+cd web
+npm install
+npm run dev
+```
+The app will be available at the URL shown (e.g. `http://localhost:5173`).
+
+#### 2. Database (PostgreSQL + pgAdmin)
+- Install **PostgreSQL** and **pgAdmin** if you don’t have them.
+- In pgAdmin, create or connect to a PostgreSQL server (localhost or your team’s host).
+- Create a database for the project (e.g. the same name you will use for `DB_NAME` in `.env`).
+- Keep pgAdmin open to inspect tables, run queries, and manage data. Connection details (host, port, database name, user, password) must match the values in the backend’s `.env` file.
+
+#### 3. Backend (Flask API)
+The backend lives in the `backend/` directory and uses a `.env` file for database and other config (e.g. `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`). Create a `.env` in `backend/` if needed (see team or README for required variables).
+
+**On macOS / Linux (non-WSL):**
+```bash
+cd backend
+pip install -r requirements.txt
+python3 app.py
+```
+
+**On WSL (Windows Subsystem for Linux):** use a virtual environment so dependencies don’t conflict with the system Python:
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 app.py
+```
+When you’re done, type `deactivate` to leave the venv. Next time you work on the backend, run `source venv/bin/activate` from `backend/` before `python3 app.py`.
+
+The API will run at the URL/port shown in the terminal (e.g. `http://localhost:5001`).
 
 ## Branching & Workflow
 We use a **lightweight GitFlow** process designed for our senior capstone schedule.
@@ -56,6 +104,18 @@ This keeps our progress visible to the entire team and aligns with our weekly me
 - Location/where to find the issue
 - Short description of what needs to be done and why
 
+### Reporting bugs
+Use **GitHub Issues**. Include:
+- Steps to reproduce
+- What you expected vs what actually happened
+- Browser and OS (and a screenshot if it helps)
+
+### Requesting changes
+Use **GitHub Issues**. Include:
+- What you want changed or added
+- Why (use case or problem it solves)
+- Simple acceptance criteria (how we’ll know it’s done)
+
 ## Commit Messages
 - **Feature branches:** `feature/<short-description>`  
 - **Bug-fix branches:** `fix/<issue-number>`  
@@ -69,21 +129,36 @@ git push -u origin feature/add-student-scenario
 
 ## Code Style, Linting & Formatting
 
-We enforce code quality through **ESLint** in CI. Every push and every pull request to `main` runs the workflow defined in `.github/workflows/lint.yml`.
+We enforce code quality through **ESLint** in CI. Every push and every pull request targeting `main` runs the workflow in `.github/workflows/lint.yml`, so lint runs automatically on GitHub when you push or open a PR. To catch issues before that, run lint (and optionally build and tests) locally from the `web/` directory:
 
 **Do This Before You Push**
 ```bash
+cd web
 npm install
 npm run lint
 npm run lint -- --fix
 ```
+Running these from `web/` matches what CI does and helps avoid failed checks after you push.
+
+### Run CI checks locally
+To run the same checks that CI runs (build, lint, tests), use these commands from the `web/` directory:
+
+```bash
+cd web
+npm install
+npm run build
+npm run lint
+npm test
+```
+
+Or use `npm run coverage` instead of `npm test` to include coverage. Fix any failures before pushing so CI passes.
 
 ## Testing
 
 ### Required Test Types
 - **Unit tests:** For utility functions, React hooks, and basic logic.
 - **Component/UI tests:** For main user flows such as login, dashboard, and scenario selection.
-- **Integration tests (planned):** For interactions between modules (React ↔ Ren’Py).
+- **Integration tests (planned):** For interactions between modules.
 
 ### How to Run Tests
 All tests are run from the `web/` directory:
@@ -104,6 +179,15 @@ Add or update tests when:
 ## Pull Requests & Reviews
 All changes to `main` must go through a Pull Request (PR). This keeps the repo consistent with our Definition of Complete and the CI/lint workflows.
 
+### Definition of Done (DoD)
+A PR is done when: **no direct pushes to main** (use a PR); **CI passes** (build, tests, lint); **docs updated** for new features/setup/API (reviewers verify); **≥1 approval** and all **review comments resolved**. Reviewers check correctness, tests, style, and docs.
+
+### How to open a PR
+1. Create a branch from `main` (e.g. `feature/my-feature` or `fix/123`).
+2. Push your branch and open a **Pull Request** on GitHub targeting `main`.
+3. Fill out the **PR template** and **link the issue** (`Closes #123` or `Related to #123`).
+4. **Request reviewers**; address feedback and fix any failing CI checks until the PR is approved and mergeable.
+
 ### PR Requirements
 - **Use the PR template**
 - **One feature/fix per PR** (no “everything I did this week” PRs).
@@ -117,8 +201,9 @@ All changes to `main` must go through a Pull Request (PR). This keeps the repo c
 
 ### Required Status Checks
 A PR can be merged only if:
-- CI (build) passes – from `.github/workflows/CI.yml`
-- Lint passes – from `.github/workflows/lint.yml`
+- CI (build) passes – `.github/workflows/CI.yml`
+- Tests pass – `.github/workflows/Tests.yml`
+- Lint passes – `.github/workflows/lint.yml`
 - Branch is up to date with main
 - Review is approved
 
@@ -145,7 +230,7 @@ State how to report vulnerabilities, prohibited patterns (hard-coded secrets),
 dependency update policy, and scanning tools.
 
 ### Reporting
-f you notice a security issue, data misuse, or suspicious access:
+If you notice a security issue, data misuse, or suspicious access:
 
 - Report it **immediately** in **Discord** (project channel), **or**
 - Bring it up in the **next team meeting**, **and**
@@ -234,9 +319,6 @@ Tags are created only after merging into `main` to ensure stability.
     npm run build
     ```
   - Share or deploy the built artifact for presentation.
-- For Ren’Py simulations:
-  - Export the latest project version.
-  - Name the build with the corresponding release tag (e.g., `NurseSim-v1.2.0`).
 - All builds and exports should be linked or referenced in GitHub release notes or the team’s shared documentation.
 
 ### Rollback Procedure
@@ -246,8 +328,12 @@ If a release causes major issues or breaks functionality:
 2. **Check out** that version:
    ```bash
    git checkout v1.1.0
-  
+   ```
+3. **Re-deploy or notify** the team; fix forward on `main` when ready, then cut a new release.
+
 ## Support & Contact
+For help, start with the **Discord project channel** or the contacts below.
+
 For any questions, issues, or clarification about NurseSim+, please reach out through the following channels.
 
 ### Communication Channels
