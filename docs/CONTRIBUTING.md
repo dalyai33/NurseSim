@@ -27,7 +27,6 @@ Contact
 - **Git** with **SSH** configured (we use SSH, not HTTPS)
 - **PostgreSQL** (or access to a shared project database)
 - **pgAdmin** (to view and manage the database)
-- **Ren’Py** (for the simulation / VN-style UI segment)
 - Recommended: VS Code + ESLint
 
 ### Clone via SSH
@@ -159,7 +158,7 @@ Or use `npm run coverage` instead of `npm test` to include coverage. Fix any fai
 ### Required Test Types
 - **Unit tests:** For utility functions, React hooks, and basic logic.
 - **Component/UI tests:** For main user flows such as login, dashboard, and scenario selection.
-- **Integration tests (planned):** For interactions between modules (React ↔ Ren’Py).
+- **Integration tests (planned):** For interactions between modules.
 
 ### How to Run Tests
 All tests are run from the `web/` directory:
@@ -320,9 +319,6 @@ Tags are created only after merging into `main` to ensure stability.
     npm run build
     ```
   - Share or deploy the built artifact for presentation.
-- For Ren’Py simulations:
-  - Export the latest project version.
-  - Name the build with the corresponding release tag (e.g., `NurseSim-v1.2.0`).
 - All builds and exports should be linked or referenced in GitHub release notes or the team’s shared documentation.
 
 ### Rollback Procedure
