@@ -182,12 +182,10 @@
   text-decoration: underline;
 }
 
-/* for the login link text on SignUp, if you keep it outside a button */
 .links span {
   margin: 0 4px;
 }
 
-/* optional: dashboard text if you reuse this file */
 .dash-wrap {
   text-align: center;
   padding: 24px;

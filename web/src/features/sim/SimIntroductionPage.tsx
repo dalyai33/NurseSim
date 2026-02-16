@@ -5,6 +5,7 @@ import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
 // import duckImg from "../../assets/Duck.png";
 import "../../styles/sim.css";
+import duckIcon from "../../assets/Duck.png";
 // import QuizComponent from "../../components/QuizPopUp";
 
 import { useState } from "react";
@@ -26,6 +27,8 @@ export const SimIntroductionPage: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showIntroduction, setShowIntroduction] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
+  
 
   function handleWrong(){
       //show the incorrect popup
@@ -144,13 +147,20 @@ export const SimIntroductionPage: React.FC = () => {
             </ol>
         </div>
         )}
-        {/* <img src={duckImg} alt="Nurse duck" className="sim-duck" /> */}
       </div>
-      <div className="chatbot-float">
-            <ChatbotComponent/>
-      </div>
-    </div>
+      <button
+        className="duck-chat-toggle"
+        onClick={() => setShowChatbot(!showChatbot)}
+        aria-label="Toggle help chat"
+      >
+        <img src={duckIcon} alt="Help" className="duck-chat-icon" />
+      </button>
 
-    
+      {showChatbot && (
+        <div className="chatbot-float">
+          <ChatbotComponent />
+        </div>
+      )}
+    </div>
   );
 };
