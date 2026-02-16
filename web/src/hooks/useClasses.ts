@@ -27,7 +27,7 @@ export function useMyClass(): {
       } else {
         setError("Could not load your class.");
       }
-    } catch (e) {
+    } catch {
       setError("Could not reach the server.");
       setClassData(null);
     } finally {
@@ -62,7 +62,7 @@ export function useClasses(): {
       } else {
         setError("Could not load classes.");
       }
-    } catch (e) {
+    } catch {
       setError("Could not reach the server.");
       setClasses([]);
     } finally {
