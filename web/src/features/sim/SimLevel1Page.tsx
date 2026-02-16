@@ -87,7 +87,7 @@ export const SimLevel1Page: React.FC = () => {
     }
   }
 
-  function buildPopupTitle(mode: string, feedback: string): string {
+  function buildPopupTitle(mode: string): string {
     switch (mode) {
       case "correct":
         return "Correct!";
@@ -178,7 +178,7 @@ export const SimLevel1Page: React.FC = () => {
       else mode = "incorrect";
 
       setPopupMode(mode);
-      setPopupTitle(buildPopupTitle(mode, data.feedback || ""));
+      setPopupTitle(buildPopupTitle(mode));
       setPopupBody(cleanFeedback(data.feedback || ""));
       setPopupOpen(true);
 
