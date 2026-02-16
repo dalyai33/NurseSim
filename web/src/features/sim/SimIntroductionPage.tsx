@@ -1,12 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
-// import folderImg from "../../assets/folder.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
-// import duckImg from "../../assets/Duck.png";
-import "../../styles/sim.css";
 import duckIcon from "../../assets/Duck.png";
-// import QuizComponent from "../../components/QuizPopUp";
+import "../../styles/sim.css";
 
 import { useState } from "react";
 import ChatbotComponent from "../../components/Chatbot";

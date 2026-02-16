@@ -51,7 +51,7 @@ export const SimLandingPage: React.FC = () => {
     }
 
     loadProgress();
-  }, [location.key]); // ✅ refetch whenever you navigate back to /sim
+  }, [location.key]);
 
   function handleTutorialClick() {
     navigate("/sim/tutorial");
