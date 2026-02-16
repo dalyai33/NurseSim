@@ -6,6 +6,7 @@ from flask_cors import CORS
 import bcrypt
 from datetime import timedelta
 from simulation import sim_bp
+from classes import classes_bp
 
 load_dotenv()
 
@@ -23,6 +24,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
 app.permanent_session_lifetime = timedelta(days=7)
 CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 app.register_blueprint(sim_bp)
+app.register_blueprint(classes_bp)
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json() or {}
