@@ -2,11 +2,16 @@ import os
 import sys
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
+from pathlib import Path
 
 #make sure too have google-genai installed, if you dont:
 #run this command: pip install google-genai
 
 #Put your api key in the .env file in the backend directory
+
+load_dotenv(Path(__file__).resolve().parent / ".env")
+
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 client = genai.Client(api_key = GEMINI_API_KEY)
 if not GEMINI_API_KEY:
