@@ -40,6 +40,9 @@ export default function LoginPage() {
         return;
       }
 
+      if (data.user) {
+        localStorage.setItem("nursesim_user", JSON.stringify(data.user));
+      }
       navigate("/landing");
     } catch (err) {
       console.error("Login error:", err);

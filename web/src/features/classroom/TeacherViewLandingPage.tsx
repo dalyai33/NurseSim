@@ -6,6 +6,18 @@ import "../../styles/sim.css";
 import "../../styles/classroom.css";
 
 const CLASSROOMS_STORAGE_KEY = "nursesim_classrooms";
+const USER_STORAGE_KEY = "nursesim_user";
+
+function getStoredUser(): { teacher?: boolean } | null {
+  try {
+    const raw = localStorage.getItem(USER_STORAGE_KEY);
+    if (!raw) return null;
+    const user = JSON.parse(raw) as { teacher?: boolean };
+    return user ?? null;
+  } catch {
+    return null;
+  }
+}
 
 // Initial default classroom
 const DEFAULT_CLASSROOMS = [
@@ -17,6 +29,14 @@ export const TeacherViewLandingPage: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [classroomName, setClassroomName] = useState("");
   const [classrooms, setClassrooms] = useState(DEFAULT_CLASSROOMS);
+
+  // Redirect non-teachers to landing
+  useEffect(() => {
+    const user = getStoredUser();
+    if (!user || !user.teacher) {
+      navigate("/landing", { replace: true });
+    }
+  }, [navigate]);
 
   // Load classrooms from localStorage on mount
   useEffect(() => {
