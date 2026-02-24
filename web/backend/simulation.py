@@ -71,6 +71,32 @@ def compute_attempt_score(cur, attempt_id: int):
 
     return correct, total, score_percent
 
+def get_latest_passed_level(cur, user_id, scenario_id):
+    cur.execute("""
+        SELECT a.id
+        FROM sim_attempts a
+        WHERE a.user_id = %s
+          AND a.scenario_id = %s
+          AND a.status = 'passed'
+        ORDER BY a.ended_at DESC NULLS LAST
+        LIMIT 1;
+    """, (user_id, scenario_id))
+
+    row = cur.fetchone()
+    if not row:
+        return None
+
+    attempt_id = row[0]
+    correct, total, score_percent = compute_attempt_score(cur, attempt_id)
+
+    return {
+        "attempt_id": attempt_id,
+        "completed": True,
+        "score": score_percent,
+        "correct": correct,
+        "total": total,
+    }
+
 
 @sim_bp.route("/progress", methods=["GET"])
 def sim_progress():
@@ -98,29 +124,9 @@ def sim_progress():
     """, (user_id,))
     tutorial_completed = cur.fetchone()[0]
 
-    # latest passed attempt for Level 1 scenario (scenario_id=1)
-    cur.execute("""
-        SELECT a.id
-        FROM sim_attempts a
-        WHERE a.user_id = %s
-          AND a.scenario_id = 1
-          AND a.status = 'passed'
-        ORDER BY a.ended_at DESC NULLS LAST
-        LIMIT 1;
-    """, (user_id,))
-    row = cur.fetchone()
-
-    level1 = None
-    if row:
-        attempt_id = row[0]
-        correct, total, score_percent = compute_attempt_score(cur, attempt_id)
-        level1 = {
-            "attempt_id": attempt_id,
-            "completed": True,
-            "score": score_percent,
-            "correct": correct,
-            "total": total,
-        }
+    level1 = get_latest_passed_level(cur, user_id, 1)
+    level2 = get_latest_passed_level(cur, user_id, 2)
+    level3 = get_latest_passed_level(cur, user_id, 3)
 
     cur.close()
     conn.close()
@@ -128,7 +134,9 @@ def sim_progress():
     return jsonify({
         "ok": True,
         "tutorialCompleted": bool(tutorial_completed),
-        "level1": level1
+        "level1": level1,
+        "level2": level2,
+        "level3": level3
     })
 
 

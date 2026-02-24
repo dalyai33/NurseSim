@@ -12,6 +12,10 @@ export const SimLandingPage: React.FC = () => {
 
   const [level1Score, setLevel1Score] = useState<number | null>(null);
   const [level1Completed, setLevel1Completed] = useState(false);
+  const [level2Score, setLevel2Score] = useState<number | null>(null);
+  const [level2Completed, setLevel2Completed] = useState(false);
+  const [level3Score, setLevel3Score] = useState<number | null>(null);
+  const [level3Completed, setLevel3Completed] = useState(false);
 
   useEffect(() => {
     async function loadProgress() {
@@ -24,6 +28,10 @@ export const SimLandingPage: React.FC = () => {
           setTutorialCompleted(false);
           setLevel1Score(null);
           setLevel1Completed(false);
+          setLevel2Score(null);
+          setLevel2Completed(false);
+          setLevel3Score(null);
+          setLevel3Completed(false);
           return;
         }
 
@@ -43,10 +51,36 @@ export const SimLandingPage: React.FC = () => {
           setLevel1Completed(false);
           setLevel1Score(null);
         }
+
+         if (data.level2 && data.level2.completed) {
+          setLevel2Completed(true);
+          setLevel2Score(typeof data.level2.score === "number" ? data.level2.score : null);
+        } else if (typeof data.level2Completed === "boolean") {
+          setLevel2Completed(Boolean(data.level2Completed));
+          setLevel2Score(typeof data.level2Score === "number" ? data.level2Score : null);
+        } else {
+          setLevel2Completed(false);
+          setLevel2Score(null);
+        }
+
+         if (data.level3 && data.level3.completed) {
+          setLevel3Completed(true);
+          setLevel3Score(typeof data.level3.score === "number" ? data.level3.score : null);
+        } else if (typeof data.level3Completed === "boolean") {
+          setLevel3Completed(Boolean(data.level3Completed));
+          setLevel3Score(typeof data.level3Score === "number" ? data.level3Score : null);
+        } else {
+          setLevel3Completed(false);
+          setLevel3Score(null);
+        }
       } catch {
         setTutorialCompleted(false);
         setLevel1Score(null);
         setLevel1Completed(false);
+        setLevel2Score(null);
+        setLevel2Completed(false);
+        setLevel3Score(null);
+        setLevel3Completed(false);
       }
     }
 
@@ -62,6 +96,8 @@ export const SimLandingPage: React.FC = () => {
   }
 
   const level1Perfect = level1Score === 100;
+  const level2Perfect = level2Score === 100;
+  const level3Perfect = level3Score === 100;
 
   return (
     <div className="app-screen">
@@ -112,25 +148,39 @@ export const SimLandingPage: React.FC = () => {
             </button>
 
             <button
-              className={`sim-level-button ${tutorialCompleted ? "available" : "locked"}`}
+               className={`sim-level-button ${
+                !tutorialCompleted ? "locked" : level2Completed ? (level2Perfect ? "completed" : "available") : "available"
+              }`}
               onClick={() => tutorialCompleted && handleLevelClick(2)}
               disabled={!tutorialCompleted}
             >
               <div className="sim-level-header">
                 <h2>Level 2 Curriculum</h2>
                 {!tutorialCompleted && <span className="locked-badge">🔒 Locked</span>}
+                {tutorialCompleted && level2Completed && level2Score !== null && (
+                  <span className="completed-badge">
+                    ✓ {level2Score}% {level2Perfect ? "🌟 Perfect!" : ""}
+                  </span>
+                )}
               </div>
               <p>Intermediate level nursing scenarios</p>
             </button>
 
             <button
-              className={`sim-level-button ${tutorialCompleted ? "available" : "locked"}`}
+               className={`sim-level-button ${
+                !tutorialCompleted ? "locked" : level3Completed ? (level3Perfect ? "completed" : "available") : "available"
+              }`}
               onClick={() => tutorialCompleted && handleLevelClick(3)}
               disabled={!tutorialCompleted}
             >
               <div className="sim-level-header">
                 <h2>Level 3 Curriculum</h2>
                 {!tutorialCompleted && <span className="locked-badge">🔒 Locked</span>}
+                {tutorialCompleted && level3Completed && level3Score !== null && (
+                  <span className="completed-badge">
+                    ✓ {level3Score}% {level3Perfect ? "🌟 Perfect!" : ""}
+                  </span>
+                )}
               </div>
               <p>Advanced level nursing scenarios</p>
             </button>
