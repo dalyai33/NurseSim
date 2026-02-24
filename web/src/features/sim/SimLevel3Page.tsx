@@ -1,11 +1,13 @@
-import React, {useMemo, useState} from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
+import duckIcon from "../../assets/Duck.png";
 import "../../styles/sim.css";
+import ChatbotComponent from "../../components/Chatbot";
 
 type SimStep = {
-  step_id: number;      
+  step_id: number;
   scenario_id: number;
   step_number: number;
 
@@ -42,129 +44,193 @@ export const SimLevel3Page: React.FC = () => {
   const [pendingStep, setPendingStep] = useState<SimStep | null>(null);
 
   const [showIntro, setShowIntro] = useState(true);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const [popupBody, setPopupBody] = useState("");
-  const [popupMode, setPopupMode] = useState<"correct" | "incorrect" | "gameover" | "done">("correct");
+  const [popupMode, setPopupMode] = useState<
+    "correct" | "incorrect" | "gameover" | "done"
+  >("correct");
 
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [scorePercent, setScorePercent] = useState<number | null>(null);
-  const [scoreBreakdown, setScoreBreakdown] = useState<{ correct: number; total: number } | null>(null);
+  const [scoreBreakdown, setScoreBreakdown] = useState<{
+    correct: number;
+    total: number;
+  } | null>(null);
 
   const choices = useMemo(() => step?.choices ?? [], [step]);
 
-  async function startOrResumeLevel3(retake = false){
+  /* ---------- helpers ---------- */
+
+  function cleanFeedback(raw: string): string {
+    return raw.replace(/\\n/g, "\n");
+  }
+
+  function popupBoxClass(): string {
+    switch (popupMode) {
+      case "correct":
+      case "done":
+        return "popup-box success-box";
+      case "incorrect":
+        return "popup-box incorrect-box";
+      case "gameover":
+        return "popup-box gameover-box";
+      default:
+        return "popup-box introduction-box";
+    }
+  }
+
+  function buildPopupTitle(mode: string): string {
+    switch (mode) {
+      case "correct":
+        return "Correct!";
+      case "incorrect":
+        return "Hmm... Not quite, try again!";
+      case "gameover":
+        return "Game Over";
+      case "done":
+        return "Level 3 Complete!";
+      default:
+        return "";
+    }
+  }
+
+  function popupButtonLabel(): string {
+    switch (popupMode) {
+      case "gameover":
+        return "Return to Curriculum";
+      case "done":
+        return "Close";
+      case "incorrect":
+        return "Close and try again";
+      default:
+        return "Continue";
+    }
+  }
+
+  /* ---------- API calls ---------- */
+
+  async function startOrResumeLevel3(retake = false) {
     setLoading(true);
     setErrorMsg(null);
+    setScorePercent(null);
     setScoreBreakdown(null);
     setPendingStep(null);
 
-    try{
-      const res = await fetch("http://localhost:5000/api/sim/level3/start",{
+    try {
+      const res = await fetch("http://localhost:5000/api/sim/level3/start", {
         method: "POST",
         credentials: "include",
-        headers: {"Content-Type" : "application/json"},
-        body: JSON.stringify({retake})
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ retake }),
       });
-      if(!res.ok) throw new Error("Failed to start level 3 attempt: " + res.statusText);
+      if (!res.ok)
+        throw new Error(
+          "Failed to start level 3 attempt: " + res.statusText
+        );
       const data: StartResponse = await res.json();
       setAttemptId(data.attempt_id);
       setStep(data.step);
-    } catch(e){
+    } catch (e) {
       console.error(e);
-      setErrorMsg("Could not start level 3. Is the backend running?");
-    } finally{
+      setErrorMsg("Could not start Level 3. Is the backend running?");
+    } finally {
       setLoading(false);
     }
   }
 
-  async function submitAnswer(selectedIndex: number){
-    if(!attemptId || !step) return;
+  async function submitAnswer(selectedIndex: number) {
+    if (!attemptId || !step) return;
 
     setSubmitting(true);
     setErrorMsg(null);
 
-    try{
-      const res = await fetch(`http://localhost:5000/api/sim/attempts/${attemptId}/answer`, {
-        method: "POST",
-        credentials: "include",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          step_id: step.step_id,
-          selected_index: selectedIndex
-      }),
-    });
-      if(!res.ok) throw new Error(`Answer failed (${res.status})`);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/sim/attempts/${attemptId}/answer`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            step_id: step.step_id,
+            selected_index: selectedIndex,
+          }),
+        }
+      );
+      if (!res.ok) throw new Error(`Answer failed (${res.status})`);
 
       const data: AnswerResponse = await res.json();
 
-      if(data.game_over){
-        setPopupMode("gameover");
-        setPopupTitle("GAME OVER");
-      }
-      else if (data.completed){
-        setPopupMode("done");
-        setPopupTitle("Level 3 Complete 🎉");
-      }
-      else if(data.is_correct){
-        setPopupMode("correct");
-        setPopupTitle("Correct ✅");
-      }
-      else{
-        setPopupMode("incorrect");
-        setPopupTitle("Incorrect ❌");
-      }
+      let mode: "correct" | "incorrect" | "gameover" | "done";
+      if (data.game_over) mode = "gameover";
+      else if (data.completed) mode = "done";
+      else if (data.is_correct) mode = "correct";
+      else mode = "incorrect";
 
-      setPopupBody(data.feedback || "");
+      setPopupMode(mode);
+      setPopupTitle(buildPopupTitle(mode));
+      setPopupBody(cleanFeedback(data.feedback || ""));
       setPopupOpen(true);
 
-      if(data.completed){
+      if (data.completed) {
         setStep(null);
         setPendingStep(null);
-
-        if(typeof data.score_percent === "number") setScorePercent(data.score_percent);
-        if(typeof data.correct === "number" && typeof data.total === "number"){
-          setScoreBreakdown({correct: data.correct, total: data.total});
+        if (typeof data.score_percent === "number")
+          setScorePercent(data.score_percent);
+        if (
+          typeof data.correct === "number" &&
+          typeof data.total === "number"
+        ) {
+          setScoreBreakdown({ correct: data.correct, total: data.total });
         }
         return;
       }
 
-      //Advance only if correct and backend has given the next step
-      if(data.is_correct && data.next_step){
+      if (data.is_correct && data.next_step) {
         setPendingStep(data.next_step);
-      }else{
+      } else {
         setPendingStep(null);
       }
-    }catch(e){
+    } catch (e) {
       console.error(e);
       setErrorMsg("Failed to submit answer. Check backend logs.");
-    } finally{
+    } finally {
       setSubmitting(false);
     }
   }
 
-  function handleStart(){
+  /* ---------- handlers ---------- */
+
+  function handleStart() {
     setShowIntro(false);
     startOrResumeLevel3(false);
   }
 
-  function handleExit(){
+  function handleExit() {
     navigate("/sim");
   }
 
-  function closePopup(){
+  function closePopup() {
     setPopupOpen(false);
-    //Advance only after closing popup and only if next step exists
-    if(pendingStep){
+
+    if (popupMode === "gameover") {
+      handleExit();
+      return;
+    }
+
+    if (pendingStep) {
       setStep(pendingStep);
       setPendingStep(null);
     }
   }
 
+  /* ---------- render ---------- */
 
   return (
     <div className="app-screen">
@@ -172,83 +238,94 @@ export const SimLevel3Page: React.FC = () => {
         className="app-screen-inner sim-root"
         style={{ backgroundImage: `url(${simBg})` }}
       >
-        {/* Intro */}
+        {/* ========== Intro overlay ========== */}
         {showIntro && (
           <div className="popup-overlay">
             <div className="popup-box introduction-box">
-              <h2>Level 3 - Running the Room, Running the System</h2>
-              <p>This will show the full scenario narrative and track your score.</p>
+              <h2>Level 3 — Running the Room, Running the System</h2>
+              <p>
+                This will show the full scenario narrative and track your score.
+              </p>
               <button className="close-button" onClick={handleStart}>
                 Start Level 3
               </button>
-              <button className="close-button" onClick={handleExit}>
+              <button
+                className="close-button"
+                onClick={handleExit}
+                style={{ marginLeft: 12 }}
+              >
                 Exit
               </button>
             </div>
           </div>
         )}
 
-        {/* Feedback popup */}
+        {/* ========== Feedback popup ========== */}
         {popupOpen && (
           <div className="popup-overlay">
-            <div
-              className={`popup-box ${
-              popupMode === "correct"
-                ? "success-box"
-                : popupMode === "incorrect"
-                ? "incorrect-box"
-                : "introduction-box"
-              }`}
-            >
+            <div className={popupBoxClass()}>
               <h2>{popupTitle}</h2>
-             
-              {/* Preserve formatting */}
-              <pre style={{ whiteSpace: "pre-wrap", textAlign: "left" }}>{popupBody}</pre>
 
-              {popupMode === "gameover" ? (
-                <button className="close-button" onClick={handleExit}>
-                  Return to curriculum
-                </button>
-              ) : (
-                <button className="close-button" onClick={closePopup}>
-                  {popupMode === "done" ? "Close" : "Continue"}
-                </button>
-              )} 
+              {popupBody && <p className="popup-feedback">{popupBody}</p>}
+
+              {popupMode === "done" && scorePercent !== null && (
+                <p className="popup-feedback" style={{ fontWeight: 700 }}>
+                  Score: {scorePercent}%
+                  {scoreBreakdown &&
+                    ` (${scoreBreakdown.correct} / ${scoreBreakdown.total} correct)`}
+                </p>
+              )}
+
+              <button className="close-button" onClick={closePopup}>
+                {popupButtonLabel()}
+              </button>
             </div>
           </div>
         )}
 
-        <button className="back-arrow sim-back" onClick={() => navigate("/sim")} />
-        
+        {/* ========== Top-left back arrow ========== */}
+        <button
+          className="back-arrow sim-back"
+          onClick={() => navigate("/sim")}
+        />
+
+        {/* ========== Top-right avatar card ========== */}
         <div className="sim-toolbar">
           <div className="sim-toolbar-card">
-            <img src={avatarIcon} alt="Profile" className="classroom-icon-img" />
+            <img
+              src={avatarIcon}
+              alt="Profile"
+              className="classroom-icon-img"
+            />
           </div>
         </div>
 
+        {/* ========== Bottom quiz card ========== */}
         {!showIntro && (
           <div className="quiz-popup">
             {loading && <p>Loading Level 3...</p>}
-            {errorMsg && <p style={{color:"red"}}>{errorMsg}</p>}
+            {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
 
             {!loading && !errorMsg && step && (
               <>
-                {/* Narrative */}
-                {step.title && <h2 style={{marginTop:0}} >{step.title}</h2>}
-                {step.body_text && ( 
-                  <pre style={{whiteSpace:"pre-wrap", textAlign:"left", marginBottom:16}}>
-                    {step.body_text}
-                  </pre>
+                {step.title && (
+                  <h2 style={{ margin: "0 0 8px", color: "#5a3000" }}>
+                    {step.title}
+                  </h2>
+                )}
+                {step.body_text && (
+                  <div className="quiz-narrative">{step.body_text}</div>
                 )}
 
-                {/* Prompt */}
-                <h1 className="question">{`Step ${step.step_number}`}</h1>
-                <p>{step.prompt_text}</p>
+                <h1 className="question">{step.prompt_text}</h1>
 
                 <ol>
                   {choices.map((c, idx) => (
                     <li className="answer" key={`${step.step_id}-${idx}`}>
-                      <button onClick={()=> submitAnswer(idx)} disabled={submitting || popupOpen}>
+                      <button
+                        onClick={() => submitAnswer(idx)}
+                        disabled={submitting || popupOpen}
+                      >
                         {c}
                       </button>
                     </li>
@@ -258,34 +335,73 @@ export const SimLevel3Page: React.FC = () => {
             )}
 
             {!loading && !errorMsg && !step && (
-              <div>
-                <h1 className="sim-coming-soon-title">Level 3 Complete 🎉</h1>
+              <div style={{ textAlign: "center" }}>
+                <h1 className="question">Level 3 Complete!</h1>
 
                 {scorePercent !== null ? (
                   <>
-                    <p className="sim-coming-soon-message">Score: {scorePercent}%</p>
+                    <p
+                      style={{
+                        fontSize: 36,
+                        fontWeight: 700,
+                        color: "#e3a538",
+                        margin: "0 0 8px",
+                      }}
+                    >
+                      Score: {scorePercent}%
+                    </p>
                     {scoreBreakdown && (
-                      <p className="sim-coming-soon-message">
-                        ({scoreBreakdown.correct} / {scoreBreakdown.total} correct)
+                      <p
+                        style={{
+                          fontSize: 20,
+                          color: "#7e410f",
+                          margin: "0 0 24px",
+                        }}
+                      >
+                        ({scoreBreakdown.correct} / {scoreBreakdown.total}{" "}
+                        correct)
                       </p>
                     )}
-                    <button className="close-button" onClick={()=> startOrResumeLevel3(true)}>
+                    <button
+                      className="close-button"
+                      onClick={() => startOrResumeLevel3(true)}
+                    >
                       Retake Level 3
                     </button>
                   </>
-                ):(
-                  <p className="sim-coming-soon-message"> Your progress has been saved.</p>
+                ) : (
+                  <p style={{ fontSize: 20, color: "#7e410f" }}>
+                    Your progress has been saved.
+                  </p>
                 )}
 
-                <button className="close-button" onClick={handleExit}>
-                  Return to curriculum
+                <button
+                  className="close-button"
+                  onClick={handleExit}
+                  style={{ marginLeft: 12 }}
+                >
+                  Return to Curriculum
                 </button>
-                </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========== Duck chatbot toggle ========== */}
+        <button
+          className="duck-chat-toggle"
+          onClick={() => setShowChatbot(!showChatbot)}
+          aria-label="Toggle help chat"
+        >
+          <img src={duckIcon} alt="Help" className="duck-chat-icon" />
+        </button>
+
+        {showChatbot && (
+          <div className="chatbot-float">
+            <ChatbotComponent />
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
