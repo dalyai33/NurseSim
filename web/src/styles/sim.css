@@ -126,6 +126,7 @@
   padding: 4px 8px;
   border-radius: 999px;
   transition: background 0.15s ease;
+  text-align: left;
 }
 
 .answer button:hover {
