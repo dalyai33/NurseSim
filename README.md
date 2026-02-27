@@ -158,7 +158,9 @@ chmod 644 ~/.ssh/id_ed25519.pub
 ---
 
 ## Contributors
-https://github.com/dalyai33/NurseSim/graphs/contributors
+<a href="https://github.com/dalyai33/NurseSim/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=dalyai33/NurseSim" />
+</a>
 
 
 ## Contact
