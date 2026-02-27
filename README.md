@@ -219,4 +219,8 @@ Host github.com
 
 ## Contact
 
-- Nadir — [GitHub](https://github.com/nisweesi) • [isweesin@oregonstate.edu](mailto:isweesin@oregonstate.edu)
+- Nadir - [GitHub](https://github.com/nisweesi) • [isweesin@oregonstate.edu](mailto:isweesin@oregonstate.edu)
+- Aidan - [GitHub](https://github.com/) •
+- Kiana - [GitHub](https://github.com/) •
+- Francisco - [GitHub](https://github.com/) •
+- Ian - [GitHub](https://github.com/) •
