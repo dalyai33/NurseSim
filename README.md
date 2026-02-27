@@ -77,9 +77,11 @@ npm run dev
 * Create your Classroom!
 
 ## 5. Set Up the Database
-### 5.1 Install pgAdmin
+Make sure to install PgAdmin
 
-### 5.2 Create a New Server
+### 5.1.1 Open **pgAdmin**
+
+### 5.1.2 Create a New Server
 
 Right Click on the Servers Icon on the Left Bar
 Register -> Server
@@ -91,7 +93,7 @@ Hostname: localhost
 Port: 5432
 ```
 
-### 5.3 Create a Database 
+### 5.1.3 Create a Database 
 Right Click on the Servers Icon on the Left Bar
 Create -> Database
 
@@ -100,7 +102,7 @@ Database: nursesim
 Locale Provider: icu (or libc)
 ```
 
-### 5.5 Define the Environmental Variables in the web directory
+### 5.1.4 Define the Environmental Variables in the web directory
 Creata a ,env file in the directory of the backend
 copy and paste the following:
 ```
@@ -111,8 +113,32 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-### 5.4 Restore the SQL Schema
-** More instructions will follow **
+### 5.1.5 Restore the SQL Schema
+```
+docs/db/schema.dump
+```
+
+### 5.2.1 Open **pgAdmin**.
+### 5.2.2 Connect to your local PostgreSQL server.
+### 5.2.3 Right-click **Databases** → **Create** → **Database**.
+### 5.2.4 Enter the following name:
+```
+nursesim
+```
+
+### 5.2.5 Click **Save**.
+### 5.2.6 Select the newly created `nursesim` database.
+### 5.2.7 Click **Tools** → **Query Tool**.
+### 5.2.8 Click the **Open File** icon (📂).
+### 5.2.9 Select:
+```
+docs/db/schema.sql
+```
+
+### 5.2.10 Click **Execute **.
+
+The database schema will now be created successfully.
+
 
 
 
