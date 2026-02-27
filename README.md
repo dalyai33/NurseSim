@@ -114,7 +114,7 @@ Locale Provider: icu (or libc)
 * Contact with the emails at the bottom of this page
 
 
-## 7. Common Issues
+## 7. Common GitHub Issues
 
 **Permission denied (publickey)**
 Your SSH key isn’t being used or isn’t recognized. Try:
@@ -144,6 +144,35 @@ Host github.com
 ```
 
 ---
+
+## Frequently Asked Questions
+
+<details>
+  <summary><strong>Is NurseSim+ an Open Source Project?</strong></summary>
+  <br>
+  Yes! NurseSim+ is an Open Source learning tool. However, it's strictly prohibited to use for commerical use.
+  See the full terms in the <a href="LICENSE">LICENSE</a>.
+  
+</details>
+
+<details>
+  <summary><strong>Does NurseSim+ require VR hardware?</strong></summary>
+  <br>
+  No. The platform is fully web-based and runs in a standard browser.
+</details>
+
+<details>
+  <summary><strong>Who can use this platform?</strong></summary>
+  <br>
+  Nursing students and instructors for educational purposes. However, NurseSim+ does not replace accredited clinical training or licensing requirements.
+</details>
+
+<details>
+  <summary><strong>Is commercial use allowed?</strong></summary>
+  <br>
+  No. The software is licensed for non-commercial use only.
+  See the full terms in the <a href="LICENSE">LICENSE</a>.
+</details>
 
 
 ## Contributors
