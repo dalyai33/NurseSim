@@ -157,6 +157,9 @@ chmod 644 ~/.ssh/id_ed25519.pub
 
 ---
 
+## Contributors
+https://github.com/dalyai33/NurseSim/graphs/contributors
+
 
 ## Contact
 martinfr@oregonstate.edu
