@@ -37,7 +37,6 @@ Database:
 - PostgreSQL
 
 Other:
-- Gemini API
 - Node.js
 
 ## Screenshots
@@ -222,9 +221,9 @@ Host github.com
 ## Frequently Asked Questions
 
 <details>
-  <summary><strong>Is NurseSim+ an Open Source Project?</strong></summary>
+  <summary><strong>Is NurseSim+ an open-source Project?</strong></summary>
   <br>
-  Yes! NurseSim+ is an Open Source learning tool. However, it's strictly prohibited to use for commerical use.
+  Yes! NurseSim+ is an open-source learning tool. However, it's strictly prohibited to use for commerical use.
   See the full terms in the <a href="LICENSE">LICENSE</a>.
   
 </details>
@@ -242,9 +241,9 @@ Host github.com
 </details>
 
 <details>
-  <summary><strong>Is commercial use allowed?</strong></summary>
+  <summary><strong>Is commericial use allowed?</strong></summary>
   <br>
-  No. The software is licensed for non-commercial use only.
+  No. The software is licensed for non-commericial use only.
   See the full terms in the <a href="LICENSE">LICENSE</a>.
 </details>
 
