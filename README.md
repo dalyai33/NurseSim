@@ -217,8 +217,6 @@ Host github.com
 
 ## Contact
 
-- Martinez F. — martinfr@oregonstate.edu  
-- Daly A. — dalyai@oregonstate.edu  
-- Hale I. — halei@oregonstate.edu  
-- Shim K. — shimk@oregonstate.edu  
-- Isweesi N. — isweesin@oregonstate.edu  
+## Contact
+
+- Nadir — [GitHub](https://github.com/nisweesi) • [isweesin@oregonstate.edu](mailto:isweesin@oregonstate.edu)
