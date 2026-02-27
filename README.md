@@ -63,7 +63,7 @@ cd NurseSim
 ```
 
 ### 1.2 create a virtual environment
-```bash
+```python
 python -m venv nursesim
 source nursesim/bin/activate # macOs or Linux
 nursesim/Scripts\activate # Windows
@@ -72,7 +72,7 @@ nursesim/Scripts\activate # Windows
 
 ### 1.3 paste the following after that
 
-```bash
+```python
 pip install -r requirements.txt
 ```
 
@@ -88,7 +88,7 @@ source ~/.bashrc # if bash terminal
 ```
 
 ### 2.2 run the server (default port: 5000)
-```bash
+```python
 python web/backend/app.py
 ```
 
@@ -123,7 +123,7 @@ Ensure PostgreSQL and pgAdmin are installed
 Right Click on the Servers Icon on the Left Bar
 Register -> Server
 
-```
+```env
 Name: nursesim
 username: any (e.g. postgres)
 Hostname: localhost
@@ -151,7 +151,7 @@ DB_PORT=5432
 ```
 
 5. Restore the SQL Schema
-```bash
+```python
 docs/db/schema.dump
 ```
 
