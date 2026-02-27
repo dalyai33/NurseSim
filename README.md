@@ -101,10 +101,18 @@ Locale Provider: icu (or libc)
 ```
 
 ### 5.5 Define the Environmental Variables in the web directory
-** Coming Soon **
+Creata a ,env file in the directory of the backend
+copy and paste the following:
+```
+DB_NAME=nursesim
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+```
 
 ### 5.4 Restore the SQL Schema
-** Coming Soon **
+** More instructions will follow **
 
 
 
