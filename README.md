@@ -5,21 +5,15 @@ NurseSim+ is a web-based clinical simulation platform designed to expand access 
 
 
 ## Screenshots
-### Landing Page
-![Landing Page](docs/images/land_page.png)
+<p align="center">
+  <img src="docs/images/land_page.png" width="45%" />
+  <img src="docs/images/login_page.png" width="45%" />
+</p>
 
-### Login Page
-![Login Page](docs/images/login_page.png)
-
-### Student View
-![Student View](docs/images/student_view.png)
-
-### Teacher View
-![Teacher View](docs/images/teacher_view.png)
-
-### Classroom Management
-![Classroom](docs/images/classroom.png)
-
+<p align="center">
+  <img src="docs/images/student_view.png" width="45%" />
+  <img src="docs/images/teacher_view.png" width="45%" />
+</p>
 ---
 
 ## 1. How to install the software
