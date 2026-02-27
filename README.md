@@ -135,7 +135,7 @@ nursesim
 docs/db/schema.sql
 ```
 
-### 5.2.10 Click **Execute **.
+### 5.2.10 Click **Execute**.
 
 The database schema will now be created successfully.
 
