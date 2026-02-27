@@ -95,26 +95,26 @@ python web/backend/app.py
 
 ## 3. Run the Web Application
 
-### 3.1 run the package manager
+1. Navigate to the frontend directory:
 ```
 cd web
 npm run dev
 ```
 
-* Open your preferred web browser.
-* Go to the following URL
+2. Open your preferred web browser.
+3. Go to:
   ```
   http://localhost:5173/
   ```
   
-* Create an Account
-* Sign In
-* Create your Classroom!
+4. Create an Account
+5. Sign In
+6. Create your Classroom!
 
-## 5. Set Up the Database
+## 4. Set Up the Database
 Ensure PostgreSQL and pgAdmin are installed
 
-### 5.2 Option A (schema.dump)
+### 4.1 Option A (schema.dump)
 
 1. Open **pgAdmin**
 
@@ -155,7 +155,7 @@ DB_PORT=5432
 docs/db/schema.dump
 ```
 
-### 5.2 Option B (schema.sql)
+### 4.2 Option B (schema.sql)
 
 1. Open **pgAdmin**.
 2. Connect to your local PostgreSQL server.
@@ -175,13 +175,13 @@ The database schema will now be created successfully.
 
 
 
-## 6. Support & Questions
+## 5. Support & Questions
 
 * Open a GitHub Issue.
 * Contact the contributors below
 
 
-## 7. Common GitHub Issues
+## 6. Common GitHub Issues
 
 **Permission denied (publickey)**
 Your SSH key isn’t being used or isn’t recognized. Try:
