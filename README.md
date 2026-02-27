@@ -103,7 +103,7 @@ Locale Provider: icu (or libc)
 ```
 
 ### 5.1.4 Define the Environmental Variables in the web directory
-Creata a ,env file in the directory of the backend
+Creata a `.env` file in the directory of the backend
 copy and paste the following:
 ```
 DB_NAME=nursesim
