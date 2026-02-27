@@ -22,7 +22,11 @@ def get_connection():
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
 app.permanent_session_lifetime = timedelta(days=7)
-CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
+CORS(app,
+     resources={r"/api/*": {"origins": ["http://127.0.0.1:5173"]}},
+     supports_credentials=True,
+     allow_headers=["Content-Type"],
+     methods=["GET","POST","PUT","PATCH","DELETE","OPTIONS"])
 app.register_blueprint(sim_bp)
 app.register_blueprint(classes_bp)
 @app.route("/api/login", methods=["POST"])
@@ -99,9 +103,13 @@ def get_users():
     ]
     return jsonify(users)
 
-@app.route("/api/signup", methods=["POST"])
+
+@app.route("/api/signup", methods=["POST", "OPTIONS"])
 def signup():
-    data = request.get_json() or {}
+    if request.method == "OPTIONS":
+        return "", 204
+
+    data = request.get_json(silent=True) or {}
 
     first_name  = data.get("first_name")
     last_name   = data.get("last_name")

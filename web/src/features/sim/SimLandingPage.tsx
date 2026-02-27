@@ -20,7 +20,7 @@ export const SimLandingPage: React.FC = () => {
   useEffect(() => {
     async function loadProgress() {
       try {
-        const res = await fetch("http://localhost:5000/api/sim/progress", {
+        const res = await fetch("http://127.0.0.1:5000/api/sim/progress", {
           credentials: "include",
         });
 
