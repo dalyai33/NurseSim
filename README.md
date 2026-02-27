@@ -57,13 +57,13 @@ Other:
 
 ### 1.1 paste the following in the command line
 
-```
+```bash
 git clone git@github.com:dalyai33/NurseSim.git
 cd NurseSim
 ```
 
 ### 1.2 create a virtual environment
-```
+```bash
 python -m venv nursesim
 source nursesim/bin/activate # macOs or Linux
 nursesim/Scripts\activate # Windows
@@ -72,14 +72,14 @@ nursesim/Scripts\activate # Windows
 
 ### 1.3 paste the following after that
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ## 2. How to run the software
 
 ### 2.1 enter the API to your provider
-```
+```bash
 echo "export GEMINI_API_KEY=YOUR_GEMINI_KEY"  >> ~/.zshrc  # can be any of the following:
 ```
 ```
@@ -88,7 +88,7 @@ source ~/.bashrc # if bash terminal
 ```
 
 ### 2.2 run the server (default port: 5000)
-```
+```bash
 python web/backend/app.py
 ```
 
@@ -96,7 +96,7 @@ python web/backend/app.py
 ## 3. Run the Web Application
 
 1. Navigate to the frontend directory:
-```
+```bash
 cd web
 npm run dev
 ```
@@ -142,7 +142,7 @@ Locale Provider: icu (or libc)
 4. Define the Environment Variables in the web directory
 Create a `.env` file in the directory of the backend
 copy and paste the following:
-```
+```env
 DB_NAME=nursesim
 DB_USER=postgres
 DB_PASSWORD=postgres
@@ -151,7 +151,7 @@ DB_PORT=5432
 ```
 
 5. Restore the SQL Schema
-```
+```bash
 docs/db/schema.dump
 ```
 
@@ -201,7 +201,7 @@ You cloned using HTTPS instead of SSH. Switch the remote URL (see step 5).
 **Wrong key or path**
 If your key isn’t in the default location, specify it in `~/.ssh/config`:
 
-```
+```bash
 Host github.com
   HostName github.com
   User git
