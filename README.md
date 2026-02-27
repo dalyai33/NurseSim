@@ -216,9 +216,9 @@ Host github.com
 
 
 ## Contact
-martinfr@oregonstate.edu
-dalyai@oregonstate.edu
-halei@oregonstate.edu
-shimk@oregonstate.edu
-isweesin@oregonstate.edu
 
+- Martinez F. — martinfr@oregonstate.edu  
+- Daly A. — dalyai@oregonstate.edu  
+- Hale I. — halei@oregonstate.edu  
+- Shim K. — shimk@oregonstate.edu  
+- Isweesi N. — isweesin@oregonstate.edu  
