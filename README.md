@@ -1,112 +1,110 @@
 # NurseSim+
- An AI-Powered Clinical Simulation developed for Nursing Education.
+NurseSim+ is a web-based clinical simulation platform designed to expand access to flexible, interactive training for nursing students. It enables learners to practice clinical decision-making through structured, decision-based scenarios delivered entirely online.
 
- # Connect to Git with SSH (Secure Shell)
+  The platform primarily serves nursing students seeking to strengthen practical reasoning skills, while also supporting instructors with tools to assign simulations and monitor student progress. NurseSim+ does not rely on VR hardware or real patient interaction, ensuring broad accessibility through standard web browsers.
 
----
 
-## 1) Generate an SSH Key Pair
-
-**Linux / macOS**
-
-```bash
-mkdir -p ~/.ssh && chmod 700 ~/.ssh
-ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/id_ed25519
-```
-
-> Press Enter to accept defaults. The `-C` flag is just a comment (usually your email).
-
-**Windows (PowerShell)**
-
-```powershell
-mkdir \.ssh
-cd \.ssh
-ssh-keygen -t ed25519 -C "your_github_email@example.com" -f $env:USERPROFILE\.ssh\id_ed25519
-```
+## Screenshots
 
 ---
 
-## 2) Start the SSH Agent & Add Your Key
+## 1. How to install the software
 
-**Linux / macOS**
-
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-```
-
-**Windows (PowerShell)**
-
-```powershell
-Start-Service ssh-agent
-ssh-add $env:USERPROFILE\.ssh\id_ed25519
-```
-
----
-
-## 3) Add the Public Key to GitHub
-
-Copy your **public** key:
-
-```bash
-cat ~/.ssh/id_ed25519.pub
-```
-
-Then go to **GitHub** → **Settings** → **SSH and GPG keys** → **New SSH key** → Paste the key → **Add key**.
-
-If your organization uses **SSO**, click **Enable SSO** and authorize it for your org (e.g., `CS-374-F25`).
-
----
-
-## 4) Test the SSH Connection
-
-```bash
-ssh -T git@github.com
-```
-
-Expected output:
+### 1.1 paste the following in the command line
 
 ```
-Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+git clone git@github.com:dalyai33/NurseSim.git
+cd NurseSim
 ```
 
----
+### 1.2 create a virtual environment
+```
+python -m venv nursesim
+source nursesim/bin/activate # macOs or Linux
+nursesim/Scripts\activate # Windows
 
-## 5) Clone Your Repository with SSH
-
-Use the **SSH URL** (not HTTPS): **GitHub** → **<Code>(Green Code button)** → **SSH** → **Copy Link**
-
-```bash
-git clone <sshURL>
 ```
 
-If you already cloned with HTTPS, switch it:
+### 1.3 paste the following after that
 
-```bash
-git remote set-url origin <sshURL>
+```
+pip install -r requirements.txt
 ```
 
----
+## 2. How to run the software
 
-## 6) Basic Git Commands
-
-```bash
-# Stage all changes
-git add -A
-
-# Commit changes
-git commit -m "Your commit message"
-
-# Push changes to GitHub
-git push -u origin HEAD
-
-# Pull updates from GitHub
-git pull --rebase
+### 2.1 enter the API to your provider
+```
+echo 'export GEMINI_API_KEY='YOUR_GEMINI_KEY''  >> ~/.zshrc  # can be any of the following:
+```
+```
+source ~/.zshrc # if zsh terminal
+source ~/.bashrc # if bash terminal
 ```
 
----
+### 2.2 run the server (default port: 5000)
+```
+python web/backend/app.py
+```
 
-## 7) Common Issues
+
+## 3. Run the Web Application
+
+### 3.1 run the package manager
+```
+cd web
+npm run dev
+```
+
+* Open your preferred web browser.
+* Go to the following URL
+  ```
+  http://localhost:5173/
+  ```
+  
+* Create an Account
+* Sign In
+* Create your Classroom!
+
+## 5. Set Up the Database
+### 5.1 Install pgAdmin
+
+### 5.2 Create a New Server
+
+Right Click on the Servers Icon on the Left Bar
+Register -> Server
+
+```
+Name: nursesim
+username: any (e.g. postgres)
+Hostname: localhost
+Port: 5432
+```
+
+### 5.3 Create a Database 
+Right Click on the Servers Icon on the Left Bar
+Create -> Database
+
+```
+Database: nursesim
+Locale Provider: icu (or libc)
+```
+
+### 5.5 Define the Environmental Variables in the web directory
+** Coming Soon **
+
+### 5.4 Restore the SQL Schema
+** Coming Soon **
+
+
+
+## 6. Support & Questions
+
+* Open a GitHub Issue.
+* Contact with the emails at the bottom of this page
+
+
+## 7. Common Issues
 
 **Permission denied (publickey)**
 Your SSH key isn’t being used or isn’t recognized. Try:
