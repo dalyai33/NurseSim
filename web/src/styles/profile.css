@@ -23,8 +23,6 @@
   gap: 40px;
 }
 
-/* avatar section */
-
 .profile-avatar-wrapper {
   display: flex;
   flex-direction: column;
@@ -42,12 +40,6 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 18px 28px rgba(0, 0, 0, 0.35);
-}
-
-.profile-avatar-icon::before {
-  content: "👤";
-  font-size: 52px;
-  color: #ffffff;
 }
 
 .profile-edit-badge {
@@ -78,8 +70,6 @@
   font-size: 16px;
   opacity: 0.8;
 }
-
-/* settings card */
 
 .profile-settings-card {
   width: min(480px, 100%);

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
-import avatarIcon from "../../assets/GenericAvatar.png";
 import duckIcon from "../../assets/Duck.png";
 import "../../styles/sim.css";
 import ChatbotComponent from "../../components/Chatbot";
@@ -288,17 +287,6 @@ export const SimLevel2Page: React.FC = () => {
           className="back-arrow sim-back"
           onClick={() => navigate("/sim")}
         />
-
-        {/* ========== Top-right avatar card ========== */}
-        <div className="sim-toolbar">
-          <div className="sim-toolbar-card">
-            <img
-              src={avatarIcon}
-              alt="Profile"
-              className="classroom-icon-img"
-            />
-          </div>
-        </div>
 
         {/* ========== Bottom quiz card ========== */}
         {!showIntro && (

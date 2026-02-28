@@ -200,7 +200,7 @@
   color: #7e410f;
 }
 
-/* --- Correct / Success popup (matches Image 5) --- */
+/* --- Correct / Success popup--- */
 
 .success-box {
   max-width: 600px;
@@ -223,7 +223,7 @@
   color: #5a3a14;
 }
 
-/* --- Incorrect popup (matches Image 6) --- */
+/* --- Incorrect popup--- */
 
 .incorrect-box h2 {
   font-family: var(--font-body, system-ui, sans-serif);
