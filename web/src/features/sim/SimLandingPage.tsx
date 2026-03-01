@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
-import avatarIcon from "../../assets/GenericAvatar.png";
 import "../../styles/sim.css";
 
 export const SimLandingPage: React.FC = () => {
@@ -103,12 +102,6 @@ export const SimLandingPage: React.FC = () => {
     <div className="app-screen">
       <div className="app-screen-inner sim-root" style={{ backgroundImage: `url(${simBg})` }}>
         <button className="back-arrow sim-back" aria-label="Back" onClick={() => navigate("/landing")} />
-
-        <div className="sim-toolbar">
-          <div className="sim-toolbar-card">
-            <img src={avatarIcon} alt="Profile" className="classroom-icon-img" />
-          </div>
-        </div>
 
         <div className="sim-landing-container">
           <h1 className="sim-landing-title">NurseSim+ Curriculum</h1>

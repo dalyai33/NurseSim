@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
-import avatarIcon from "../../assets/GenericAvatar.png";
 import duckIcon from "../../assets/Duck.png";
 import "../../styles/sim.css";
 
@@ -106,21 +105,7 @@ export const SimIntroductionPage: React.FC = () => {
             )}
         
         <button className="back-arrow sim-back" aria-label="Back" onClick={() => navigate("/sim")} />
-        
-        <div className="sim-toolbar">
-          <div className="sim-toolbar-card">
-            <img
-                src={avatarIcon}
-                alt="Profile"
-                className="classroom-icon-img"
-            />
-            {/* <img
-                src={avatarIcon}
-                alt="Folder"
-                className="classroom-icon-img"
-            /> */}
-          </div>
-        </div>
+
         {!showIntroduction && !showSuccess && (
         <div className="quiz-popup">
 
