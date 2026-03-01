@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
-import avatarIcon from "../../assets/GenericAvatar.png";
 import duckIcon from "../../assets/Duck.png";
 import "../../styles/sim.css";
 import ChatbotComponent from "../../components/Chatbot";
@@ -126,7 +125,7 @@ export const SimLevel1Page: React.FC = () => {
     setPendingStep(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/sim/level1/start", {
+      const res = await fetch("http://127.0.0.1:5000/api/sim/level1/start", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -154,7 +153,7 @@ export const SimLevel1Page: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/sim/attempts/${attemptId}/answer`,
+        `http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`,
         {
           method: "POST",
           credentials: "include",
@@ -295,17 +294,6 @@ export const SimLevel1Page: React.FC = () => {
           className="back-arrow sim-back"
           onClick={() => navigate("/sim")}
         />
-
-        {/* ========== Top-right avatar card ========== */}
-        <div className="sim-toolbar">
-          <div className="sim-toolbar-card">
-            <img
-              src={avatarIcon}
-              alt="Profile"
-              className="classroom-icon-img"
-            />
-          </div>
-        </div>
 
         {/* ========== Bottom quiz card ========== */}
         {!showIntro && (

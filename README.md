@@ -1,112 +1,187 @@
 # NurseSim+
- An AI-Powered Clinical Simulation developed for Nursing Education.
+NurseSim+ is a web-based clinical simulation platform designed to expand access to flexible, interactive training for nursing students. It enables learners to practice clinical decision-making through structured, decision-based scenarios delivered entirely online.
 
- # Connect to Git with SSH (Secure Shell)
+The platform primarily serves nursing students seeking to strengthen practical reasoning skills, while also supporting instructors with tools to assign simulations and monitor student progress. NurseSim+ does not rely on VR hardware or real patient interaction, ensuring broad accessibility through standard web browsers.
 
----
 
-## 1) Generate an SSH Key Pair
+## Key Features
 
-**Linux / macOS**
+- Role-based dashboards (Student / Instructor)
+- Decision-tree clinical simulations
+- Gemini-powered dynamic scenario generation
+- Classroom assignment and progress tracking
+- Fully web-based (Easily Accessible to Students)
 
-```bash
-mkdir -p ~/.ssh && chmod 700 ~/.ssh
-ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/id_ed25519
-```
 
-> Press Enter to accept defaults. The `-C` flag is just a comment (usually your email).
+## Architecture Overview
 
-**Windows (PowerShell)**
+NurseSim+ follows a client-server architecture.
 
-```powershell
-mkdir \.ssh
-cd \.ssh
-ssh-keygen -t ed25519 -C "your_github_email@example.com" -f $env:USERPROFILE\.ssh\id_ed25519
-```
+- The React + TypeScript frontend communicates with a Flask REST API.
+- The backend handles authentication, classroom management, simulation logic, and Gemini-powered scenario generation.
+- Data persistence is managed through PostgreSQL using a relational schema for users, classrooms, simulations, and progress tracking.
 
----
+  
+## Tech Stack
 
-## 2) Start the SSH Agent & Add Your Key
+Frontend:
+- React
+- TypeScript
 
-**Linux / macOS**
+Backend:
+- Flask REST API
+- SQLAlchemy ORM
+- Gemini API integration
 
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-```
+Database:
+- PostgreSQL
 
-**Windows (PowerShell)**
+Other:
+- Node.js
 
-```powershell
-Start-Service ssh-agent
-ssh-add $env:USERPROFILE\.ssh\id_ed25519
-```
+## Screenshots
 
----
+<table>
+  <tr>
+    <td><img src="docs/images/land_page.png" width="400"/></td>
+    <td><img src="docs/images/login_page.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/student_view.png" width="400"/></td>
+    <td><img src="docs/images/teacher_view.png" width="400"/></td>
+  </tr>
+</table>
 
-## 3) Add the Public Key to GitHub
 
-Copy your **public** key:
+## 1. How to install the software
 
-```bash
-cat ~/.ssh/id_ed25519.pub
-```
-
-Then go to **GitHub** → **Settings** → **SSH and GPG keys** → **New SSH key** → Paste the key → **Add key**.
-
-If your organization uses **SSO**, click **Enable SSO** and authorize it for your org (e.g., `CS-374-F25`).
-
----
-
-## 4) Test the SSH Connection
+### 1.1 paste the following in the command line
 
 ```bash
-ssh -T git@github.com
+git clone git@github.com:dalyai33/NurseSim.git
+cd NurseSim
 ```
 
-Expected output:
+### 1.2 create a virtual environment
+```python
+python -m venv nursesim
+source nursesim/bin/activate # macOs or Linux
+nursesim/Scripts\activate # Windows
 
 ```
-Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+
+### 1.3 paste the following after that
+
+```python
+pip install -r requirements.txt
 ```
 
----
+## 2. How to run the software
 
-## 5) Clone Your Repository with SSH
-
-Use the **SSH URL** (not HTTPS): **GitHub** → **<Code>(Green Code button)** → **SSH** → **Copy Link**
-
+### 2.1 enter the API to your provider
 ```bash
-git clone <sshURL>
+echo "export GEMINI_API_KEY=YOUR_GEMINI_KEY"  >> ~/.zshrc  # can be any of the following:
+```
+```
+source ~/.zshrc # if zsh terminal
+source ~/.bashrc # if bash terminal
 ```
 
-If you already cloned with HTTPS, switch it:
+### 2.2 run the server (default port: 5000)
+```python
+python web/backend/app.py
+```
 
+
+## 3. Run the Web Application
+
+1. Navigate to the frontend directory:
 ```bash
-git remote set-url origin <sshURL>
+cd web
+npm run dev
 ```
 
----
+2. Open your preferred web browser.
+3. Go to:
+  ```
+  http://localhost:5173/
+  ```
+  
+4. Create an Account
+5. Sign In
+6. Create your Classroom!
 
-## 6) Basic Git Commands
+## 4. Set Up the Database
+Ensure PostgreSQL and pgAdmin are installed
 
-```bash
-# Stage all changes
-git add -A
+### 4.1 Option A (schema.dump)
 
-# Commit changes
-git commit -m "Your commit message"
+1. Open **pgAdmin**
 
-# Push changes to GitHub
-git push -u origin HEAD
+2. Create a New Server
 
-# Pull updates from GitHub
-git pull --rebase
+Right Click on the Servers Icon on the Left Bar
+Register -> Server
+
+```env
+Name: nursesim
+username: any (e.g. postgres)
+Hostname: localhost
+Port: 5432
 ```
 
----
+3. Create a Database 
+Right Click on the Servers Icon on the Left Bar
+Create -> Database
 
-## 7) Common Issues
+```
+Database: nursesim
+Locale Provider: icu (or libc)
+```
+
+4. Define the Environment Variables in the web directory
+Create a `.env` file in the directory of the backend
+copy and paste the following:
+```env
+DB_NAME=nursesim
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+5. Restore the SQL Schema
+```python
+docs/db/schema.dump
+```
+
+### 4.2 Option B (schema.sql)
+
+1. Open **pgAdmin**.
+2. Connect to your local PostgreSQL server.
+3. Right-click **Databases** → **Create** → **Database**.
+4. Name it:
+   - `nursesim`
+5. Click **Save**.
+6. Select the newly created `nursesim` database.
+7. Click **Tools** → **Query Tool**.
+8. Click the **Open File** icon (📂).
+9. Select:
+   - `docs/db/schema.sql`
+10. Click **Execute**.
+
+The database schema will now be created successfully.
+
+
+
+
+## 5. Support & Questions
+
+* Open a GitHub Issue.
+* Contact the contributors below
+
+
+## 6. Common GitHub Issues
 
 **Permission denied (publickey)**
 Your SSH key isn’t being used or isn’t recognized. Try:
@@ -126,7 +201,7 @@ You cloned using HTTPS instead of SSH. Switch the remote URL (see step 5).
 **Wrong key or path**
 If your key isn’t in the default location, specify it in `~/.ssh/config`:
 
-```
+```bash
 Host github.com
   HostName github.com
   User git
@@ -137,23 +212,46 @@ Host github.com
 
 ---
 
-## 8) Permissions
+## Frequently Asked Questions
 
-SSH is strict about file permissions:
+<details>
+  <summary><strong>Is NurseSim+ an open-source Project?</strong></summary>
+  <br>
+  Yes! NurseSim+ is an open-source learning tool. However, it's strictly prohibited to use for commerical use.
+  See the full terms in the <a href="LICENSE">LICENSE</a>.
+  
+</details>
 
-```bash
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/id_ed25519
-chmod 644 ~/.ssh/id_ed25519.pub
-```
+<details>
+  <summary><strong>Does NurseSim+ require VR hardware?</strong></summary>
+  <br>
+  No. The platform is fully web-based and runs in a standard browser.
+</details>
 
----
+<details>
+  <summary><strong>Who can use this platform?</strong></summary>
+  <br>
+  Nursing students and instructors for educational purposes. However, NurseSim+ does not replace accredited clinical training or licensing requirements.
+</details>
+
+<details>
+  <summary><strong>Is commericial use allowed?</strong></summary>
+  <br>
+  No. The software is licensed for non-commericial use only.
+  See the full terms in the <a href="LICENSE">LICENSE</a>.
+</details>
+
+
+## Contributors
+<a href="https://github.com/dalyai33/NurseSim/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=dalyai33/NurseSim" />
+</a>
 
 
 ## Contact
-martinfr@oregonstate.edu
-dalyai@oregonstate.edu
-halei@oregonstate.edu
-shimk@oregonstate.edu
-isweesin@oregonstate.edu
 
+- Nadir - [GitHub](https://github.com/nisweesi) • [isweesin@oregonstate.edu](mailto:isweesin@oregonstate.edu)
+- Aidan - [GitHub](https://github.com/) •
+- Kiana - [GitHub](https://github.com/) •
+- Francisco - [GitHub](https://github.com/) •
+- Ian - [GitHub](https://github.com/) •
