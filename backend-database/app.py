@@ -23,7 +23,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
 app.permanent_session_lifetime = timedelta(days=7)
 CORS(app,
-     resources={r"/api/*": {"origins": ["http://127.0.0.1:5173"]}},
+     resources={r"/api/*": {"origins": ["http://localhost:5173"]}},
      supports_credentials=True,
      allow_headers=["Content-Type"],
      methods=["GET","POST","PUT","PATCH","DELETE","OPTIONS"])
