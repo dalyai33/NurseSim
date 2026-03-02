@@ -121,8 +121,8 @@ export const SimLevel2Page: React.FC = () => {
     setScoreBreakdown(null);
     setPendingStep(null);
 
-    try {
-      const res = await fetch("http://localhost:5000/api/sim/level2/start", {
+    try{
+      const res = await fetch("http://127.0.0.1:5000/api/sim/level2/start",{
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -149,20 +149,17 @@ export const SimLevel2Page: React.FC = () => {
     setSubmitting(true);
     setErrorMsg(null);
 
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/sim/attempts/${attemptId}/answer`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            step_id: step.step_id,
-            selected_index: selectedIndex,
-          }),
-        }
-      );
-      if (!res.ok) throw new Error(`Answer failed (${res.status})`);
+    try{
+      const res = await fetch(`http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`, {
+        method: "POST",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          step_id: step.step_id,
+          selected_index: selectedIndex
+      }),
+    });
+      if(!res.ok) throw new Error(`Answer failed (${res.status})`);
 
       const data: AnswerResponse = await res.json();
 
