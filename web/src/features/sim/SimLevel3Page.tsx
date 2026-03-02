@@ -121,8 +121,8 @@ export const SimLevel3Page: React.FC = () => {
     setScoreBreakdown(null);
     setPendingStep(null);
 
-    try{
-      const res = await fetch("http://127.0.0.1:5000/api/sim/level3/start",{
+    try {
+      const res = await fetch("http://localhost:5000/api/sim/level3/start", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

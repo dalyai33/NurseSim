@@ -38,7 +38,7 @@
   bottom: 124px;
   right: 20px;
   width: 340px;
-  max-height: 450px;
+  height: 350px;
   background: linear-gradient(170deg, #fdf6ec 0%, #fce8cc 50%, #f8d9a8 100%);
   border-radius: 20px;
   box-shadow:
@@ -68,6 +68,8 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
 }
 
 .message {
@@ -99,6 +101,7 @@
   padding: 12px 14px;
   border-top: 1px solid #f0dfc4;
   background: linear-gradient(180deg, #fdf6ec, #f8e8d0);
+  margin-top: auto;           /* pushes input to bottom */
 }
 
 .chatbot-input-area input {
