@@ -95,7 +95,7 @@ describe("SignUpPage", () => {
   // Wait for async effects
   await screen.findByText(/Sign Up/i); // Wait for component re-render (optional)
   
-  expect(mockedNavigate).toHaveBeenCalledWith("/landing");
+  expect(mockedNavigate).toHaveBeenCalledWith("/");
 });
 
 it("shows server error when fetch fails", async () => {
