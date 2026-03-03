@@ -62,7 +62,6 @@ Nursesim
 │   ├── db
 │   ├── images
 │   └── images
-├── infra
 └── web
     ├── backend
     ├── coverage
