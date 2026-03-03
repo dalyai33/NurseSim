@@ -76,7 +76,7 @@ export default function SignUpPage() {
         return;
       }
 
-      navigate("/landing");
+      navigate("/");
     } catch (err) {
       console.error("Signup error:", err);
       setErrors((prev) => ({
