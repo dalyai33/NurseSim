@@ -26,19 +26,19 @@ NurseSim+ follows a client-server architecture.
 
 <table>
   <tr>
-    Frontend
+    <td><strong>Frontend</strong></td>
     <td>Reach, Typescript</td>
   </tr>
   <tr>
-    Backend
+    <td><strong>Backend</strong></td>
     <td>Flask REST API, SQLAlchemy ORM, Gemini API integration</td>
   </tr>
   <tr>
-    Database
+    <td><strong>Database</strong></td>
     <td>Postgresql</td>
   </tr>
   <tr>
-    Other
+    <td><strong>Other</strong></td>
     <td>Node.js</td>
   </tr>
 </table>
