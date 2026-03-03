@@ -46,22 +46,14 @@ Nursesim
 ├── backend # chatbot and database will be merge in here soon
 │   └── install.sh
 ├── backend-chatbot
-│   ├── __init__.py
 │   ├── app.py
-│   ├── chatbot.py
 │   ├── config.py
-│   ├── extension.py
-│   ├── gemini.py
 │   ├── models
-│   ├── requirements.txt
 │   ├── resources
 │   ├── schemas
 │   └── wsgi.py
 ├── backend-database
-│   ├── add_curriculum_level.py
 │   ├── app.py
-│   ├── classes.py
-│   └── simulation.py
 ├── docker
 │   ├── Dockerfile
 ├── Dockerfile
@@ -71,13 +63,10 @@ Nursesim
 │   ├── images
 │   └── images
 ├── infra
-├── LICENSE
-├── README.md
 └── web
     ├── backend
     ├── coverage
     ├── public
-    ├── README.md
     └── src
 
 ```
