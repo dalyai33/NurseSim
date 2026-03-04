@@ -1,89 +1,76 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
 import "../../styles/sim.css";
 import "../../styles/classroom.css";
-
-const CLASSROOMS_STORAGE_KEY = "nursesim_classrooms";
-
-// Initial default classroom
-const DEFAULT_CLASSROOMS = [
-  { id: "1", name: "Kirsten's Class" },
-];
+import { useClasses } from "../../hooks/useClasses";
+import { createClass } from "../../api/classes";
+import type { Class } from "../../api/classes";
 
 export const TeacherViewLandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { classes: classrooms, loading, error, refetch } = useClasses();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [classroomName, setClassroomName] = useState("");
-  const [classrooms, setClassrooms] = useState(DEFAULT_CLASSROOMS);
-
-  // Load classrooms from localStorage on mount
-  useEffect(() => {
-    const savedClassrooms = localStorage.getItem(CLASSROOMS_STORAGE_KEY);
-    if (savedClassrooms) {
-      try {
-        const parsed = JSON.parse(savedClassrooms);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setClassrooms(parsed);
-        } else {
-          // If saved data is invalid, initialize with defaults
-          localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-        }
-      } catch (error) {
-        console.error("Error loading classrooms from localStorage:", error);
-        // Initialize with defaults on error
-        localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-      }
-    } else {
-      // First time - initialize localStorage with default classroom
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-    }
-  }, []);
+  const [curriculumLevel, setCurriculumLevel] = useState(1);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  /** After create, show this class's join code before closing. */
+  const [createdClass, setCreatedClass] = useState<Class | null>(null);
 
   function handleCreateClassroom() {
     setShowCreateModal(true);
+    setCreateError(null);
+    setCreatedClass(null);
   }
 
   function handleCloseModal() {
     setShowCreateModal(false);
     setClassroomName("");
+    setCurriculumLevel(1);
+    setCreateError(null);
+    setCreatedClass(null);
   }
 
-  function handleSubmitClassroom(e: React.FormEvent) {
+  async function handleSubmitClassroom(e: React.FormEvent) {
     e.preventDefault();
-    if (classroomName.trim()) {
-      // Create new classroom
-      const newClassroom = {
-        id: Date.now().toString(),
+    if (!classroomName.trim()) return;
+    setCreateLoading(true);
+    setCreateError(null);
+    try {
+      const res = await createClass({
         name: classroomName.trim(),
-      };
-      const updatedClassrooms = [...classrooms, newClassroom];
-      setClassrooms(updatedClassrooms);
-      
-      // Save to localStorage
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(updatedClassrooms));
-      
-      handleCloseModal();
-      // Navigate to permissions page for the new classroom
-      navigate(`/classroom/permissions?name=${encodeURIComponent(newClassroom.name)}`);
+        curriculum_level: curriculumLevel,
+      });
+      if (res.ok && res.class) {
+        setCreatedClass(res.class);
+      } else {
+        setCreateError((res as { error?: string }).error ?? "Could not create class.");
+      }
+    } catch {
+      setCreateError("Could not reach the server.");
+    } finally {
+      setCreateLoading(false);
     }
   }
 
-  function handleClassroomClick(classroomName: string) {
-    navigate(`/classroom/permissions?name=${encodeURIComponent(classroomName)}`);
+  function handleDoneWithJoinCode() {
+    refetch();
+    handleCloseModal();
+    if (createdClass) {
+      navigate(`/classroom/permissions?name=${encodeURIComponent(createdClass.name)}`);
+    }
+    setCreatedClass(null);
   }
 
-  function handleDeleteClassroom(e: React.MouseEvent, classroomId: string) {
-    e.stopPropagation(); // Prevent card click from firing
-    
-    if (window.confirm("Are you sure you want to delete this classroom?")) {
-      const updatedClassrooms = classrooms.filter((c) => c.id !== classroomId);
-      setClassrooms(updatedClassrooms);
-      
-      // Update localStorage
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(updatedClassrooms));
-    }
+  function copyJoinCode() {
+    if (!createdClass?.join_code) return;
+    navigator.clipboard.writeText(createdClass.join_code);
+  }
+
+  function handleClassroomClick(c: Class) {
+    navigate(`/classroom/permissions?name=${encodeURIComponent(c.name)}`);
   }
 
   return (
@@ -111,99 +98,114 @@ export const TeacherViewLandingPage: React.FC = () => {
         <div className="sim-landing-container">
           <h1 className="sim-landing-title">Teacher View</h1>
 
-          <div className="sim-level-selection">
-            {/* Plus button to create new classroom */}
-            <button
-              className="sim-level-button primary create-classroom-button"
-              onClick={handleCreateClassroom}
-            >
-              <div className="sim-level-header">
-                <h2>+ New Classroom</h2>
-              </div>
-              <p>Create a new classroom</p>
-            </button>
-
-            {/* Existing classrooms */}
-            {classrooms.map((classroom) => (
+          {error && <p className="error" style={{ marginBottom: "1rem" }}>{error}</p>}
+          {loading ? (
+            <p>Loading classes…</p>
+          ) : (
+            <div className="sim-level-selection">
               <button
-                key={classroom.id}
-                className="sim-level-button available classroom-card"
-                onClick={() => handleClassroomClick(classroom.name)}
-                style={{ position: "relative" }}
+                className="sim-level-button primary create-classroom-button"
+                onClick={handleCreateClassroom}
               >
-                <button
-                  className="classroom-delete-button"
-                  onClick={(e) => handleDeleteClassroom(e, classroom.id)}
-                  aria-label="Delete classroom"
-                  title="Delete classroom"
-                >
-                  <span className="delete-x">×</span>
-                </button>
                 <div className="sim-level-header">
-                  <h2>{classroom.name}</h2>
+                  <h2>+ New Classroom</h2>
                 </div>
-                <p>View classroom details</p>
+                <p>Create a new classroom</p>
               </button>
-            ))}
-          </div>
+
+              {classrooms.map((c) => (
+                <button
+                  key={c.id}
+                  className="sim-level-button available classroom-card"
+                  onClick={() => handleClassroomClick(c)}
+                >
+                  <div className="sim-level-header">
+                    <h2>{c.name}</h2>
+                  </div>
+                  <p>Level {c.curriculum_level} · View classroom details</p>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Create Classroom Modal */}
         {showCreateModal && (
-          <div className="popup-overlay" onClick={handleCloseModal}>
+          <div className="popup-overlay" onClick={createdClass ? undefined : handleCloseModal}>
             <div
               className="popup-box introduction-box"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2>Create New Classroom</h2>
-              <form onSubmit={handleSubmitClassroom}>
-                <div style={{ marginBottom: "20px" }}>
-                  <label
-                    htmlFor="classroom-name"
-                    style={{
-                      display: "block",
-                      marginBottom: "8px",
-                      fontSize: "16px",
-                      color: "#333",
-                    }}
-                  >
-                    Classroom Name:
-                  </label>
-                  <input
-                    id="classroom-name"
-                    type="text"
-                    value={classroomName}
-                    onChange={(e) => setClassroomName(e.target.value)}
-                    placeholder="Enter classroom name"
-                    className="classroom-input"
-                    autoFocus
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "12px",
-                    justifyContent: "center",
-                  }}
-                >
+              {createdClass ? (
+                <>
+                  <h2>Class created</h2>
+                  <p style={{ marginBottom: "8px" }}>Share this code with students to join:</p>
+                  <p style={{ fontSize: "1.5rem", fontWeight: "bold", letterSpacing: "0.1em", marginBottom: "12px" }}>
+                    {createdClass.join_code}
+                  </p>
                   <button
                     type="button"
                     className="close-button"
-                    onClick={handleCloseModal}
-                    style={{ marginTop: "0" }}
+                    onClick={copyJoinCode}
+                    style={{ marginBottom: "12px" }}
                   >
-                    Cancel
+                    Copy code
                   </button>
                   <button
-                    type="submit"
+                    type="button"
                     className="close-button"
+                    onClick={handleDoneWithJoinCode}
                     style={{ marginTop: "0" }}
-                    disabled={!classroomName.trim()}
                   >
-                    Create
+                    Done
                   </button>
-                </div>
-              </form>
+                </>
+              ) : (
+                <>
+                  <h2>Create New Classroom</h2>
+                  {createError && <p className="error" style={{ marginBottom: "12px" }}>{createError}</p>}
+                  <form onSubmit={handleSubmitClassroom}>
+                    <div style={{ marginBottom: "16px" }}>
+                      <label htmlFor="classroom-name" style={{ display: "block", marginBottom: "8px", fontSize: "16px", color: "#333" }}>
+                        Classroom name
+                      </label>
+                      <input
+                        id="classroom-name"
+                        type="text"
+                        value={classroomName}
+                        onChange={(e) => setClassroomName(e.target.value)}
+                        placeholder="Enter classroom name"
+                        className="classroom-input"
+                        autoFocus
+                      />
+                    </div>
+                    <div style={{ marginBottom: "20px" }}>
+                      <label htmlFor="curriculum-level" style={{ display: "block", marginBottom: "8px", fontSize: "16px", color: "#333" }}>
+                        Curriculum level
+                      </label>
+                      <select
+                        id="curriculum-level"
+                        value={curriculumLevel}
+                        onChange={(e) => setCurriculumLevel(Number(e.target.value))}
+                        className="classroom-input"
+                        style={{ width: "100%", padding: "8px" }}
+                      >
+                        <option value={1}>Level 1</option>
+                        <option value={2}>Level 2</option>
+                        <option value={3}>Level 3</option>
+                      </select>
+                    </div>
+                    <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                      <button type="button" className="close-button" onClick={handleCloseModal} style={{ marginTop: "0" }}>
+                        Cancel
+                      </button>
+                      <button type="submit" className="close-button" style={{ marginTop: "0" }} disabled={!classroomName.trim() || createLoading}>
+                        {createLoading ? "Creating…" : "Create"}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
             </div>
           </div>
         )}
