@@ -76,7 +76,9 @@ export default function SignUpPage() {
         return;
       }
 
-      navigate("/landing");
+      navigate("/login", {
+        state: { message: "Account created successfully! Please log in." },
+      });
     } catch (err) {
       console.error("Signup error:", err);
       setErrors((prev) => ({
