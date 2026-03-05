@@ -21,7 +21,7 @@ export const ProtectedRoute: React.FC<Props> = ({ children }) => {
         const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
         const data = res.ok ? await res.json().catch(() => ({})) : {};
         if (cancelled) return;
-        if (res.ok && data.ok && data.user_id != null) {
+        if (res.ok && data.ok && (data.user_id != null || (data.user && data.user.id != null))) {
           setStatus("authenticated");
         } else {
           setStatus("unauthenticated");
