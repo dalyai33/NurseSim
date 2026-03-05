@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMyClass } from "../../hooks/useClasses";
 import { useMe } from "../../hooks/useMe";
@@ -18,7 +18,10 @@ export const SimLevelGuard: React.FC<Props> = ({ level, children }) => {
   const { class: myClass, loading: classLoading } = useMyClass();
   const loading = meLoading || classLoading;
   const isTeacher = Boolean(me?.teacher);
-  const allowedLevels = isTeacher ? [1, 2, 3] : (myClass?.curriculum_levels ?? []);
+  const allowedLevels = useMemo(
+    () => (isTeacher ? [1, 2, 3] : (myClass?.curriculum_levels ?? [])),
+    [isTeacher, myClass]
+  );
 
   useEffect(() => {
     if (loading) return;

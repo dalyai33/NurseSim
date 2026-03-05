@@ -19,13 +19,6 @@ export const ClassroomStudentsPage: React.FC = () => {
   const [loading, setLoading] = useState(!!classId);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchClass = useCallback(() => {
-    if (!classId || isNaN(classId)) return Promise.resolve();
-    return getClass(classId).then((res) => {
-      if (res.ok && res.class) setClassData(res.class);
-    });
-  }, [classId]);
-
   const fetchStudents = useCallback(() => {
     if (!classId || isNaN(classId)) return Promise.resolve();
     return getClassStudents(classId).then((res) => {
