@@ -1,89 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
+import { useClasses } from "../../hooks/useClasses";
+import { createClass } from "../../api/classes";
+import type { Class } from "../../api/classes";
 import "../../styles/sim.css";
 import "../../styles/classroom.css";
 
-const CLASSROOMS_STORAGE_KEY = "nursesim_classrooms";
-
-// Initial default classroom
-const DEFAULT_CLASSROOMS = [
-  { id: "1", name: "Kirsten's Class" },
-];
-
 export const TeacherViewLandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { classes: classrooms, loading: classesLoading, refetch } = useClasses();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [classroomName, setClassroomName] = useState("");
-  const [classrooms, setClassrooms] = useState(DEFAULT_CLASSROOMS);
+  const [curriculumLevels, setCurriculumLevels] = useState<number[]>([1]);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createdClass, setCreatedClass] = useState<Class | null>(null);
 
-  // Load classrooms from localStorage on mount
-  useEffect(() => {
-    const savedClassrooms = localStorage.getItem(CLASSROOMS_STORAGE_KEY);
-    if (savedClassrooms) {
-      try {
-        const parsed = JSON.parse(savedClassrooms);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setClassrooms(parsed);
-        } else {
-          // If saved data is invalid, initialize with defaults
-          localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-        }
-      } catch (error) {
-        console.error("Error loading classrooms from localStorage:", error);
-        // Initialize with defaults on error
-        localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-      }
-    } else {
-      // First time - initialize localStorage with default classroom
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(DEFAULT_CLASSROOMS));
-    }
-  }, []);
+  function toggleLevel(level: number) {
+    setCurriculumLevels((prev) =>
+      prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level].sort((a, b) => a - b)
+    );
+  }
 
   function handleCreateClassroom() {
     setShowCreateModal(true);
+    setCreatedClass(null);
+    setCreateError(null);
   }
 
   function handleCloseModal() {
     setShowCreateModal(false);
     setClassroomName("");
+    setCurriculumLevels([1]);
+    setCreateError(null);
+    setCreatedClass(null);
   }
 
-  function handleSubmitClassroom(e: React.FormEvent) {
+  async function handleSubmitClassroom(e: React.FormEvent) {
     e.preventDefault();
-    if (classroomName.trim()) {
-      // Create new classroom
-      const newClassroom = {
-        id: Date.now().toString(),
+    if (!classroomName.trim()) return;
+    if (curriculumLevels.length === 0) return;
+    setCreateLoading(true);
+    setCreateError(null);
+    try {
+      const res = await createClass({
         name: classroomName.trim(),
-      };
-      const updatedClassrooms = [...classrooms, newClassroom];
-      setClassrooms(updatedClassrooms);
-      
-      // Save to localStorage
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(updatedClassrooms));
-      
-      handleCloseModal();
-      // Navigate to permissions page for the new classroom
-      navigate(`/classroom/permissions?name=${encodeURIComponent(newClassroom.name)}`);
+        curriculum_levels: curriculumLevels,
+      });
+      if (res.ok && res.class) {
+        setCreatedClass(res.class);
+        await refetch();
+      } else {
+        setCreateError((res as { error?: string }).error ?? "Failed to create classroom.");
+      }
+    } catch {
+      setCreateError("Could not reach the server.");
+    } finally {
+      setCreateLoading(false);
     }
   }
 
-  function handleClassroomClick(classroomName: string) {
-    navigate(`/classroom/permissions?name=${encodeURIComponent(classroomName)}`);
+  function handleOpenClassroom(c: Class) {
+    handleCloseModal();
+    navigate(`/classroom/students?id=${c.id}`);
   }
 
-  function handleDeleteClassroom(e: React.MouseEvent, classroomId: string) {
-    e.stopPropagation(); // Prevent card click from firing
-    
-    if (window.confirm("Are you sure you want to delete this classroom?")) {
-      const updatedClassrooms = classrooms.filter((c) => c.id !== classroomId);
-      setClassrooms(updatedClassrooms);
-      
-      // Update localStorage
-      localStorage.setItem(CLASSROOMS_STORAGE_KEY, JSON.stringify(updatedClassrooms));
-    }
+  function handleClassroomClick(c: Class) {
+    navigate(`/classroom/students?id=${c.id}`);
   }
 
   return (
@@ -112,7 +97,6 @@ export const TeacherViewLandingPage: React.FC = () => {
           <h1 className="sim-landing-title">Teacher View</h1>
 
           <div className="sim-level-selection">
-            {/* Plus button to create new classroom */}
             <button
               className="sim-level-button primary create-classroom-button"
               onClick={handleCreateClassroom}
@@ -123,32 +107,25 @@ export const TeacherViewLandingPage: React.FC = () => {
               <p>Create a new classroom</p>
             </button>
 
-            {/* Existing classrooms */}
-            {classrooms.map((classroom) => (
+            {classesLoading && (
+              <p className="classroom-loading">Loading classrooms…</p>
+            )}
+            {classrooms.map((c) => (
               <button
-                key={classroom.id}
+                key={c.id}
                 className="sim-level-button available classroom-card"
-                onClick={() => handleClassroomClick(classroom.name)}
-                style={{ position: "relative" }}
+                onClick={() => handleClassroomClick(c)}
               >
-                <button
-                  className="classroom-delete-button"
-                  onClick={(e) => handleDeleteClassroom(e, classroom.id)}
-                  aria-label="Delete classroom"
-                  title="Delete classroom"
-                >
-                  <span className="delete-x">×</span>
-                </button>
                 <div className="sim-level-header">
-                  <h2>{classroom.name}</h2>
+                  <h2>{c.name}</h2>
                 </div>
-                <p>View classroom details</p>
+                <p className="classroom-card-code">Code: <strong>{c.join_code}</strong></p>
+                <p>Levels {c.curriculum_levels.join(", ")} · View details</p>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Create Classroom Modal */}
         {showCreateModal && (
           <div className="popup-overlay" onClick={handleCloseModal}>
             <div
@@ -156,54 +133,67 @@ export const TeacherViewLandingPage: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <h2>Create New Classroom</h2>
-              <form onSubmit={handleSubmitClassroom}>
-                <div style={{ marginBottom: "20px" }}>
-                  <label
-                    htmlFor="classroom-name"
-                    style={{
-                      display: "block",
-                      marginBottom: "8px",
-                      fontSize: "16px",
-                      color: "#333",
-                    }}
-                  >
-                    Classroom Name:
-                  </label>
-                  <input
-                    id="classroom-name"
-                    type="text"
-                    value={classroomName}
-                    onChange={(e) => setClassroomName(e.target.value)}
-                    placeholder="Enter classroom name"
-                    className="classroom-input"
-                    autoFocus
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "12px",
-                    justifyContent: "center",
-                  }}
-                >
+              {createdClass ? (
+                <div className="classroom-created">
+                  <p className="classroom-created-msg">Classroom created.</p>
+                  <p className="classroom-created-code">
+                    Share this code with students: <strong>{createdClass.join_code}</strong>
+                  </p>
                   <button
                     type="button"
                     className="close-button"
-                    onClick={handleCloseModal}
-                    style={{ marginTop: "0" }}
+                    onClick={() => handleOpenClassroom(createdClass)}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="close-button"
-                    style={{ marginTop: "0" }}
-                    disabled={!classroomName.trim()}
-                  >
-                    Create
+                    Open classroom
                   </button>
                 </div>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmitClassroom}>
+                  <div style={{ marginBottom: "16px" }}>
+                    <label htmlFor="classroom-name" className="classroom-modal-label">
+                      Classroom name
+                    </label>
+                    <input
+                      id="classroom-name"
+                      type="text"
+                      value={classroomName}
+                      onChange={(e) => setClassroomName(e.target.value)}
+                      placeholder="e.g. Nursing 101"
+                      className="classroom-input"
+                      autoFocus
+                    />
+                  </div>
+                  <div style={{ marginBottom: "20px" }}>
+                    <span className="classroom-modal-label">Curriculum levels</span>
+                    <div className="classroom-levels-checkboxes">
+                      {[1, 2, 3].map((level) => (
+                        <label key={level} className="classroom-level-check">
+                          <input
+                            type="checkbox"
+                            checked={curriculumLevels.includes(level)}
+                            onChange={() => toggleLevel(level)}
+                          />
+                          Level {level}
+                        </label>
+                      ))}
+                    </div>
+                    <p className="classroom-levels-hint">Select at least one level students can access.</p>
+                  </div>
+                  {createError && <p className="classroom-modal-error" role="alert">{createError}</p>}
+                  <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                    <button type="button" className="close-button" onClick={handleCloseModal}>
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="close-button"
+                      disabled={!classroomName.trim() || curriculumLevels.length === 0 || createLoading}
+                    >
+                      {createLoading ? "Creating…" : "Create"}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         )}

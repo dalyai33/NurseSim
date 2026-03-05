@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
 import duckIcon from "../../assets/Duck.png";
+import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";
-
 import { useState } from "react";
 import ChatbotComponent from "../../components/Chatbot";
 
@@ -37,7 +37,7 @@ export const SimIntroductionPage: React.FC = () => {
 
     // mark tutorial complete in the database (per user)
     try {
-        const res = await fetch("http://localhost:5000/api/sim/tutorial/complete", {
+        const res = await fetch(`${API_BASE}/api/sim/tutorial/complete`, {
         method: "POST",
         credentials: "include",
         });

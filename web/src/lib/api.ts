@@ -2,7 +2,7 @@
  * Shared API base URL and fetch helper for backend (web/backend Flask app).
  * Use credentials: "include" so session cookie is sent.
  */
-export const API_BASE = "http://127.0.0.1:5000";
+export const API_BASE = "http://localhost:5000";
 
 export type ApiFetchOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -22,4 +22,19 @@ export async function apiFetch<T = unknown>(
   });
   const data = (await res.json().catch(() => ({}))) as T;
   return { data, ok: res.ok, status: res.status };
+}
+
+export type MeUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  teacher: boolean;
+};
+
+export type MeResponse = { ok: boolean; user: MeUser | null };
+
+export async function getMe(): Promise<MeResponse> {
+  const { data } = await apiFetch<MeResponse>("/api/me");
+  return data;
 }
