@@ -101,8 +101,10 @@ def get_latest_passed_level(cur, user_id, scenario_id):
 @sim_bp.route("/progress", methods=["GET"])
 def sim_progress():
     """
-    Matches your SimLandingPage expectations:
-      { ok, tutorialCompleted, level1: { completed, score, correct, total } | null }
+    Returns user progress safely:
+      { ok, tutorialCompleted, level1, level2, level3 }
+    Only marks a level as completed if a passed attempt exists for that scenario.
+    Levels 2-3 are never pre-completed for new users.
     """
     user_id, err = require_user()
     if err:
@@ -110,6 +112,8 @@ def sim_progress():
 
     conn = get_connection()
     cur = conn.cursor()
+
+    # Tutorial completion (Level 1, Scenario 99)
     cur.execute("""
         SELECT EXISTS (
             SELECT 1
@@ -124,9 +128,55 @@ def sim_progress():
     """, (user_id,))
     tutorial_completed = cur.fetchone()[0]
 
-    level1 = get_latest_passed_level(cur, user_id, 1)
-    level2 = get_latest_passed_level(cur, user_id, 2)
-    level3 = get_latest_passed_level(cur, user_id, 3)
+    def safe_level(level_number: int):
+        """
+        Returns latest passed attempt for this level safely.
+        Only returns completed if a passed attempt exists.
+        """
+        # Get all scenarios in this level (excluding tutorial scenario)
+        cur.execute("""
+            SELECT id
+            FROM sim_scenarios
+            WHERE level_id = (
+                SELECT id FROM sim_levels WHERE level_number = %s
+            )
+            AND scenario_number != 99
+        """, (level_number,))
+        scenario_ids = [row[0] for row in cur.fetchall()]
+        if not scenario_ids:
+            return None
+
+        # Check for latest passed attempt among scenarios
+        cur.execute(f"""
+            SELECT id, scenario_id
+            FROM sim_attempts
+            WHERE user_id = %s
+              AND status = 'passed'
+              AND scenario_id = ANY(%s)
+            ORDER BY ended_at DESC NULLS LAST
+            LIMIT 1;
+        """, (user_id, scenario_ids))
+        row = cur.fetchone()
+        if not row:
+            return None
+
+        attempt_id, scenario_id = row
+        correct, total, score_percent = compute_attempt_score(cur, attempt_id)
+        # Defensive: only mark completed if total > 0
+        if total == 0:
+            return None
+
+        return {
+            "attempt_id": attempt_id,
+            "completed": True,
+            "score": score_percent,
+            "correct": correct,
+            "total": total,
+        }
+
+    level1 = safe_level(1)
+    level2 = safe_level(2)
+    level3 = safe_level(3)
 
     cur.close()
     conn.close()
