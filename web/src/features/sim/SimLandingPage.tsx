@@ -4,6 +4,7 @@ import simBg from "../../assets/DuckHospitalRoom.png";
 import { JoinClassForm } from "../classroom/JoinClassForm";
 import { useMyClass } from "../../hooks/useClasses";
 import { useMe } from "../../hooks/useMe";
+import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";
 
 export const SimLandingPage: React.FC = () => {
@@ -27,7 +28,7 @@ export const SimLandingPage: React.FC = () => {
   useEffect(() => {
     async function loadProgress() {
       try {
-        const res = await fetch("http://localhost:5000/api/sim/progress", {
+        const res = await fetch(`${API_BASE}/api/sim/progress`, {
           credentials: "include",
         });
 
