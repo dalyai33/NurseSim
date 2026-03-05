@@ -3,12 +3,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import simBg from "../../assets/DuckHospitalRoom.png";
 import { JoinClassForm } from "../classroom/JoinClassForm";
 import { useMyClass } from "../../hooks/useClasses";
+import { useMe } from "../../hooks/useMe";
 import "../../styles/sim.css";
 
 export const SimLandingPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user: me } = useMe();
   const { class: myClass, loading: classLoading, refetch } = useMyClass();
+  const isTeacher = Boolean(me?.teacher);
   const [joinOpen, setJoinOpen] = useState(false);
   const [joinSuccessName, setJoinSuccessName] = useState<string | null>(null);
 
@@ -103,9 +106,9 @@ export const SimLandingPage: React.FC = () => {
   const level2Perfect = level2Score === 100;
   const level3Perfect = level3Score === 100;
 
-  const allowedLevels = myClass?.curriculum_levels ?? [];
+  const allowedLevels = isTeacher ? [1, 2, 3] : (myClass?.curriculum_levels ?? []);
   const canAccessLevel = (level: number) => allowedLevels.includes(level);
-  const noClassMessage = !classLoading && myClass === null;
+  const noClassMessage = !isTeacher && !classLoading && myClass === null;
 
   function onJoined(c: { name: string }) {
     setJoinSuccessName(c.name);
@@ -119,12 +122,15 @@ export const SimLandingPage: React.FC = () => {
         <button className="back-arrow sim-back" aria-label="Back" onClick={() => navigate("/landing")} />
 
         <div className="sim-join-widget">
-          {!classLoading && myClass != null && (
+          {isTeacher && (
+            <span className="sim-join-widget-class">All levels</span>
+          )}
+          {!isTeacher && !classLoading && myClass != null && (
             <span className="sim-join-widget-class">
               {joinSuccessName ? `Joined ${joinSuccessName}` : myClass.name}
             </span>
           )}
-          {!classLoading && myClass === null && (
+          {!isTeacher && !classLoading && myClass === null && (
             <>
               <button
                 type="button"

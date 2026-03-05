@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMyClass } from "../../hooks/useClasses";
+import { useMe } from "../../hooks/useMe";
 
 type Props = {
   level: 1 | 2 | 3;
@@ -8,16 +9,20 @@ type Props = {
 };
 
 /**
- * Renders children only if the user's class curriculum_levels includes this level.
- * If no class, redirects to /landing. If level not allowed, redirects to /sim.
+ * Teachers: can access any level. Students: only if their class's curriculum_levels includes this level.
+ * Students with no class are redirected to /landing.
  */
 export const SimLevelGuard: React.FC<Props> = ({ level, children }) => {
   const navigate = useNavigate();
-  const { class: myClass, loading } = useMyClass();
-  const allowedLevels = myClass?.curriculum_levels ?? [];
+  const { user: me, loading: meLoading } = useMe();
+  const { class: myClass, loading: classLoading } = useMyClass();
+  const loading = meLoading || classLoading;
+  const isTeacher = Boolean(me?.teacher);
+  const allowedLevels = isTeacher ? [1, 2, 3] : (myClass?.curriculum_levels ?? []);
 
   useEffect(() => {
     if (loading) return;
+    if (isTeacher) return;
     if (!myClass) {
       navigate("/landing", { replace: true });
       return;
@@ -25,7 +30,7 @@ export const SimLevelGuard: React.FC<Props> = ({ level, children }) => {
     if (!allowedLevels.includes(level)) {
       navigate("/sim", { replace: true });
     }
-  }, [loading, myClass, level, navigate, allowedLevels]);
+  }, [loading, isTeacher, myClass, level, navigate, allowedLevels]);
 
   if (loading) {
     return (
@@ -34,8 +39,7 @@ export const SimLevelGuard: React.FC<Props> = ({ level, children }) => {
       </div>
     );
   }
-  if (!myClass || !allowedLevels.includes(level)) {
-    return null;
-  }
+  if (isTeacher) return <>{children}</>;
+  if (!myClass || !allowedLevels.includes(level)) return null;
   return <>{children}</>;
 };
