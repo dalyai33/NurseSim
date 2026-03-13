@@ -7,8 +7,10 @@ import bcrypt
 from datetime import timedelta
 from simulation import sim_bp
 from classes import classes_bp
+from chatbot import chat_bot
 
 load_dotenv()
+
 
 def get_connection():
     return psycopg2.connect(
@@ -19,16 +21,25 @@ def get_connection():
         port=os.getenv("DB_PORT")
     )
 
+
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
 app.permanent_session_lifetime = timedelta(days=7)
 CORS(app,
-     resources={r"/api/*": {"origins": ["http://localhost:5173"]}},
+     resources={r"/api/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}},
      supports_credentials=True,
      allow_headers=["Content-Type"],
-     methods=["GET","POST","PUT","PATCH","DELETE","OPTIONS"])
+     methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])
 app.register_blueprint(sim_bp)
 app.register_blueprint(classes_bp)
+app.register_blueprint(chat_bot)
+
+
+@app.route("/api/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json() or {}
@@ -43,7 +54,14 @@ def login():
 
     cur.execute(
         """
-        SELECT id, first_name, last_name, student_id, phone_number, email, password, teacher
+        SELECT id,
+               first_name,
+               last_name,
+               student_id,
+               phone_number,
+               email,
+               password,
+               teacher
         FROM users
         WHERE email = %s;
         """,
@@ -72,7 +90,7 @@ def login():
     }
 
     session.permanent = True
-    session["user_id"] = user["id"] 
+    session["user_id"] = user["id"]
 
     return jsonify({"ok": True, "user": user}), 200
 
@@ -82,9 +100,9 @@ def get_users():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT id, first_name, last_name, student_id, phone_number, email, teacher
-        FROM users;
-    """)
+                SELECT id, first_name, last_name, student_id, phone_number, email, teacher
+                FROM users;
+                """)
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -111,13 +129,13 @@ def signup():
 
     data = request.get_json(silent=True) or {}
 
-    first_name  = data.get("first_name")
-    last_name   = data.get("last_name")
-    student_id  = data.get("student_id")
-    phone       = data.get("phone_number")
-    email       = data.get("email")
-    password    = data.get("password")
-    is_teacher  = data.get("is_teacher", False)
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+    student_id = data.get("student_id")
+    phone = data.get("phone_number")
+    email = data.get("email")
+    password = data.get("password")
+    is_teacher = data.get("is_teacher", False)
     teacher_code = data.get("teacher_code", "")
 
     missing = []
@@ -136,12 +154,12 @@ def signup():
 
     pw_bytes = password.encode("utf-8")
     pw_hash = bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
-    
+
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT id FROM users WHERE email = %s;", (email,))
-    
+
     existing = cur.fetchone()
     if existing:
         cur.close()
@@ -151,8 +169,8 @@ def signup():
     cur.execute(
         """
         INSERT INTO users (first_name, last_name, student_id, phone_number, email, password, teacher)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-        RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
+        VALUES (%s, %s, %s, %s, %s, %s,
+                %s) RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
         """,
         (first_name, last_name, student_id, phone, email, pw_hash, is_teacher)
     )
@@ -174,10 +192,12 @@ def signup():
     session["user_id"] = user["id"]
     return jsonify({"ok": True, "user": user}), 201
 
+
 @app.route("/api/me", methods=["GET"])
 def me():
-    #Confirm that session is in fact working
+    # Confirm that session is in fact working
     return jsonify({"ok": True, "user_id": session.get("user_id")})
+
 
 def require_user():
     user_id = session.get("user_id")
@@ -186,11 +206,11 @@ def require_user():
     return user_id, None
 
 
-
 @app.route("/api/logout", methods=["POST"])
 def logout():
     session.clear()
     return jsonify({"ok": True})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
