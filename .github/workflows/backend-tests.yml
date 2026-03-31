@@ -34,7 +34,7 @@ jobs:
           python -m pytest --cov=backend --cov-report=term-missing
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-coverage-report
           path: backend/htmlcov
