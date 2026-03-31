@@ -28,19 +28,12 @@ jobs:
           python -m pip install -r backend/requirements.txt
           python -m pip install pytest pytest-cov
 
-      - name: Run backend tests with coverage
+      - name: Run backend tests
         run: |
-          cd backend
-          python -m pytest --cov=backend --cov-report=term-missing
+          python -m pytest
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: backend-coverage-report
           path: backend/htmlcov
-
-      - name: Generate coverage HTML (optional)
-        if: always()
-        run: |
-          cd backend
-          python -m pytest --cov=backend --cov-report=html
