@@ -13,10 +13,17 @@ from pathlib import Path
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-client = genai.Client(api_key = GEMINI_API_KEY)
-if not GEMINI_API_KEY:
-    print("Error: GEMINI API key not found, please, set it as an env variable")
-    sys.exit(1)
+client = None
+
+if GEMINI_API_KEY:
+    try:
+        client = genai.Client(api_key=GEMINI_API_KEY)
+    except Exception as exc:
+        # Allow tests and non-production use to import this module without an API key.
+        print("Warning: failed to initialize Gemini client:", exc)
+        client = None
+else:
+    print("Warning: GEMINI_API_KEY not set, funcs will return fallback response.")
 
 messages = """
         As the Capstone Duck Lab, You are a helpful assistant, create brief (25-word) answer statements under the following strict conditions:
@@ -46,6 +53,9 @@ print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your ques
 #         break
 
 def get_help(user_text: str):
+    if not client:
+        return "Gemini API key unavailable; no response generated."
+
     try:
         response = client.models.generate_content(
             model="gemini-3-flash-preview",
