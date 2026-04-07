@@ -330,6 +330,10 @@
   flex-wrap: wrap;
 }
 
+.sim-level-button-container {
+  position: relative;
+}
+
 .sim-level-button {
   flex: 1;
   min-width: 200px;
@@ -538,4 +542,40 @@
   font-size: 18px;
   margin-bottom: 32px;
   line-height: 1.6;
+}
+
+/* Help button in curriculum level containers */
+.help-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #5a3000;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure it's on top */
+}
+
+.help-button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Tutorial popup specific styles */
+.tutorial-popup h2 {
+  color: #F8770D;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 16px;
 }
