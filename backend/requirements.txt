@@ -19,7 +19,6 @@ idna==3.11
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
-psycopg2==2.9.11
 psycopg2-binary==2.9.11
 pyasn1==0.6.3
 pyasn1_modules==0.4.2
@@ -35,3 +34,4 @@ typing_extensions==4.15.0
 urllib3==2.6.3
 websockets==16.0
 Werkzeug==3.1.8
+gunicorn
