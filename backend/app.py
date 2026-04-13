@@ -36,7 +36,7 @@ cors_allowed_origins = [
     origin.strip()
     for origin in os.getenv(
         "CORS_ALLOWED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173,https://www.nursesim.plus"
+        "http://localhost:5173,http://127.0.0.1:5173,https://www.nursesim.plus,https://nursesim-1.onrender.com"
     ).split(",")
     if origin.strip()
 ]
