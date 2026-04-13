@@ -218,6 +218,10 @@ def signup():
 
 @app.route("/api/me", methods=["GET"])
 def me():
+    _, error = require_user()
+    if error:
+        return error
+    
     # Confirm that session is in fact working
     return jsonify({"ok": True, "user_id": session.get("user_id")})
 
