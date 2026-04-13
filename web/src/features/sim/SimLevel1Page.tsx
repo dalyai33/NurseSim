@@ -5,6 +5,8 @@ import duckIcon from "../../assets/Duck.png";
 import "../../styles/sim.css";
 import ChatbotComponent from "../../components/Chatbot";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 type SimStep = {
   step_id: number;
   scenario_id: number;
@@ -125,7 +127,7 @@ export const SimLevel1Page: React.FC = () => {
     setPendingStep(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/sim/level1/start", {
+      const res = await fetch(`${API_BASE}/api/sim/level1/start`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -153,7 +155,7 @@ export const SimLevel1Page: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`,
+        `${API_BASE}/api/sim/attempts/${attemptId}/answer`,
         {
           method: "POST",
           credentials: "include",

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../lib/validate";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -24,7 +26,7 @@ export default function LoginPage() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/login", {
+      const res = await fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import "../../styles/sim.css";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
+
 export const SimLandingPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,7 +22,7 @@ export const SimLandingPage: React.FC = () => {
   useEffect(() => {
     async function loadProgress() {
       try {
-        const res = await fetch("http://localhost:5000/api/sim/progress", {
+        const res = await fetch(`${API_BASE}/api/sim/progress`, {
           credentials: "include",
         });
 

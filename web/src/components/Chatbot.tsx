@@ -10,6 +10,8 @@ import {useState} from "react";
       </div>
 */
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export default function ChatbotComponent(){
    const [input, setInput] = useState("");
    const [messages, setMessages] = useState([
@@ -24,7 +26,7 @@ export default function ChatbotComponent(){
         setInput("");
 
         try{
-            const res = await fetch("http://127.0.0.1:5000/api/chat", {
+            const res = await fetch(`${API_BASE}/api/chat`, {
                 method: "POST",
                 headers:{
                     "Content-Type": "application/json"
