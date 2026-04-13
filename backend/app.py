@@ -11,34 +11,51 @@ from chatbot import chat_bot
 
 load_dotenv()
 
-
 def get_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-    )
-
+    return psycopg2.connect(os.environ["DATABASE_URL"])
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me")
+flask_secret_key = os.getenv("FLASK_SECRET_KEY")
+flask_env = os.getenv("FLASK_ENV", "").lower()
+
+
+if flask_secret_key:
+    app.secret_key = flask_secret_key
+elif flask_env == "development":
+    app.secret_key = "dev-secret-change-me"
+else:
+    raise RuntimeError("FLASK_SECRET_KEY must be set when not running in development mode.")
+
 app.permanent_session_lifetime = timedelta(days=7)
+
+if os.getenv("FLASK_ENV", "").lower() != "development":
+    app.config["SESSION_COOKIE_SECURE"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "None"
+
+cors_allowed_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,https://www.nursesim.plus"
+    ).split(",")
+    if origin.strip()
+]
+
 CORS(app,
-     resources={r"/api/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}},
+     resources={r"/api/*": {
+         "origins": cors_allowed_origins
+         }
+         },
      supports_credentials=True,
-     allow_headers=["Content-Type"],
+     allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])
 app.register_blueprint(sim_bp)
 app.register_blueprint(classes_bp)
 app.register_blueprint(chat_bot)
 
-
 @app.route("/api/health")
 def health():
     return {"status": "ok"}
-
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -97,6 +114,12 @@ def login():
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
+    # protect this path to only logger in users
+    # that's said, this is still not secure since all logged in users can see that, but will change this eventally
+    _, error = require_user()
+    if error:
+        return error
+    
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
@@ -205,7 +228,6 @@ def require_user():
         return None, (jsonify({"ok": False, "error": "Not authenticated"}), 401)
     return user_id, None
 
-
 @app.route("/api/logout", methods=["POST"])
 def logout():
     session.clear()
@@ -213,4 +235,5 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
