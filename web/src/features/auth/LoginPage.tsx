@@ -92,8 +92,6 @@ export default function LoginPage() {
             </button>
 
             <div className="links">
-              <a href="#">Forgot Password?</a>
-              <span> · </span>
               <a
                 href="#"
                 onClick={(e) => {

@@ -287,6 +287,6 @@ Host github.com
 
 - Nadir - [GitHub](https://github.com/nisweesi) • [isweesin@oregonstate.edu](mailto:isweesin@oregonstate.edu)
 - Kiana - [GitHub](https://github.com/KianaIShim) • [shimk@oregonstate.edu](mailto:shimk@oregonstate.edu)
-- Aidan - [GitHub](https://github.com/dalyai33) •
+- Aidan - [GitHub](https://github.com/dalyai33) • [dalyai@oregonstate.edu](mailto:dalyai@oregonstate.edu)
 - Francisco - [GitHub](https://github.com/) •
 - Ian - [GitHub](https://github.com/) •
