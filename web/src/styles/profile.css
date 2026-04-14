@@ -100,3 +100,23 @@
 .profile-settings-chevron {
   font-size: 20px;
 }
+
+.profile-settings-item--logout {
+  justify-content: center;
+  border-bottom: none;
+}
+
+.profile-logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c0392b;
+  padding: 4px 0;
+}
+
+.profile-logout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

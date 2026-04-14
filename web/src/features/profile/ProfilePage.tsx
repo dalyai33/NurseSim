@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SoftCard } from "../../components/SoftCard";
+import { apiFetch } from "../../lib/api";
 import "../../styles/profile.css";
 
 const SETTINGS_ITEMS = [
@@ -14,6 +15,18 @@ const SETTINGS_ITEMS = [
 
 export const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    try {
+      await apiFetch("/api/logout", { method: "POST" });
+    } catch {
+      // session is cleared server-side regardless; proceed to login
+    } finally {
+      navigate("/login");
+    }
+  }
 
   return (
     <div className="app-screen">
@@ -49,6 +62,15 @@ export const ProfilePage: React.FC = () => {
                   <span className="profile-settings-chevron">›</span>
                 </li>
               ))}
+              <li className="profile-settings-item profile-settings-item--logout">
+                <button
+                  className="profile-logout-btn"
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                >
+                  {loggingOut ? "Logging out…" : "Log Out"}
+                </button>
+              </li>
             </ul>
           </SoftCard>
         </div>

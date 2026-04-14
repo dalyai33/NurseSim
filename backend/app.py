@@ -116,16 +116,18 @@ def login():
 def get_users():
     # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
+    _, error = require_admin()
     if error:
         return error
     
     conn = get_connection()
     cur = conn.cursor()
+
     cur.execute("""
                 SELECT id, first_name, last_name, student_id, phone_number, email, teacher
                 FROM users;
                 """)
+    
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -230,6 +232,24 @@ def require_user():
     user_id = session.get("user_id")
     if not user_id:
         return None, (jsonify({"ok": False, "error": "Not authenticated"}), 401)
+    return user_id, None
+
+def require_admin():
+    user_id, error = require_user()
+    if error:
+        return None, error
+    
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT teacher FROM users WHERE id = %s;", (user_id,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not row or not row[0]:
+        return None, (jsonify({"ok": False, "error": "Admin access required"}), 403)
+    
     return user_id, None
 
 @app.route("/api/logout", methods=["POST"])
