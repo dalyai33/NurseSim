@@ -51,7 +51,7 @@ export default function SignUpPage() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://127.0.0.1:5000/api/signup", {
+      const res = await fetch("http://localhost:5000/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -92,7 +92,7 @@ export default function SignUpPage() {
     <div className="app-shell">
       <div className="sign-up-wrap">
         <div className="card">
-          <h1 className="brand">NurseSim</h1>
+          <h1 className="brand">Sign up</h1>
 
           <form onSubmit={handleSubmit} noValidate>
             {errors.form && <p className="error">{errors.form}</p>}
