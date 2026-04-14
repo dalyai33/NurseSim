@@ -2,6 +2,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { PublicRoute } from "./PublicRoute";
 import LoginPage from "../features/auth/LoginPage";
 import SignUpPage from "../features/auth/SignUpPage";
 import { LandingPage } from "../features/landing/LandingPage";
@@ -19,10 +20,10 @@ import {SimPageTwo} from "../features/sim/SimPageTwo";
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* auth */}
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
+      {/* auth — redirect to /landing if already signed in */}
+      <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/signup" element={<PublicRoute><SignUpPage /></PublicRoute>} />
 
       {/* after login — require session so /api/sim/* and other APIs work */}
       <Route path="/landing" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
