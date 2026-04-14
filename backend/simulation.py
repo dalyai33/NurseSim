@@ -217,14 +217,9 @@ def sim_progress():
 
 @sim_bp.route("/level1/start", methods=["POST"])
 def level1_start():
-        # protect this path to only logger in users
-    # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     """
     Starts (or retakes) Level 1.
-    Assumes Level 1 scenario is scenario_id = 1.
+    Looks up the scenario dynamically by level_number=1 (excludes tutorial scenario_number=99).
     Returns the next step to do.
     """
     user_id, err = require_user()
@@ -234,10 +229,23 @@ def level1_start():
     data = request.get_json() or {}
     retake = bool(data.get("retake", False))
 
-    scenario_id = 1  # change if needed
-
     conn = get_connection()
     cur = conn.cursor()
+
+    cur.execute("""
+        SELECT s.id FROM sim_scenarios s
+        JOIN sim_levels l ON l.id = s.level_id
+        WHERE l.level_number = 1 AND s.scenario_number != 99
+        ORDER BY s.scenario_number
+        LIMIT 1;
+    """)
+    row = cur.fetchone()
+    if not row:
+        cur.close()
+        conn.close()
+        return jsonify({"ok": False, "error": "Level 1 scenario not found in database"}), 404
+
+    scenario_id = row[0]
 
     attempt_id = None
 
@@ -285,20 +293,33 @@ def level1_start():
 def level2_start():
     """
     Starts or retakes Level 2.
-    Assumes Level 2 scenario is scenario_id = 2.
+    Looks up the scenario dynamically by level_number=2.
     Returns the next step to do.
     """
     user_id, err = require_user()
     if err:
         return err
-    
+
     data = request.get_json() or {}
     retake = bool(data.get("retake", False))
 
-    scenario_id = 2  # change if needed
-
     conn = get_connection()
     cur = conn.cursor()
+
+    cur.execute("""
+        SELECT s.id FROM sim_scenarios s
+        JOIN sim_levels l ON l.id = s.level_id
+        WHERE l.level_number = 2 AND s.scenario_number != 99
+        ORDER BY s.scenario_number
+        LIMIT 1;
+    """)
+    row = cur.fetchone()
+    if not row:
+        cur.close()
+        conn.close()
+        return jsonify({"ok": False, "error": "Level 2 scenario not found in database"}), 404
+
+    scenario_id = row[0]
 
     attempt_id = None
 
@@ -347,20 +368,33 @@ def level2_start():
 def level3_start():
     """
     Starts or retakes Level 3.
-    Assumes Level 3 scenario is scenario_id = 3.
+    Looks up the scenario dynamically by level_number=3.
     Returns the next step to do.
     """
     user_id, err = require_user()
     if err:
         return err
-    
+
     data = request.get_json() or {}
     retake = bool(data.get("retake", False))
 
-    scenario_id = 3  # change if needed
-
     conn = get_connection()
     cur = conn.cursor()
+
+    cur.execute("""
+        SELECT s.id FROM sim_scenarios s
+        JOIN sim_levels l ON l.id = s.level_id
+        WHERE l.level_number = 3 AND s.scenario_number != 99
+        ORDER BY s.scenario_number
+        LIMIT 1;
+    """)
+    row = cur.fetchone()
+    if not row:
+        cur.close()
+        conn.close()
+        return jsonify({"ok": False, "error": "Level 3 scenario not found in database"}), 404
+
+    scenario_id = row[0]
 
     attempt_id = None
 
@@ -414,24 +448,25 @@ def tutorial_complete():
     conn = get_connection()
     cur = conn.cursor()
 
-    # Tutorial is Level 1, Scenario 99 (must exist in sim_scenarios)
+    # Ensure level 1 exists
     cur.execute("""
-        SELECT s.id
-        FROM sim_scenarios s
-        JOIN sim_levels l ON l.id = s.level_id
-        WHERE l.level_number = 1
-          AND s.scenario_number = 99
-        LIMIT 1;
+        INSERT INTO sim_levels (level_number, title, description)
+        VALUES (1, 'Level 1', '')
+        ON CONFLICT (level_number) DO UPDATE SET level_number = EXCLUDED.level_number
+        RETURNING id;
     """)
-    row = cur.fetchone()
-    if not row:
-        cur.close()
-        conn.close()
-        return jsonify({"ok": False, "error": "Tutorial scenario not seeded (Level 1, Scenario 99)"}), 500
+    level_id = cur.fetchone()[0]
 
-    tutorial_scenario_id = row[0]
+    # Ensure tutorial scenario exists (Level 1, scenario_number 99)
+    cur.execute("""
+        INSERT INTO sim_scenarios (level_id, scenario_number, title)
+        VALUES (%s, 99, 'Tutorial')
+        ON CONFLICT (level_id, scenario_number) DO UPDATE SET title = EXCLUDED.title
+        RETURNING id;
+    """, (level_id,))
+    tutorial_scenario_id = cur.fetchone()[0]
 
-    # Idempotent
+    # Idempotent check
     cur.execute("""
         SELECT 1
         FROM sim_attempts
@@ -442,6 +477,7 @@ def tutorial_complete():
     """, (user_id, tutorial_scenario_id))
 
     if cur.fetchone():
+        conn.commit()
         cur.close()
         conn.close()
         return jsonify({"ok": True, "alreadyCompleted": True}), 200

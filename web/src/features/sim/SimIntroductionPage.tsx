@@ -24,32 +24,41 @@ export const SimIntroductionPage: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showIntroduction, setShowIntroduction] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [savingComplete, setSavingComplete] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
-  
+
 
   function handleWrong(){
       //show the incorrect popup
       setShowPopup(true);
   }
 
-    async function handleCorrect() {
-    // show the success popup
-    setShowSuccess(true);
+  async function handleCorrect() {
+    setSavingComplete(true);
+    setSaveError(false);
 
-    // mark tutorial complete in the database (per user)
     try {
-        const res = await fetch(`${API_BASE}/api/sim/tutorial/complete`, {
+      const res = await fetch(`${API_BASE}/api/sim/tutorial/complete`, {
         method: "POST",
         credentials: "include",
-        });
+      });
 
-        if (!res.ok) {
-        console.error("Failed to mark tutorial complete");
-        }
+      if (!res.ok) {
+        setSaveError(true);
+        setSavingComplete(false);
+        return;
+      }
+
+      // Only show the success popup after the DB confirms completion
+      setShowSuccess(true);
     } catch (err) {
-        console.error("Tutorial complete request failed:", err);
+      console.error("Tutorial complete request failed:", err);
+      setSaveError(true);
+    } finally {
+      setSavingComplete(false);
     }
-    }
+  }
 
   function handleStartQuiz(){
       //hide the introduction and show the quiz
@@ -117,20 +126,26 @@ export const SimIntroductionPage: React.FC = () => {
 
 
             <h1 className="question">{quizQuestion}</h1>
+            {saveError && (
+              <p style={{ color: "red", textAlign: "center" }}>
+                Something went wrong saving your progress. Please try again.
+              </p>
+            )}
             <ol>
                 <li className="answer">
-                    <button onClick={handleCorrect}>{correctAnswer}</button>
+                    <button onClick={handleCorrect} disabled={savingComplete}>{correctAnswer}</button>
                 </li>
                 <li className="answer">
-                    <button onClick={handleWrong}>{wrongOne}</button>
+                    <button onClick={handleWrong} disabled={savingComplete}>{wrongOne}</button>
                 </li>
                 <li className="answer">
-                    <button onClick={handleWrong}>{wrongTwo}</button>
+                    <button onClick={handleWrong} disabled={savingComplete}>{wrongTwo}</button>
                 </li>
                 <li className="answer">
-                    <button onClick={handleWrong}>{wrongThree}</button>
+                    <button onClick={handleWrong} disabled={savingComplete}>{wrongThree}</button>
                 </li>
             </ol>
+            {savingComplete && <p style={{ textAlign: "center" }}>Saving your progress...</p>}
         </div>
         )}
       </div>
