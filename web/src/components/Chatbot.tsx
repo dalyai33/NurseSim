@@ -49,29 +49,32 @@ export default function ChatbotComponent(){
         }
    };
    
-    return(
-    
-    <div className="chatbot-container">
-        <div className="chatbot-header">
-            <h3>Help Chat</h3>
-        </div>
-        
-        {messages.slice(-3).map((msg, index)=>(
-            <div key={index} className={`message ${msg.sender}`}>
-                {msg.text}
+    return (
+        <div className="chatbot-container">
+            <div className="chatbot-header">
+                <h3>Help Chat</h3>
             </div>
-        ))}
-        
-        <div className="chatbot-input-area">
-            <input type="text" 
-            placeholder="Type a question..."
-            value={input}
-            onChange={(e)=>setInput(e.target.value)}
-            onKeyDown={(e)=>e.key === "Enter" && sendMessage()}/>
-            <button onClick={sendMessage}>Send</button>
+
+            <div className="chatbot-messages">
+                {messages.map((msg, index) => (
+                    <div key={index} className={`message ${msg.sender}`}>
+                        {msg.text}
+                    </div>
+                ))}
+            </div>
+
+            <div className="chatbot-input-area">
+                <input
+                    type="text"
+                    placeholder="Type a question..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                />
+                <button onClick={sendMessage}>Send</button>
+            </div>
         </div>
-    </div>
-   );
+    );
 }
 
 
