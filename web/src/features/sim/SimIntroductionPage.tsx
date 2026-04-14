@@ -87,7 +87,10 @@ export const SimIntroductionPage: React.FC = () => {
                         <h2>Correct! 'Hemo-' relates to blood.</h2>
                         <p>Congrats! You are practically a pro now at using the NurseSim+ Simulator. We hope you enjoy your learning!</p>
                         <button className="close-button" onClick={handleExitTutorial}>
-                            Exit Tutorial
+                            Back to Curriculum
+                        </button>
+                        <button className="close-button" onClick={() => navigate("/sim/level-1")} style={{ marginLeft: 12 }}>
+                            Start Level 1
                         </button>
                     </div>
                 </div>

@@ -277,6 +277,15 @@ export const SimLevel2Page: React.FC = () => {
               <button className="close-button" onClick={closePopup}>
                 {popupButtonLabel()}
               </button>
+              {popupMode === "done" && (
+                <button
+                  className="close-button"
+                  onClick={() => navigate("/sim/level-3")}
+                  style={{ marginLeft: 12 }}
+                >
+                  Start Level 3
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -368,6 +377,13 @@ export const SimLevel2Page: React.FC = () => {
                   style={{ marginLeft: 12 }}
                 >
                   Return to Curriculum
+                </button>
+                <button
+                  className="close-button"
+                  onClick={() => navigate("/sim/level-3")}
+                  style={{ marginLeft: 12 }}
+                >
+                  Start Level 3
                 </button>
               </div>
             )}
