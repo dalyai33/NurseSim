@@ -220,12 +220,33 @@ def signup():
 
 @app.route("/api/me", methods=["GET"])
 def me():
-    _, error = require_user()
+    user_id, error = require_user()
     if error:
         return error
-    
-    # Confirm that session is in fact working
-    return jsonify({"ok": True, "user_id": session.get("user_id")})
+
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT id, first_name, last_name, student_id, email FROM users WHERE id = %s;",
+        (user_id,)
+    )
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not row:
+        return jsonify({"ok": False, "error": "User not found"}), 404
+
+    return jsonify({
+        "ok": True,
+        "user": {
+            "id": row[0],
+            "first_name": row[1],
+            "last_name": row[2],
+            "student_id": row[3],
+            "email": row[4],
+        }
+    })
 
 
 def require_user():
