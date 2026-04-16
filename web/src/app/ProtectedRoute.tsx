@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AppLayout } from "../components/AppLayout";
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
@@ -50,5 +49,5 @@ export const ProtectedRoute: React.FC<Props> = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <AppLayout>{children}</AppLayout>;
+  return <>{children}</>;
 };
