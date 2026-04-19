@@ -8,11 +8,21 @@ from datetime import timedelta
 from simulation import sim_bp
 from classes import classes_bp
 from chatbot import chat_bot
+from psycopg2.pool import SimpleConnectionPool
 
 load_dotenv()
 
+db_pool = SimpleConnectionPool(
+    minconn=1,
+    maxconn=10,
+    dsn=os.environ["DATABASE_URL"]
+)
+
 def get_connection():
-    return psycopg2.connect(os.environ["DATABASE_URL"])
+    return db_pool.getconn()
+
+def release_connection(conn):
+    db_pool.putconn(conn)
 
 app = Flask(__name__)
 flask_secret_key = os.getenv("FLASK_SECRET_KEY")
@@ -53,6 +63,7 @@ app.register_blueprint(sim_bp)
 app.register_blueprint(classes_bp)
 app.register_blueprint(chat_bot)
 
+
 @app.route("/api/health")
 def health():
     return {"status": "ok"}
@@ -65,28 +76,29 @@ def login():
 
     if not email or not password:
         return jsonify({"ok": False, "error": "Email and password are required."}), 400
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute(
-        """
-        SELECT id,
-               first_name,
-               last_name,
-               student_id,
-               phone_number,
-               email,
-               password,
-               teacher
-        FROM users
-        WHERE email = %s;
-        """,
-        (email,)
-    )
-    row = cur.fetchone()
-    cur.close()
-    conn.close()
+    conn = None
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id,
+                    first_name,
+                    last_name,
+                    student_id,
+                    phone_number,
+                    email,
+                    password,
+                    teacher
+                FROM users
+                WHERE email = %s;
+                """,
+                (email,)
+            )
+            row = cur.fetchone()
+    finally:
+        if conn is not None:
+            release_connection(conn)
 
     if not row:
         return jsonify({"ok": False, "error": "Invalid email or password."}), 401
@@ -120,17 +132,20 @@ def get_users():
     if error:
         return error
     
-    conn = get_connection()
-    cur = conn.cursor()
+    conn = None
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute("""
+                        SELECT id, first_name, last_name, student_id, phone_number, email, teacher
+                        FROM users;
+                        """)
+            
+            rows = cur.fetchall()
 
-    cur.execute("""
-                SELECT id, first_name, last_name, student_id, phone_number, email, teacher
-                FROM users;
-                """)
-    
-    rows = cur.fetchall()
-    cur.close()
-    conn.close()
+    finally:
+        if conn is not None:
+            release_connection(conn)
 
     users = [
         {
@@ -179,30 +194,31 @@ def signup():
 
     pw_bytes = password.encode("utf-8")
     pw_hash = bcrypt.hashpw(pw_bytes, bcrypt.gensalt()).decode("utf-8")
+    conn = None
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
 
-    conn = get_connection()
-    cur = conn.cursor()
+            cur.execute("SELECT id FROM users WHERE email = %s;", (email,))
 
-    cur.execute("SELECT id FROM users WHERE email = %s;", (email,))
+            existing = cur.fetchone()
+            if existing:
+                return jsonify({"ok": False, "error": "Email already in use."}), 409
 
-    existing = cur.fetchone()
-    if existing:
-        cur.close()
-        conn.close()
-        return jsonify({"ok": False, "error": "Email already in use."}), 409
+            cur.execute(
+                """
+                INSERT INTO users (first_name, last_name, student_id, phone_number, email, password, teacher)
+                VALUES (%s, %s, %s, %s, %s, %s,
+                        %s) RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
+                """,
+                (first_name, last_name, student_id, phone, email, pw_hash, is_teacher)
+            )
+            row = cur.fetchone()
+            conn.commit()
 
-    cur.execute(
-        """
-        INSERT INTO users (first_name, last_name, student_id, phone_number, email, password, teacher)
-        VALUES (%s, %s, %s, %s, %s, %s,
-                %s) RETURNING id, first_name, last_name, student_id, phone_number, email, teacher;
-        """,
-        (first_name, last_name, student_id, phone, email, pw_hash, is_teacher)
-    )
-    row = cur.fetchone()
-    conn.commit()
-    cur.close()
-    conn.close()
+    finally:
+        if conn is not None:
+            release_connection(conn)
 
     user = {
         "id": row[0],
@@ -223,16 +239,21 @@ def me():
     user_id, error = require_user()
     if error:
         return error
+    
+    conn = None
+    row = None
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT id, first_name, last_name, student_id, email FROM users WHERE id = %s;",
+                (user_id,)
+            )
+            row = cur.fetchone()
 
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute(
-        "SELECT id, first_name, last_name, student_id, email FROM users WHERE id = %s;",
-        (user_id,)
-    )
-    row = cur.fetchone()
-    cur.close()
-    conn.close()
+    finally:
+        if conn is not None:
+            release_connection(conn)
 
     if not row:
         return jsonify({"ok": False, "error": "User not found"}), 404
@@ -260,13 +281,17 @@ def require_admin():
     if error:
         return None, error
     
-    conn = get_connection()
-    cur = conn.cursor()
+    conn = None
+    row = None
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
 
-    cur.execute("SELECT teacher FROM users WHERE id = %s;", (user_id,))
-    row = cur.fetchone()
-    cur.close()
-    conn.close()
+            cur.execute("SELECT teacher FROM users WHERE id = %s;", (user_id,))
+            row = cur.fetchone()
+    finally:
+        if conn is not None:
+            release_connection(conn)
 
     if not row or not row[0]:
         return None, (jsonify({"ok": False, "error": "Admin access required"}), 403)

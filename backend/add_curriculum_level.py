@@ -20,7 +20,6 @@ def get_connection():
         port=os.getenv("DB_PORT"),
     )
 
-
 def main():
     conn = get_connection()
     cur = conn.cursor()

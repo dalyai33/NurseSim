@@ -5,11 +5,6 @@ from google.genai import types
 from dotenv import load_dotenv
 from pathlib import Path
 
-#make sure too have google-genai installed, if you dont:
-#run this command: pip install google-genai
-
-#Put your api key in the .env file in the backend directory
-
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -29,21 +24,11 @@ messages = """
         7. AVOID GIVING ANSWERS, ONLY HINTS.
         8. YOUR JOB IS TO BE LIKE A TEACHER ASSISTANT IN AN EXAM, ONLY HELP WITH A HINT, YOU CANNOT LET THEM GET THE ANSWER FROM YOU
         9. Do not reply with broad response
+        10. DON'T ANSWER ANY QUESTIONS THAT ARE NOT RELATED TO THE NURSING SIMULATION, IF THE USER ASKS YOU A QUESTION OUTSIDE OF THE SCOPE OF THE SIMULATION, RESPOND WITH "I'M NOT SURE ABOUT THAT, LET'S FOCUS ON THE SIMULATION"
         Do not include any meta-text.
         """
 
 print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your questions.")
-
-# while True:
-#     #use to get input from the console
-#     user_input = input("You: ")
-
-#     if not user_input:
-#         print("Please Enter a text to get a response!\n")
-    
-#     if user_input.lower() in ["goodbye", "bye", "quit", "leave", "exit"]:
-#         print("BYE BYE BYE")
-#         break
 
 def get_help(user_text: str):
     try:
