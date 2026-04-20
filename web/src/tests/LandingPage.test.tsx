@@ -24,6 +24,7 @@ vi.mock("../../assets/MainBackground.png", () => ({
 describe("LandingPage", () => {
   beforeEach(() => {
     navigateMock.mockClear();
+    localStorage.removeItem("nursesim_user");
   });
 
   it("renders the landing title", () => {
@@ -42,7 +43,22 @@ describe("LandingPage", () => {
     expect(navigateMock).toHaveBeenCalledWith("/sim");
   });
 
-  it("navigates to /teacher when Teacher View button is clicked", () => {
+  it("does not show Teacher View button when user is not a teacher", () => {
+    localStorage.setItem(
+      "nursesim_user",
+      JSON.stringify({ id: 1, email: "u@test.com", teacher: false })
+    );
+    render(<LandingPage />);
+
+    expect(screen.queryByRole("button", { name: /teacher view/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /enter/i })).toBeInTheDocument();
+  });
+
+  it("shows Teacher View button and navigates when user is a teacher", () => {
+    localStorage.setItem(
+      "nursesim_user",
+      JSON.stringify({ id: 1, email: "u@test.com", teacher: true })
+    );
     render(<LandingPage />);
 
     fireEvent.click(
