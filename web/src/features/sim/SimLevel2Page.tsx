@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import duckIcon from "../../assets/Duck.png";
+import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";
 import ChatbotComponent from "../../components/Chatbot";
 
@@ -122,7 +123,7 @@ export const SimLevel2Page: React.FC = () => {
     setPendingStep(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/sim/level2/start", {
+      const res = await fetch(`${API_BASE}/api/sim/level2/start`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -150,7 +151,7 @@ export const SimLevel2Page: React.FC = () => {
     setErrorMsg(null);
 
     try{
-      const res = await fetch(`http://localhost:5000/api/sim/attempts/${attemptId}/answer`, {
+      const res = await fetch(`${API_BASE}/api/sim/attempts/${attemptId}/answer`, {
         method: "POST",
         credentials: "include",
         headers: {"Content-Type": "application/json"},

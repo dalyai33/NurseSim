@@ -23,3 +23,18 @@ export async function apiFetch<T = unknown>(
   const data = (await res.json().catch(() => ({}))) as T;
   return { data, ok: res.ok, status: res.status };
 }
+
+export type MeUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  teacher: boolean;
+};
+
+export type MeResponse = { ok: boolean; user: MeUser | null };
+
+export async function getMe(): Promise<MeResponse> {
+  const { data } = await apiFetch<MeResponse>("/api/me");
+  return data;
+}

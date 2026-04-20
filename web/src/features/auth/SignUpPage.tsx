@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../lib/validate";
+import { API_BASE } from "../../lib/api";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function SignUpPage() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://127.0.0.1:5000/api/signup", {
+      const res = await fetch(`${API_BASE}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

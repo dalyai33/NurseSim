@@ -195,8 +195,30 @@ def signup():
 
 @app.route("/api/me", methods=["GET"])
 def me():
-    # Confirm that session is in fact working
-    return jsonify({"ok": True, "user_id": session.get("user_id")})
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"ok": True, "user": None})
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT id, first_name, last_name, email, teacher FROM users WHERE id = %s;",
+        (user_id,),
+    )
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return jsonify({"ok": True, "user": None})
+    return jsonify({
+        "ok": True,
+        "user": {
+            "id": row[0],
+            "first_name": row[1],
+            "last_name": row[2],
+            "email": row[3],
+            "teacher": bool(row[4]) if row[4] is not None else False,
+        },
+    })
 
 
 def require_user():
