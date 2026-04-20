@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
+import simBg from "../../assets/final_updated_hospital_bg.webp";
 import "../../styles/sim.css";
 import "../../styles/classroom.css";
 

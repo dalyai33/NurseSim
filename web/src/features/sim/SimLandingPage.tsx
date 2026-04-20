@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
+import simBg from "../../assets/final_updated_hospital_bg.webp";
 import "../../styles/sim.css";
 
 export const SimLandingPage: React.FC = () => {
