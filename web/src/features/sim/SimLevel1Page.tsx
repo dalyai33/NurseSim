@@ -154,7 +154,7 @@ export const SimLevel1Page: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`,
+        `${API_BASE}/api/sim/attempts/${attemptId}/answer`,
         {
           method: "POST",
           credentials: "include",

@@ -151,7 +151,7 @@ export const SimLevel3Page: React.FC = () => {
     setErrorMsg(null);
 
     try{
-      const res = await fetch(`http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`, {
+      const res = await fetch(`${API_BASE}/api/sim/attempts/${attemptId}/answer`, {
         method: "POST",
         credentials: "include",
         headers: {"Content-Type": "application/json"},
