@@ -125,7 +125,7 @@ export const SimLevel1Page: React.FC = () => {
     setPendingStep(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/sim/level1/start", {
+      const res = await fetch("http://localhost:5000/api/sim/level1/start", { //Changed to localhost:5000 will have to change when pushed to nursesim.plus
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
