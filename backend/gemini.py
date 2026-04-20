@@ -13,10 +13,10 @@ from pathlib import Path
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-client = genai.Client(api_key = GEMINI_API_KEY)
 if not GEMINI_API_KEY:
-    print("Error: GEMINI API key not found, please, set it as an env variable")
+    print("Error: GEMINI API key not found. Set GEMINI_API_KEY in backend/.env")
     sys.exit(1)
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 messages = """
         As the Capstone Duck Lab, You are a helpful assistant, create brief (25-word) answer statements under the following strict conditions:
