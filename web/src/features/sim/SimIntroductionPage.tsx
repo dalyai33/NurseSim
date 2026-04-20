@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import duckIcon from "../../assets/Duck.png";
-import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";
 import { useState } from "react";
 import ChatbotComponent from "../../components/Chatbot";
