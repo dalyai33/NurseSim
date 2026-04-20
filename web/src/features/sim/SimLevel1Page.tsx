@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/DuckHospitalRoom.png";
+import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import duckIcon from "../../assets/Duck.png";
 import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";
@@ -154,7 +154,7 @@ export const SimLevel1Page: React.FC = () => {
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/sim/attempts/${attemptId}/answer`,
+        `http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`,
         {
           method: "POST",
           credentials: "include",

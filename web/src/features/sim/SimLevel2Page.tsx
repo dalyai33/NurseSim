@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/DuckHospitalRoom.png";
+import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import duckIcon from "../../assets/Duck.png";
 import { API_BASE } from "../../lib/api";
 import "../../styles/sim.css";

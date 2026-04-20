@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/DuckHospitalRoom.png";
-// import folderImg from "../../assets/folder.png";
+import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import avatarIcon from "../../assets/GenericAvatar.png";
 // import duckImg from "../../assets/Duck.png";
 import "../../styles/sim.css";

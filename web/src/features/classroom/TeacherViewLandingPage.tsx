@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/DuckHospitalRoom.png";
-import avatarIcon from "../../assets/GenericAvatar.png";
+import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import { useClasses } from "../../hooks/useClasses";
 import { createClass } from "../../api/classes";
 import type { Class } from "../../api/classes";
@@ -82,16 +81,6 @@ export const TeacherViewLandingPage: React.FC = () => {
           aria-label="Back"
           onClick={() => navigate("/landing")}
         />
-
-        <div className="sim-toolbar">
-          <div className="sim-toolbar-card">
-            <img
-              src={avatarIcon}
-              alt="Profile"
-              className="classroom-icon-img"
-            />
-          </div>
-        </div>
 
         <div className="sim-landing-container">
           <h1 className="sim-landing-title">Teacher View</h1>

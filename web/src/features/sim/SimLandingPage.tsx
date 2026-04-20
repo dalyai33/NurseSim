@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import simBg from "../../assets/DuckHospitalRoom.png";
+import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
 import { JoinClassForm } from "../classroom/JoinClassForm";
 import { useMyClass } from "../../hooks/useClasses";
 import { useMe } from "../../hooks/useMe";
