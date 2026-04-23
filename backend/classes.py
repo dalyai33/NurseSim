@@ -36,9 +36,6 @@ def require_teacher(cur, user_id):
 def generate_join_code(cur, length=6):
      # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     chars = string.ascii_uppercase + string.digits
     for _ in range(10):
         code = "".join(random.choices(chars, k=length))
@@ -68,9 +65,6 @@ def row_to_class(row):
 def create_class():
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     user_id, err = require_user()
     if err:
         return err
@@ -124,9 +118,6 @@ def create_class():
 def list_classes():
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     user_id, err = require_user()
     if err:
         return err
