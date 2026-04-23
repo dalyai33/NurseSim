@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import landingBg from "../../assets/MainBackground.png";
+import landingBg from "../../assets/main_background.webp";
 import { GradientButton } from "../../components/GradientButton";
 import "../../styles/landing.css";
 
