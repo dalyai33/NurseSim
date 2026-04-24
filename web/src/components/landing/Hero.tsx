@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import duckImg from "../../assets/Duck.png";
+import duckImg from "../../assets/full_duck.webp";
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -48,7 +48,7 @@ export const Hero: React.FC = () => {
           className="landing-btn landing-btn--primary landing-btn--hero"
           onClick={() => navigate("/signup")}
         >
-          Enter the ward
+          Play
         </button>
         <button
           type="button"

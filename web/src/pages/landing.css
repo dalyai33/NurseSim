@@ -252,8 +252,8 @@
 }
 
 .landing-hero__duck-img {
-  width: 72px;
-  height: 72px;
+  width: 104px;
+  height: 104px;
   object-fit: contain;
   display: block;
 }
@@ -611,6 +611,17 @@
   border-radius: var(--r-md);
   padding: 14px;
   text-align: center;
+}
+
+.landing-team-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.landing-team-card-link:hover .landing-team-card {
+  outline: 1px solid var(--c-primary);
+  outline-offset: 0;
 }
 
 .landing-team-card__avatar {

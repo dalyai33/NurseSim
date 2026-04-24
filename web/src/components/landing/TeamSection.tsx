@@ -1,11 +1,41 @@
 import React from "react";
 
 const team = [
-  { initials: "KS", name: "Kiana Shim", role: "Lead UI/UX", mod: "ks" },
-  { initials: "IH", name: "Ian Hale", role: "Team lead", mod: "ih" },
-  { initials: "AD", name: "Aidan Daly", role: "QA / Frontend", mod: "ad" },
-  { initials: "NI", name: "Nadir Isweesi", role: "Lead backend", mod: "ni" },
-  { initials: "FM", name: "Francisco Martinez", role: "Database", mod: "fm" },
+  {
+    initials: "KS",
+    name: "Kiana Shim",
+    role: "Lead UI/UX",
+    mod: "ks",
+    github: "https://github.com/KianaShim",
+  },
+  {
+    initials: "IH",
+    name: "Ian Hale",
+    role: "Team lead",
+    mod: "ih",
+    github: "https://github.com/Halei-6103",
+  },
+  {
+    initials: "AD",
+    name: "Aidan Daly",
+    role: "QA / Frontend",
+    mod: "ad",
+    github: "https://github.com/dalyai33",
+  },
+  {
+    initials: "NI",
+    name: "Nadir Isweesi",
+    role: "Lead backend",
+    mod: "ni",
+    github: "https://github.com/nisweesi",
+  },
+  {
+    initials: "FM",
+    name: "Francisco Martinez",
+    role: "Database",
+    mod: "fm",
+    github: "https://github.com/FranciscoJMartinez12",
+  },
 ] as const;
 
 export const TeamSection: React.FC = () => (
@@ -24,16 +54,25 @@ export const TeamSection: React.FC = () => (
     </p>
     <div className="landing-team-grid">
       {team.map((m) => (
-        <article key={m.initials} className="landing-team-card">
-          <div
-            className={`landing-team-card__avatar landing-team-card__avatar--${m.mod}`}
-            aria-hidden
-          >
-            {m.initials}
-          </div>
-          <p className="landing-team-card__name">{m.name}</p>
-          <p className="landing-team-card__role">{m.role}</p>
-        </article>
+        <a
+          key={m.initials}
+          href={m.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="landing-team-card-link"
+          aria-label={`${m.name} GitHub profile`}
+        >
+          <article className="landing-team-card">
+            <div
+              className={`landing-team-card__avatar landing-team-card__avatar--${m.mod}`}
+              aria-hidden
+            >
+              {m.initials}
+            </div>
+            <p className="landing-team-card__name">{m.name}</p>
+            <p className="landing-team-card__role">{m.role}</p>
+          </article>
+        </a>
       ))}
     </div>
     <div className="landing-partner-card">
