@@ -7,11 +7,7 @@ export const LandingFooter: React.FC = () => {
   return (
     <footer className="landing-footer">
       <p className="landing-footer__left">NurseSim+ · OSU Senior Capstone 013 · 2026</p>
-      <p className="landing-footer__center">
-        <a href="https://nursesim.plus" target="_blank" rel="noopener noreferrer">
-          nursesim.plus
-        </a>
-      </p>
+      <p className="landing-footer__center" />
       <div className="landing-footer__actions">
         <button
           type="button"

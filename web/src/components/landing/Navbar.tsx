@@ -53,14 +53,6 @@ export const Navbar: React.FC = () => {
         >
           The team
         </button>
-        <a
-          className="landing-navbar__link landing-navbar__link--external"
-          href="https://nursesim.plus"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          nursesim.plus
-        </a>
       </nav>
       <div className="landing-navbar__actions">
         <button
