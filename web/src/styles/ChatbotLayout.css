@@ -68,8 +68,12 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   min-height: 0;
+}
+
+.chatbot-messages::before {
+  content: '';
+  margin-top: auto;
 }
 
 .message {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
-import duckIcon from "../../assets/Duck.png";
+import simBg from "../../assets/final_updated_hospital_bg.webp";
+import duckIcon from "../../assets/full_duck.webp";
 import "../../styles/sim.css";
 
 import { useState } from "react";

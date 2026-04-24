@@ -6,14 +6,7 @@ import os
 sim_bp = Blueprint("sim", __name__, url_prefix="/api/sim")
 
 def get_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
-    )
-
+    return psycopg2.connect(os.environ["DATABASE_URL"])
 def require_user():
     user_id = session.get("user_id")
     if not user_id:
@@ -34,9 +27,6 @@ def row_to_step(row):
 def get_step_by_number(cur, scenario_id: int, step_number: int):
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     cur.execute("""
         SELECT id, scenario_id, step_number, title, body_text, prompt_text, choices
         FROM sim_steps
@@ -49,9 +39,6 @@ def get_step_by_number(cur, scenario_id: int, step_number: int):
 def compute_attempt_score(cur, attempt_id: int):
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     # Get scenario + status + mistakes for this attempt
     cur.execute("""
         SELECT scenario_id, status, COALESCE(mistakes, 0)
@@ -84,9 +71,6 @@ def compute_attempt_score(cur, attempt_id: int):
 def get_latest_passed_level(cur, user_id, scenario_id):
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     cur.execute("""
         SELECT a.id
         FROM sim_attempts a
@@ -117,9 +101,6 @@ def get_latest_passed_level(cur, user_id, scenario_id):
 def sim_progress():
         # protect this path to only logger in users
     # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-    _, error = require_user()
-    if error:
-        return error
     """
     Returns user progress safely:
       { ok, tutorialCompleted, level1, level2, level3 }
@@ -151,9 +132,6 @@ def sim_progress():
     def safe_level(level_number: int):
             # protect this path to only logger in users
         # that's said, this is still not secure since all logged in users can see that, but will change this eventally
-        _, error = require_user()
-        if error:
-            return error
         """
         Returns latest passed attempt for this level safely.
         Only returns completed if a passed attempt exists.

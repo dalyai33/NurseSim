@@ -106,36 +106,60 @@
 
 .quiz-popup ol {
   margin: 0;
-  padding-left: 1.2rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: quiz-choice;
 }
 
-.answer {
-  margin: 6px 0;
-  font-size: 20px;
-  line-height: 1.2;
+.quiz-popup .answer {
+  margin: 10px 0 0;
+  counter-increment: quiz-choice;
+  font-size: 18px;
+  line-height: 1.35;
   color: #5a3000;
   font-family: var(--font-body, system-ui, sans-serif);
 }
 
-.answer button {
-  border: none;
-  background: transparent;
+.quiz-popup .answer button {
+  box-sizing: border-box;
+  width: 100%;
+  display: block;
   cursor: pointer;
   font: inherit;
   color: inherit;
-  padding: 4px 8px;
-  border-radius: 999px;
-  transition: background 0.15s ease;
   text-align: left;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 2px solid rgba(90, 48, 0, 0.45);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 2px 0 rgba(90, 48, 0, 0.12);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.answer button:hover {
-  background: rgba(255, 255, 255, 0.35);
+.quiz-popup .answer button::before {
+  content: counter(quiz-choice) ". ";
+  font-weight: 700;
+  color: #5a3000;
 }
 
-.answer button:disabled {
-  opacity: 0.5;
+.quiz-popup .answer button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(90, 48, 0, 0.75);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.quiz-popup .answer button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-popup .answer button:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
+  border-color: rgba(90, 48, 0, 0.2);
 }
 
 /* ============================================================
