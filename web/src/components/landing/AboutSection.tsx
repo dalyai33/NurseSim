@@ -1,5 +1,5 @@
 import React from "react";
-import duckImg from "../../assets/full_duck.webp";
+import duckImg from "../../assets/full_duck_head.webp";
 
 function BranchIcon() {
   return (

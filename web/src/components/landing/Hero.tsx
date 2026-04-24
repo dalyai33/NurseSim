@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import duckImg from "../../assets/full_duck.webp";
+import duckImg from "../../assets/full_duck_head.webp";
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
