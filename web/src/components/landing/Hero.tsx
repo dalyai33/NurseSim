@@ -46,7 +46,7 @@ export const Hero: React.FC = () => {
         <button
           type="button"
           className="landing-btn landing-btn--primary landing-btn--hero"
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate("/login")}
         >
           Play
         </button>
