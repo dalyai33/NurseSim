@@ -6,14 +6,7 @@ import os
 sim_bp = Blueprint("sim", __name__, url_prefix="/api/sim")
 
 def get_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
-    )
-
+    return psycopg2.connect(os.environ["DATABASE_URL"])
 def require_user():
     user_id = session.get("user_id")
     if not user_id:

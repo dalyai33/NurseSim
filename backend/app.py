@@ -41,12 +41,14 @@ app.permanent_session_lifetime = timedelta(days=7)
 if os.getenv("FLASK_ENV", "").lower() != "development":
     app.config["SESSION_COOKIE_SECURE"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "None"
+    app.config["SESSION_COOKIE_DOMAIN"] = ".nursesim.plus"
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
 
 cors_allowed_origins = [
     origin.strip()
     for origin in os.getenv(
         "CORS_ALLOWED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173,https://www.nursesim.plus,https://nursesim-1.onrender.com"
+        "http://localhost:5173,http://127.0.0.1:5173,https://www.nursesim.plus,https://nursesim-1.onrender.com,https://nursesim.plus"
     ).split(",")
     if origin.strip()
 ]
