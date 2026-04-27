@@ -108,4 +108,29 @@ describe("SimIntroductionPage", () => {
     ).toBeNull();
     });
 
+  it("sends tutorial complete request to localhost API on correct answer", async () => {
+    const mockFetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+      })
+    );
+
+    global.fetch = mockFetch;
+
+    render(<SimIntroductionPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /start quiz/i }));
+    fireEvent.click(screen.getByRole("button", { name: /blood/i }));
+
+    await new Promise(resolve => setTimeout(resolve, 0)); // Wait for async
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:5000/api/sim/tutorial/complete",
+      expect.objectContaining({
+        method: "POST",
+        credentials: "include",
+      })
+    );
+  });
+
 });

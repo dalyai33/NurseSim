@@ -198,5 +198,41 @@ describe("LoginPage", () => {
     ).not.toBeNull();
   });
 
-});
+  it("sends login request to localhost API", async () => {
+    const mockFetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ ok: true }),
+      })
+    );
 
+    globalThis.fetch = mockFetch;
+
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "test@ohsu.edu" },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "password123" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /log in/i }));
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        "http://localhost:5000/api/login",
+        expect.objectContaining({
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ email: "test@ohsu.edu", password: "password123" }),
+        })
+      );
+    });
+  });
+});

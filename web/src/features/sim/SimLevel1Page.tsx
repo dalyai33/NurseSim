@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import simBg from "../../assets/Final_Updated_Hospital_Bg.png";
-import duckIcon from "../../assets/Duck.png";
+import simBg from "../../assets/final_updated_hospital_bg.webp";
+import duckIcon from "../../assets/full_duck.webp";
 import "../../styles/sim.css";
 import ChatbotComponent from "../../components/Chatbot";
 
@@ -125,7 +125,7 @@ export const SimLevel1Page: React.FC = () => {
     setPendingStep(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/sim/level1/start", {
+      const res = await fetch("http://localhost:5000/api/sim/level1/start", { //Changed to localhost:5000 will have to change when pushed to nursesim.plus
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -153,7 +153,7 @@ export const SimLevel1Page: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/sim/attempts/${attemptId}/answer`,
+        `http://localhost:5000/api/sim/attempts/${attemptId}/answer`,
         {
           method: "POST",
           credentials: "include",
