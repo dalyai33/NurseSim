@@ -6,6 +6,7 @@ import { PublicRoute } from "./PublicRoute";
 import LoginPage from "../features/auth/LoginPage";
 import SignUpPage from "../features/auth/SignUpPage";
 import { LandingPage } from "../features/landing/LandingPage";
+import Landing from "../pages/Landing";
 import { ClassroomStudentsPage } from "../features/classroom/ClassroomStudentsPage";
 import { ClassroomPermissionsPage } from "../features/classroom/ClassroomPermissionsPage";
 import { TeacherViewLandingPage } from "../features/classroom/TeacherViewLandingPage";
@@ -20,10 +21,16 @@ import {SimPageTwo} from "../features/sim/SimPageTwo";
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* auth — redirect to /landing if already signed in */}
-      <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      {/* public marketing */}
+      <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
+
+      {/* auth */}
       <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
       <Route path="/signup" element={<PublicRoute><SignUpPage /></PublicRoute>} />
+
+      {/* Used to be   <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/signup" element={<PublicRoute><SignUpPage /></PublicRoute>} /> */}
 
       {/* after login — require session so /api/sim/* and other APIs work */}
       <Route path="/landing" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />

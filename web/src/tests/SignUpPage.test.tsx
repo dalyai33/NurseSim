@@ -1,5 +1,5 @@
 // src/features/signup/SignUpPage.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import SignUpPage from "../features/auth/SignUpPage";
@@ -265,7 +265,50 @@ it("shows teacher code error when clicking checkbox with wrong code", () => {
   expect(checkbox.checked).toBe(false); // checkbox is reset
 });
 
+  it("sends signup request to localhost API", async () => {
+    const mockFetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ ok: true }),
+      })
+    );
 
+    vi.stubGlobal("fetch", mockFetch);
 
+    render(
+      <MemoryRouter>
+        <SignUpPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/First Name/i), { target: { value: "Alex" } });
+    fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: "Smith" } });
+    fireEvent.change(screen.getByLabelText(/Student ID/i), { target: { value: "97000001" } });
+    fireEvent.change(screen.getByLabelText(/Phone Number/i), { target: { value: "+12345678910" } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: "test@ohsu.edu" } });
+    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        "http://localhost:5000/api/signup",
+        expect.objectContaining({
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            first_name: "Alex",
+            last_name: "Smith",
+            student_id: "97000001",
+            phone_number: "+12345678910",
+            email: "test@ohsu.edu",
+            password: "password123",
+            is_teacher: false,
+            teacher_code: "",
+          }),
+        })
+      );
+    });
+  });
 
 });
