@@ -63,9 +63,9 @@
 
 .quiz-popup {
   position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  bottom: 40px;
+  transform: translate(-50%, -50%);
   width: min(720px, 90%);
   padding: 24px 28px;
   background: linear-gradient(180deg, #f7c270 0%, #f3e2cf 100%);
