@@ -5,6 +5,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import LoginPage from "../features/auth/LoginPage";
 import SignUpPage from "../features/auth/SignUpPage";
 import { LandingPage } from "../features/landing/LandingPage";
+import Landing from "../pages/Landing";
 import { ClassroomStudentsPage } from "../features/classroom/ClassroomStudentsPage";
 import { ClassroomPermissionsPage } from "../features/classroom/ClassroomPermissionsPage";
 import { TeacherViewLandingPage } from "../features/classroom/TeacherViewLandingPage";
@@ -19,8 +20,10 @@ import {SimPageTwo} from "../features/sim/SimPageTwo";
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
+      {/* public marketing */}
+      <Route path="/" element={<Landing />} />
+
       {/* auth */}
-      <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
 
