@@ -8,6 +8,7 @@ import { HowItWorks } from "../components/landing/HowItWorks";
 import { OHSUSection } from "../components/landing/OHSUSection";
 import { TeamSection } from "../components/landing/TeamSection";
 import { LandingFooter } from "../components/landing/LandingFooter";
+import { ScreenshotsSection } from "../components/landing/ScreenshotSection";
 
 const Landing: React.FC = () => (
   <div className="landing-root">
@@ -17,6 +18,7 @@ const Landing: React.FC = () => (
       <StatsBar />
       <AboutSection />
       <HowItWorks />
+      <ScreenshotsSection />
       <OHSUSection />
       <TeamSection />
     </main>

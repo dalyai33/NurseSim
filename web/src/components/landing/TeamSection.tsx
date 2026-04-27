@@ -6,7 +6,7 @@ const team = [
     name: "Kiana Shim",
     role: "Lead UI/UX",
     mod: "ks",
-    github: "https://github.com/KianaShim",
+    github: "https://github.com/KianaIShim",
   },
   {
     initials: "IH",
