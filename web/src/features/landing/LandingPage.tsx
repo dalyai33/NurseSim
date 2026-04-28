@@ -17,7 +17,7 @@ export const LandingPage: React.FC = () => {
           <h1 className="landing-title">OHSU NURSE SIM+</h1>
           <div className="landing-buttons">
             <GradientButton onClick={() => navigate("/sim")}>
-              Enter
+              Student View
             </GradientButton>
             <GradientButton onClick={() => navigate("/teacher")}>
               Teacher View
