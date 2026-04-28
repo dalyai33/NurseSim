@@ -34,10 +34,10 @@ describe("LandingPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("navigates to /sim when Enter button is clicked", () => {
+  it("navigates to /sim when Student View button is clicked", () => {
     render(<LandingPage />);
 
-    fireEvent.click(screen.getByRole("button", { name: /enter/i }));
+    fireEvent.click(screen.getByRole("button", { name: /student view/i }));
 
     expect(navigateMock).toHaveBeenCalledWith("/sim");
   });

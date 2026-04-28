@@ -92,7 +92,7 @@ export default function SignUpPage() {
     <div className="app-shell">
       <div className="sign-up-wrap">
         <div className="card">
-          <h1 className="brand">NurseSim</h1>
+          <h1 className="brand">Sign up</h1>
 
           <form onSubmit={handleSubmit} noValidate>
             {errors.form && <p className="error">{errors.form}</p>}
