@@ -36,8 +36,6 @@ def get_help(user_text: str):
             model="gemma-4-26b-a4b-it",
             contents=user_text,
             config=types.GenerateContentConfig(
-                #Restrict the model to use one token at a time
-                thinking_config=types.ThinkingConfig(thinking_budget=1),
                 system_instruction=messages,
                 #scaler of randomness/creative responses
                 temperature=0.1,
