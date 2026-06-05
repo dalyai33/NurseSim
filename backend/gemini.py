@@ -33,7 +33,7 @@ print("Start Chating with NurseSim+ Assistant!\nUse it to get hints on your ques
 def get_help(user_text: str):
     try:
         response = client.models.generate_content(
-            model="gemini-3-flash-preview",
+            model="gemma-4-26b-a4b-it",
             contents=user_text,
             config=types.GenerateContentConfig(
                 #Restrict the model to use one token at a time
